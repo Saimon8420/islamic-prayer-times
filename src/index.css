@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 30% 98%;
+    --foreground: 160 40% 15%;
+    --card: 45 40% 99%;
+    --card-foreground: 160 40% 15%;
+    --popover: 45 40% 99%;
+    --popover-foreground: 160 40% 15%;
+    --primary: 158 64% 32%;
+    --primary-foreground: 45 30% 98%;
+    --secondary: 43 96% 56%;
+    --secondary-foreground: 160 40% 15%;
+    --muted: 45 20% 93%;
+    --muted-foreground: 160 20% 45%;
+    --accent: 173 58% 39%;
+    --accent-foreground: 45 30% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 45 30% 98%;
+    --border: 45 20% 88%;
+    --input: 45 20% 88%;
+    --ring: 158 64% 32%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 160 35% 7%;
+    --foreground: 45 20% 95%;
+    --card: 160 30% 10%;
+    --card-foreground: 45 20% 95%;
+    --popover: 160 30% 10%;
+    --popover-foreground: 45 20% 95%;
+    --primary: 158 55% 42%;
+    --primary-foreground: 45 30% 98%;
+    --secondary: 43 90% 50%;
+    --secondary-foreground: 160 40% 10%;
+    --muted: 160 25% 15%;
+    --muted-foreground: 45 15% 65%;
+    --accent: 173 50% 45%;
+    --accent-foreground: 45 30% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 45 30% 98%;
+    --border: 160 25% 18%;
+    --input: 160 25% 18%;
+    --ring: 158 55% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  /* Islamic Pattern Background */
+  .islamic-pattern-bg {
+    background-color: hsl(var(--background));
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e7d5c' fill-opacity='0.03'%3E%3Cpath d='M40 0l40 40-40 40L0 40 40 0zm0 10L10 40l30 30 30-30-30-30zm0 10l20 20-20 20-20-20 20-20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Mosque Silhouette Header */
+  .mosque-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mosque-header::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,120 L0,80 Q150,40 300,80 Q350,60 400,80 L400,60 Q420,20 440,60 L440,80 Q500,50 560,80 L560,60 Q580,30 600,60 L600,80 Q700,40 800,80 L800,60 Q820,20 840,60 L840,80 Q900,50 960,80 Q1050,40 1200,80 L1200,120 Z' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  /* Beautiful Islamic Gradient */
+  .islamic-gradient {
+    background: linear-gradient(135deg, hsl(158, 64%, 32%) 0%, hsl(173, 58%, 39%) 50%, hsl(158, 64%, 32%) 100%);
+  }
+
+  .islamic-gradient-gold {
+    background: linear-gradient(135deg, hsl(43, 96%, 46%) 0%, hsl(38, 92%, 50%) 50%, hsl(43, 96%, 46%) 100%);
+  }
+
+  .islamic-gradient-dark {
+    background: linear-gradient(135deg, hsl(160, 35%, 12%) 0%, hsl(158, 40%, 18%) 50%, hsl(160, 35%, 12%) 100%);
+  }
+
+  /* Text Gradients */
+  .islamic-text-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, hsl(158, 64%, 32%) 0%, hsl(173, 58%, 39%) 100%);
+  }
+
+  .gold-text-gradient {
+    @apply bg-clip-text text-transparent;
+    background: linear-gradient(135deg, hsl(43, 96%, 46%) 0%, hsl(38, 92%, 50%) 100%);
+  }
+
+  /* Prayer Card Styling */
+  .prayer-card {
+    @apply relative overflow-hidden rounded-2xl transition-all duration-500;
+    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+  }
+
+  .prayer-card::before {
+    content: '';
+    @apply absolute top-0 right-0 w-32 h-32 opacity-5;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%231e7d5c' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='30' fill='none' stroke='%231e7d5c' stroke-width='2'/%3E%3Ccircle cx='50' cy='50' r='20' fill='none' stroke='%231e7d5c' stroke-width='2'/%3E%3Cpath d='M50 10 L50 90 M10 50 L90 50 M22 22 L78 78 M78 22 L22 78' stroke='%231e7d5c' stroke-width='1'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+  }
+
+  /* Highlight for next prayer */
+  .next-prayer-glow {
+    @apply relative;
+    box-shadow: 0 0 30px rgba(30, 125, 92, 0.3), 0 0 60px rgba(30, 125, 92, 0.12);
+  }
+
+  /* Glass morphism effect */
+  .glass-card {
+    @apply backdrop-blur-xl;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .glass-card {
+    background: rgba(20, 40, 35, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Crescent Moon decoration */
+  .crescent-decoration {
+    @apply absolute opacity-10;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M70 15 A35 35 0 1 0 70 85 A28 28 0 1 1 70 15' fill='%231e7d5c'/%3E%3Cpolygon points='78,42 81,50 90,50 83,55 86,64 78,58 70,64 73,55 66,50 75,50' fill='%23d4a017'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+  }
+
+  /* Arabic text styling */
+  .arabic-text {
+    font-family: 'Scheherazade New', 'Amiri', serif;
+    direction: rtl;
+    line-height: 1.8;
+  }
+
+  .arabic-large {
+    font-family: 'Scheherazade New', serif;
+    font-size: 1.5em;
+  }
+
+  /* Decorative border */
+  .islamic-border {
+    @apply relative rounded-2xl overflow-hidden;
+    border: 2px solid transparent;
+    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+                linear-gradient(135deg, hsl(158, 64%, 32%), hsl(43, 96%, 56%), hsl(173, 58%, 39%)) border-box;
+  }
+
+  /* Ornamental divider */
+  .islamic-divider {
+    @apply relative h-8 w-full flex items-center justify-center;
+  }
+
+  .islamic-divider::before,
+  .islamic-divider::after {
+    content: '';
+    @apply flex-1 h-px bg-gradient-to-r;
+  }
+
+  .islamic-divider::before {
+    background: linear-gradient(to right, transparent, hsl(var(--primary)));
+  }
+
+  .islamic-divider::after {
+    background: linear-gradient(to left, transparent, hsl(var(--primary)));
+  }
+
+  /* Star decoration */
+  .star-icon {
+    @apply inline-block;
+    color: hsl(43, 96%, 56%);
+  }
+
+  /* Countdown timer styling */
+  .countdown-display {
+    @apply font-mono tracking-wider;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.35),
+                 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Animated gradient background */
+  .animate-gradient-bg {
+    background: linear-gradient(-45deg,
+      hsl(158, 64%, 32%),
+      hsl(173, 58%, 39%),
+      hsl(158, 45%, 40%),
+      hsl(43, 70%, 50%)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Hero section styling */
+  .hero-section {
+    @apply relative overflow-hidden;
+    background: linear-gradient(180deg,
+      hsl(160, 35%, 10%) 0%,
+      hsl(158, 40%, 15%) 50%,
+      hsl(160, 35%, 10%) 100%
+    );
+  }
+
+  /* Shimmer effect */
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Smooth fade in animation */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Slide animations */
+  .slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scale animation */
+  .scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Rotate animation for compass */
+  .rotate-smooth {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+  background: linear-gradient(180deg, hsl(158, 64%, 32%), hsl(173, 58%, 39%));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, hsl(158, 64%, 38%), hsl(173, 58%, 45%));
+}
+
+/* Selection styling */
+::selection {
+  background: hsl(158, 64%, 32%);
+  color: white;
+}
