@@ -8,7 +8,11 @@
       "Bash(npx tailwindcss init -p)",
       "Bash(npm run build:*)",
       "Bash(npm uninstall:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(cd D:Web Practiceprayertime-fastingtime-clientsite)",
+      "Bash(npx tsc:*)",
+      "Bash(ipconfig:*)",
+      "Bash(findstr:*)"
     ]
   }
 }
