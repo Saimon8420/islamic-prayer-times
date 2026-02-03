@@ -2,7 +2,7 @@
 
 A comprehensive Islamic prayer times and fasting schedule application built with React, TypeScript, and modern web technologies. Available as both a **web app** and a **native Android app** with prayer time notifications and adhan sounds.
 
-[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Saimon8420/islamic-prayer-times/releases/latest/download/app-debug.apk)
+[![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Saimon8420/islamic-prayer-times/releases/latest/download/islamic-prayer-times.apk)
 
 > Click the badge above to download and install the latest Android APK directly on your device.
 
@@ -187,7 +187,7 @@ The built files will be in the `dist` directory.
 npm run build:apk
 ```
 
-Requires Android SDK and JDK 17. The APK will be at `android/app/build/outputs/apk/debug/app-debug.apk`.
+Requires Android SDK and JDK 17. The APK will be at `android/app/build/outputs/apk/debug/islamic-prayer-times.apk`.
 
 ### Other Capacitor Commands
 
