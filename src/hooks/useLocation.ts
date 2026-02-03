@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
+import { Geolocation } from '@capacitor/geolocation';
 import { useStore } from '../store/useStore';
+import { isNativePlatform } from '../services/platformService';
 
 interface LocationState {
   loading: boolean;
@@ -30,46 +32,68 @@ export const useLocation = () => {
   };
 
   const requestLocation = useCallback(async () => {
-    if (!navigator.geolocation) {
-      setState({
-        loading: false,
-        error: 'Geolocation is not supported by your browser',
-      });
-      return;
-    }
-
     setState({ loading: true, error: null });
 
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
+    try {
+      if (isNativePlatform()) {
+        // Use Capacitor Geolocation — triggers native Android permission dialog
+        const permResult = await Geolocation.requestPermissions();
+        if (permResult.location !== 'granted' && permResult.coarseLocation !== 'granted') {
+          setState({ loading: false, error: 'Location permission denied. Please enable location access in app settings.' });
+          return;
+        }
+
+        const position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 10000,
+        });
+
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         const name = await getLocationName(lat, lon);
-
         setLocation({ lat, lon, name });
         setState({ loading: false, error: null });
-      },
-      (error) => {
-        let errorMessage = 'Failed to get location';
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            errorMessage = 'Location permission denied. Please enable location access.';
-            break;
-          case error.POSITION_UNAVAILABLE:
-            errorMessage = 'Location information unavailable.';
-            break;
-          case error.TIMEOUT:
-            errorMessage = 'Location request timed out.';
-            break;
+      } else {
+        // Web fallback — uses browser geolocation API
+        if (!navigator.geolocation) {
+          setState({ loading: false, error: 'Geolocation is not supported by your browser' });
+          return;
         }
-        setState({ loading: false, error: errorMessage });
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const name = await getLocationName(lat, lon);
+            setLocation({ lat, lon, name });
+            setState({ loading: false, error: null });
+          },
+          (error) => {
+            let errorMessage = 'Failed to get location';
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                errorMessage = 'Location permission denied. Please enable location access.';
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMessage = 'Location information unavailable.';
+                break;
+              case error.TIMEOUT:
+                errorMessage = 'Location request timed out.';
+                break;
+            }
+            setState({ loading: false, error: errorMessage });
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0,
+          }
+        );
       }
-    );
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to get location';
+      setState({ loading: false, error: message });
+    }
   }, [setLocation]);
 
   const setManualLocation = useCallback(
