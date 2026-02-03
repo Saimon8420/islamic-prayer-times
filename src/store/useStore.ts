@@ -6,6 +6,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { CalculationMethodId, MadhabId } from '../services/prayerService';
+import type { AdhanSoundId } from '../services/notificationService';
 
 export interface Location {
   lat: number;
@@ -28,6 +29,7 @@ export interface AppSettings {
 
   // Notifications
   notificationsEnabled: boolean;
+  selectedAdhan: AdhanSoundId;
 }
 
 interface AppState extends AppSettings {
@@ -39,6 +41,7 @@ interface AppState extends AppSettings {
   setUse24HourFormat: (use24Hour: boolean) => void;
   setShowSeconds: (show: boolean) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
+  setSelectedAdhan: (adhan: AdhanSoundId) => void;
   resetSettings: () => void;
 }
 
@@ -50,6 +53,7 @@ const defaultSettings: AppSettings = {
   use24HourFormat: false,
   showSeconds: true,
   notificationsEnabled: false,
+  selectedAdhan: 'makkah',
 };
 
 export const useStore = create<AppState>()(
@@ -70,6 +74,8 @@ export const useStore = create<AppState>()(
       setShowSeconds: (showSeconds) => set({ showSeconds }),
 
       setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
+
+      setSelectedAdhan: (selectedAdhan) => set({ selectedAdhan }),
 
       resetSettings: () => set(defaultSettings),
     }),

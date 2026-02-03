@@ -13,6 +13,7 @@ import { QiblaCompass } from './components/qibla/QiblaCompass';
 import { MonthlySchedule } from './components/MonthlySchedule';
 import { useStore } from './store/useStore';
 import { useTheme } from './hooks/useTheme';
+import { useNotifications } from './hooks/useNotifications';
 
 // Custom Icons
 const PrayerIcon = () => (
@@ -47,6 +48,7 @@ function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const location = useStore((state) => state.location);
   useTheme();
+  useNotifications();
 
   const hasLocation = location !== null;
 

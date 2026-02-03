@@ -1,4 +1,5 @@
-import { MapPin, RefreshCw, Info } from 'lucide-react';
+import { MapPin, RefreshCw, Info, Bell } from 'lucide-react';
+import { isNativePlatform } from '../services/platformService';
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import { Switch } from './ui/switch';
 import { useStore } from '../store/useStore';
 import { useLocation } from '../hooks/useLocation';
 import { CALCULATION_METHODS, MADHAB_OPTIONS } from '../services/prayerService';
+import { ADHAN_SOUNDS } from '../services/notificationService';
 
 interface SettingsDialogProps {
   open: boolean;
@@ -35,9 +37,15 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const setShowSeconds = useStore((state) => state.setShowSeconds);
   const theme = useStore((state) => state.theme);
   const setTheme = useStore((state) => state.setTheme);
+  const notificationsEnabled = useStore((state) => state.notificationsEnabled);
+  const setNotificationsEnabled = useStore((state) => state.setNotificationsEnabled);
+  const selectedAdhan = useStore((state) => state.selectedAdhan);
+  const setSelectedAdhan = useStore((state) => state.setSelectedAdhan);
   const resetSettings = useStore((state) => state.resetSettings);
 
   const { name: locationName, hasLocation, loading, requestLocation, clearLocation } = useLocation();
+
+  const isNative = isNativePlatform();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -173,6 +181,51 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               onCheckedChange={setShowSeconds}
             />
           </div>
+
+          {/* Notifications - only visible on native platform */}
+          {isNative && (
+            <div className="space-y-4 pt-4 border-t">
+              <div className="flex items-center gap-2">
+                <Bell className="h-4 w-4 text-primary" />
+                <label className="text-sm font-medium">Notifications</label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <label className="text-sm font-medium">Prayer Notifications</label>
+                  <p className="text-xs text-muted-foreground">Get notified at each prayer time</p>
+                </div>
+                <Switch
+                  checked={notificationsEnabled}
+                  onCheckedChange={setNotificationsEnabled}
+                />
+              </div>
+
+              {notificationsEnabled && (
+                <div className="space-y-3">
+                  <label className="text-sm font-medium">Adhan Sound</label>
+                  <Select
+                    value={selectedAdhan}
+                    onValueChange={(value) => setSelectedAdhan(value as typeof selectedAdhan)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select adhan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ADHAN_SOUNDS.map((adhan) => (
+                        <SelectItem key={adhan.id} value={adhan.id}>
+                          {adhan.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    Choose which adhan to play for prayer notifications.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Reset */}
           <div className="pt-4 border-t">
