@@ -1,4 +1,5 @@
 import { Heart, ExternalLink, Code2, Globe } from 'lucide-react';
+import { useTranslation } from '../../i18n/useTranslation';
 
 // Crescent Star Icon
 const CrescentStarIcon = () => (
@@ -22,6 +23,8 @@ const developerProjects = [
 ];
 
 export const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className="relative overflow-hidden">
       {/* Decorative top border */}
@@ -36,18 +39,16 @@ export const Footer = () => {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <CrescentStarIcon />
-                <h3 className="text-base font-bold">Prayer Times</h3>
+                <h3 className="text-base font-bold">{t('common.appName')}</h3>
               </div>
               <p className="text-white/70 text-xs leading-relaxed">
-                A comprehensive Islamic prayer times and fasting schedule application.
-                Get accurate prayer times, Qibla direction, and fasting schedules for
-                your location.
+                {t('footer.about')}
               </p>
             </div>
 
             {/* Powered By */}
             <div>
-              <h3 className="text-sm font-semibold mb-2">Powered By</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('footer.poweredBy')}</h3>
               <div className="space-y-1.5">
                 <div>
                   <a
@@ -56,11 +57,11 @@ export const Footer = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-secondary hover:text-secondary/80 transition-colors text-xs font-medium"
                   >
-                    Adhan Library
+                    {t('footer.adhanLibrary')}
                     <ExternalLink className="h-3 w-3" />
                   </a>
                   <p className="text-white/60 text-[11px]">
-                    Islamic prayer time calculations
+                    {t('footer.adhanLibraryDesc')}
                   </p>
                 </div>
                 <div>
@@ -70,11 +71,11 @@ export const Footer = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-secondary hover:text-secondary/80 transition-colors text-xs font-medium"
                   >
-                    hijri-converter
+                    {t('footer.hijriConverter')}
                     <ExternalLink className="h-3 w-3" />
                   </a>
                   <p className="text-white/60 text-[11px]">
-                    Hijri calendar date conversions
+                    {t('footer.hijriConverterDesc')}
                   </p>
                 </div>
               </div>
@@ -82,27 +83,27 @@ export const Footer = () => {
 
             {/* Features */}
             <div>
-              <h3 className="text-sm font-semibold mb-2">Features</h3>
+              <h3 className="text-sm font-semibold mb-2">{t('footer.features')}</h3>
               <ul className="space-y-1 text-[11px] text-white/70">
                 <li className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-secondary shrink-0" />
-                  Accurate prayer times based on location
+                  {t('footer.featureAccurate')}
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-secondary shrink-0" />
-                  12 calculation methods supported
+                  {t('footer.featureMethods')}
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-secondary shrink-0" />
-                  Qibla direction finder
+                  {t('footer.featureQibla')}
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-secondary shrink-0" />
-                  Fasting times &amp; Hijri calendar
+                  {t('footer.featureFasting')}
                 </li>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-secondary shrink-0" />
-                  Offline-capable local calculations
+                  {t('footer.featureOffline')}
                 </li>
               </ul>
             </div>
@@ -111,11 +112,10 @@ export const Footer = () => {
             <div>
               <h3 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
                 <Code2 className="h-3.5 w-3.5" />
-                Developer
+                {t('footer.developer')}
               </h3>
               <p className="text-white/70 text-[11px] leading-relaxed mb-2">
-                Built with care by a passionate developer focused on creating meaningful
-                Islamic web applications.
+                {t('footer.developerDesc')}
               </p>
               <div className="space-y-1.5">
                 <a
@@ -125,7 +125,7 @@ export const Footer = () => {
                   className="inline-flex items-center gap-1.5 text-secondary hover:text-secondary/80 transition-colors text-xs font-medium"
                 >
                   <Globe className="h-3 w-3" />
-                  Portfolio
+                  {t('footer.portfolio')}
                   <ExternalLink className="h-3 w-3" />
                 </a>
                 <div className="flex flex-wrap gap-x-3 gap-y-1">
@@ -159,18 +159,17 @@ export const Footer = () => {
           {/* Bottom */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-white/60">
             <p className="flex items-center gap-1.5">
-              Made with <Heart className="h-3 w-3 text-red-400 fill-red-400" /> for the
-              Muslim Ummah
+              {t('footer.madeWith')} <Heart className="h-3 w-3 text-red-400 fill-red-400" /> {t('footer.forUmmah')}
             </p>
             <p className="arabic-text text-sm">بسم الله الرحمن الرحيم</p>
             <p>
-              &copy; {new Date().getFullYear()} Prayer Times
+              &copy; {new Date().getFullYear()} {t('common.appName')}
             </p>
           </div>
 
           {/* Attribution */}
           <div className="mt-3 text-center text-[10px] text-white/40">
-            Prayer times calculated using{' '}
+            {t('footer.attribution')}{' '}
             <a
               href="https://github.com/batoulapps/adhan-js"
               target="_blank"
@@ -180,7 +179,7 @@ export const Footer = () => {
               Adhan
             </a>
             {' '}&middot;{' '}
-            Hijri dates by{' '}
+            {t('footer.hijriDatesBy')}{' '}
             <a
               href="https://github.com/AliYmn/hijri-converter"
               target="_blank"

@@ -2,6 +2,7 @@ import { MapPin, Navigation, Compass } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { useLocation } from '../../hooks/useLocation';
+import { useTranslation } from '../../i18n/useTranslation';
 
 // Kaaba Icon
 const KaabaIcon = () => (
@@ -25,6 +26,7 @@ const MosqueSilhouette = () => (
 
 export const LocationPrompt = () => {
   const { loading, error, requestLocation } = useLocation();
+  const { t } = useTranslation();
 
   return (
     <div className="relative w-full max-w-lg mx-auto">
@@ -42,9 +44,9 @@ export const LocationPrompt = () => {
             <div className="mx-auto w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4">
               <KaabaIcon />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Assalamu Alaikum</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('location.greeting')}</h2>
             <p className="text-3xl arabic-text mb-2">السلام عليكم</p>
-            <p className="text-white/80 text-sm">Welcome to Prayer Times</p>
+            <p className="text-white/80 text-sm">{t('location.welcome')}</p>
           </div>
 
           <MosqueSilhouette />
@@ -55,9 +57,9 @@ export const LocationPrompt = () => {
             <div className="w-16 h-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4">
               <MapPin className="w-8 h-8 text-primary" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Set Your Location</h3>
+            <h3 className="text-xl font-semibold mb-2">{t('location.setYourLocation')}</h3>
             <p className="text-muted-foreground">
-              To show accurate prayer times and Qibla direction, we need your location.
+              {t('location.locationNeeded')}
             </p>
           </div>
 
@@ -72,18 +74,18 @@ export const LocationPrompt = () => {
             onClick={requestLocation}
             disabled={loading}
           >
-            <Navigation className="mr-2 h-5 w-5" />
-            {loading ? 'Getting Location...' : 'Use My Current Location'}
+            <Navigation className="me-2 h-5 w-5" />
+            {loading ? t('location.gettingLocation') : t('location.useCurrentLocation')}
           </Button>
 
           <div className="mt-6 flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex-1 h-px bg-border" />
-            <span>or</span>
+            <span>{t('common.or')}</span>
             <div className="flex-1 h-px bg-border" />
           </div>
 
           <p className="mt-4 text-sm text-muted-foreground">
-            Your location is stored locally and used only for calculating prayer times.
+            {t('location.privacyNote')}
           </p>
 
           {/* Features preview */}
@@ -95,13 +97,13 @@ export const LocationPrompt = () => {
                   <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                 </svg>
               </div>
-              <p className="text-xs font-medium">Prayer Times</p>
+              <p className="text-xs font-medium">{t('location.featurePrayer')}</p>
             </div>
             <div className="p-3 rounded-xl bg-muted/50">
               <div className="w-10 h-10 mx-auto rounded-lg bg-secondary/20 flex items-center justify-center mb-2">
                 <Compass className="w-5 h-5 text-secondary" />
               </div>
-              <p className="text-xs font-medium">Qibla</p>
+              <p className="text-xs font-medium">{t('location.featureQibla')}</p>
             </div>
             <div className="p-3 rounded-xl bg-muted/50">
               <div className="w-10 h-10 mx-auto rounded-lg bg-accent/10 flex items-center justify-center mb-2">
@@ -109,7 +111,7 @@ export const LocationPrompt = () => {
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" />
                 </svg>
               </div>
-              <p className="text-xs font-medium">Fasting</p>
+              <p className="text-xs font-medium">{t('location.featureFasting')}</p>
             </div>
           </div>
         </CardContent>

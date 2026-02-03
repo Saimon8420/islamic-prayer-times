@@ -4,15 +4,14 @@ import { format } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { useStore } from '../../store/useStore';
 import { getUpcomingWhiteDays, isWhiteDay, gregorianToHijri } from '../../services/hijriService';
+import { useTranslation } from '../../i18n/useTranslation';
 
 export const WhiteDays = () => {
   const location = useStore((state) => state.location);
   const hasLocation = location !== null;
+  const { t } = useTranslation();
 
-  // Get upcoming white days
   const whiteDays = useMemo(() => getUpcomingWhiteDays(6), []);
-
-  // Check if today is a white day
   const todayHijri = useMemo(() => gregorianToHijri(new Date()), []);
   const isTodayWhiteDay = useMemo(() => isWhiteDay(todayHijri.day), [todayHijri.day]);
 
@@ -23,12 +22,12 @@ export const WhiteDays = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Star className="h-5 w-5 text-yellow-500" />
-          White Days (Ayyam Al-Beed)
+          {t('fasting.whiteDays.title')}
         </CardTitle>
         <CardDescription>
-          The 13th, 14th, and 15th of each Islamic month. Fasting these days is Sunnah.
+          {t('fasting.whiteDays.description')}
           {isTodayWhiteDay && (
-            <span className="ml-1 text-yellow-600 font-medium">(Today is a White Day!)</span>
+            <span className="ms-1 text-yellow-600 font-medium">{t('fasting.whiteDays.todayIsWhiteDay')}</span>
           )}
         </CardDescription>
       </CardHeader>
@@ -51,8 +50,8 @@ export const WhiteDays = () => {
                   </div>
                   <div>
                     <p className="font-medium">
-                      {day.hijriDate.day}th of {day.hijriDate.monthName.en}
-                      {isToday && <span className="ml-2 text-yellow-600 text-sm">(Today)</span>}
+                      {t('fasting.whiteDays.dayOfMonth', { day: day.hijriDate.day, month: day.hijriDate.monthName.en })}
+                      {isToday && <span className="ms-2 text-yellow-600 text-sm">{t('fasting.whiteDays.todayLabel')}</span>}
                     </p>
                     <p className="text-xs text-muted-foreground arabic-text">
                       {day.hijriDate.formattedArabic}
@@ -67,8 +66,7 @@ export const WhiteDays = () => {
           })}
         </div>
         <p className="mt-4 text-xs text-muted-foreground text-center">
-          The Prophet (PBUH) said: "Fasting three days of each month is fasting for a
-          lifetime." (Bukhari & Muslim)
+          {t('fasting.whiteDays.hadith')}
         </p>
       </CardContent>
     </Card>

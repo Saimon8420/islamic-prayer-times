@@ -7,6 +7,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { CalculationMethodId, MadhabId } from '../services/prayerService';
 import type { AdhanSoundId } from '../services/notificationService';
+import type { Language } from '../i18n/types';
 
 export interface Location {
   lat: number;
@@ -30,6 +31,9 @@ export interface AppSettings {
   // Notifications
   notificationsEnabled: boolean;
   selectedAdhan: AdhanSoundId;
+
+  // Language
+  language: Language;
 }
 
 interface AppState extends AppSettings {
@@ -42,6 +46,7 @@ interface AppState extends AppSettings {
   setShowSeconds: (show: boolean) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
   setSelectedAdhan: (adhan: AdhanSoundId) => void;
+  setLanguage: (language: Language) => void;
   resetSettings: () => void;
 }
 
@@ -54,6 +59,7 @@ const defaultSettings: AppSettings = {
   showSeconds: true,
   notificationsEnabled: false,
   selectedAdhan: 'makkah',
+  language: 'en' as Language,
 };
 
 export const useStore = create<AppState>()(
@@ -76,6 +82,8 @@ export const useStore = create<AppState>()(
       setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
 
       setSelectedAdhan: (selectedAdhan) => set({ selectedAdhan }),
+
+      setLanguage: (language) => set({ language }),
 
       resetSettings: () => set(defaultSettings),
     }),

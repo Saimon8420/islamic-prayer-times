@@ -6,6 +6,7 @@ import { calculatePrayerTimes, formatPrayerTime } from '../../services/prayerSer
 import { gregorianToHijri, isRamadan, getDaysUntilRamadan } from '../../services/hijriService';
 import { formatCountdown, formatDuration } from '../../utils';
 import { cn } from '../../lib/utils';
+import { useTranslation } from '../../i18n/useTranslation';
 
 // Custom Icons
 const SahurIcon = () => (
@@ -42,12 +43,12 @@ export const FastingTimesCard = () => {
   const calculationMethod = useStore((state) => state.calculationMethod);
   const madhab = useStore((state) => state.madhab);
   const use24HourFormat = useStore((state) => state.use24HourFormat);
+  const { t } = useTranslation();
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const hasLocation = location !== null;
 
-  // Calculate prayer times for fasting
   const prayerTimes = useMemo(() => {
     if (!hasLocation) return null;
     return calculatePrayerTimes(
@@ -59,14 +60,10 @@ export const FastingTimesCard = () => {
     );
   }, [hasLocation, location, calculationMethod, madhab]);
 
-  // Get hijri date
   const hijriDate = useMemo(() => gregorianToHijri(new Date()), []);
-
-  // Check Ramadan status
   const isCurrentlyRamadan = useMemo(() => isRamadan(), []);
   const daysUntilRamadan = useMemo(() => getDaysUntilRamadan(), []);
 
-  // Update current time every second
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -76,25 +73,22 @@ export const FastingTimesCard = () => {
 
   if (!hasLocation || !prayerTimes) return null;
 
-  const sahurTime = prayerTimes.imsak; // Sahur ends at Imsak (10 min before Fajr)
+  const sahurTime = prayerTimes.imsak;
   const iftarTime = prayerTimes.maghrib;
-
-  // Calculate fasting duration in minutes
   const fastingDuration = Math.floor((iftarTime.getTime() - prayerTimes.fajr.getTime()) / (1000 * 60));
-
   const isFasting = currentTime >= prayerTimes.fajr && currentTime < iftarTime;
 
   const getTimeUntil = () => {
     if (currentTime < sahurTime) {
       return {
-        event: 'Sahur ends in',
+        event: t('fasting.sahurEndsIn'),
         seconds: Math.floor((sahurTime.getTime() - currentTime.getTime()) / 1000),
         type: 'sahur' as const,
       };
     }
     if (currentTime < iftarTime) {
       return {
-        event: 'Iftar in',
+        event: t('fasting.iftarIn'),
         seconds: Math.floor((iftarTime.getTime() - currentTime.getTime()) / 1000),
         type: 'iftar' as const,
       };
@@ -122,22 +116,22 @@ export const FastingTimesCard = () => {
             <div>
               <h2 className="text-2xl font-bold mb-1 flex items-center gap-2">
                 <DatesIcon />
-                Fasting Times
+                {t('fasting.title')}
               </h2>
               <p className="text-white/80 text-sm">
                 {hijriDate.formatted}
               </p>
               {isCurrentlyRamadan && (
-                <p className="text-white font-medium mt-1">Ramadan Mubarak!</p>
+                <p className="text-white font-medium mt-1">{t('fasting.ramadanMubarak')}</p>
               )}
               {!isCurrentlyRamadan && daysUntilRamadan !== null && daysUntilRamadan > 0 && (
                 <p className="text-white/80 text-sm mt-1">
-                  {daysUntilRamadan} days until Ramadan
+                  {t('fasting.daysUntilRamadan', { count: daysUntilRamadan })}
                 </p>
               )}
             </div>
-            <div className="text-right bg-white/20 rounded-xl px-4 py-2">
-              <p className="text-xs text-white/70">Duration</p>
+            <div className="text-end bg-white/20 rounded-xl px-4 py-2">
+              <p className="text-xs text-white/70">{t('fasting.duration')}</p>
               <p className="text-xl font-bold">{formatDuration(fastingDuration)}</p>
             </div>
           </div>
@@ -145,8 +139,8 @@ export const FastingTimesCard = () => {
           {/* Countdown */}
           {timeUntil && (
             <div className={cn(
-              'glass-card rounded-2xl p-5 border-l-4',
-              timeUntil.type === 'sahur' ? 'border-l-blue-300/80' : 'border-l-orange-200/80'
+              'glass-card rounded-2xl p-5 border-s-4',
+              timeUntil.type === 'sahur' ? 'border-s-blue-300/80' : 'border-s-orange-200/80'
             )}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -183,10 +177,10 @@ export const FastingTimesCard = () => {
                 <SahurIcon />
               </div>
               <p className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-1">
-                Sahur (Sehri)
+                {t('fasting.sahurSehri')}
               </p>
               <p className="text-3xl font-bold">{formatPrayerTime(sahurTime, use24HourFormat)}</p>
-              <p className="text-xs text-muted-foreground mt-2">End of pre-dawn meal</p>
+              <p className="text-xs text-muted-foreground mt-2">{t('fasting.endOfPreDawnMeal')}</p>
             </div>
           </div>
 
@@ -203,10 +197,10 @@ export const FastingTimesCard = () => {
                 <IftarIcon />
               </div>
               <p className="text-sm font-medium text-orange-600 dark:text-orange-400 mb-1">
-                Iftar
+                {t('fasting.iftar')}
               </p>
               <p className="text-3xl font-bold">{formatPrayerTime(iftarTime, use24HourFormat)}</p>
-              <p className="text-xs text-muted-foreground mt-2">Time to break fast</p>
+              <p className="text-xs text-muted-foreground mt-2">{t('fasting.timeToBreakFast')}</p>
             </div>
           </div>
         </div>
@@ -215,24 +209,24 @@ export const FastingTimesCard = () => {
         <div className="mt-6 rounded-xl bg-muted/50 p-4 text-center">
           {isFasting ? (
             <div>
-              <p className="font-medium text-primary">You are currently fasting</p>
+              <p className="font-medium text-primary">{t('fasting.currentlyFasting')}</p>
               <p className="text-sm text-muted-foreground mt-1">
-                May Allah accept your fast
+                {t('fasting.mayAllahAccept')}
                 <span className="arabic-text mx-2">تقبل الله</span>
               </p>
             </div>
           ) : currentTime < sahurTime ? (
             <div>
-              <p className="font-medium">Prepare for Sahur</p>
+              <p className="font-medium">{t('fasting.prepareForSahur')}</p>
               <p className="text-sm text-muted-foreground mt-1">
-                Don't forget to make intention for fasting
+                {t('fasting.dontForgetIntention')}
               </p>
             </div>
           ) : (
             <div>
-              <p className="font-medium text-primary">Fast completed for today</p>
+              <p className="font-medium text-primary">{t('fasting.fastCompleted')}</p>
               <p className="text-sm text-muted-foreground mt-1">
-                <span className="arabic-text">الحمد لله</span> - Alhamdulillah
+                <span className="arabic-text">الحمد لله</span> - {t('fasting.alhamdulillah')}
               </p>
             </div>
           )}

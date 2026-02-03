@@ -28,6 +28,7 @@ import {
   formatPrayerTime,
 } from "../services/prayerService";
 import { formatDuration } from "../utils";
+import { useTranslation } from "../i18n/useTranslation";
 
 interface DayData {
   date: Date;
@@ -38,30 +39,30 @@ interface DayData {
   asr: Date;
   maghrib: Date;
   isha: Date;
-  fastingDuration: number; // in minutes
+  fastingDuration: number;
 }
-
-const prayerColumns = [
-  { key: "fajr", label: "Fajr", icon: Moon, color: "text-indigo-400 dark:text-indigo-300" },
-  { key: "sunrise", label: "Sunrise", icon: Sunrise, color: "text-orange-400 dark:text-orange-300" },
-  { key: "dhuhr", label: "Dhuhr", icon: Sun, color: "text-yellow-500 dark:text-yellow-400" },
-  { key: "asr", label: "Asr", icon: CloudSun, color: "text-amber-500 dark:text-amber-400" },
-  { key: "maghrib", label: "Maghrib", icon: Sunset, color: "text-rose-400 dark:text-rose-300" },
-  { key: "isha", label: "Isha", icon: MoonStar, color: "text-blue-400 dark:text-blue-300" },
-] as const;
 
 export const MonthlySchedule = () => {
   const location = useStore((state) => state.location);
   const calculationMethod = useStore((state) => state.calculationMethod);
   const madhab = useStore((state) => state.madhab);
   const use24HourFormat = useStore((state) => state.use24HourFormat);
+  const { t } = useTranslation();
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [activeTab, setActiveTab] = useState("prayer");
 
   const hasLocation = location !== null;
 
-  // Calculate prayer times for each day of the month
+  const prayerColumns = [
+    { key: "fajr", label: t('prayer.names.Fajr'), icon: Moon, color: "text-indigo-400 dark:text-indigo-300" },
+    { key: "sunrise", label: t('prayer.names.Sunrise'), icon: Sunrise, color: "text-orange-400 dark:text-orange-300" },
+    { key: "dhuhr", label: t('prayer.names.Dhuhr'), icon: Sun, color: "text-yellow-500 dark:text-yellow-400" },
+    { key: "asr", label: t('prayer.names.Asr'), icon: CloudSun, color: "text-amber-500 dark:text-amber-400" },
+    { key: "maghrib", label: t('prayer.names.Maghrib'), icon: Sunset, color: "text-rose-400 dark:text-rose-300" },
+    { key: "isha", label: t('prayer.names.Isha'), icon: MoonStar, color: "text-blue-400 dark:text-blue-300" },
+  ] as const;
+
   const monthData = useMemo(() => {
     if (!hasLocation) return [];
 
@@ -83,7 +84,6 @@ export const MonthlySchedule = () => {
         madhab,
       );
 
-      // Calculate fasting duration in minutes
       const fastingDuration = Math.floor(
         (prayerTimes.maghrib.getTime() - prayerTimes.fajr.getTime()) /
           (1000 * 60),
@@ -114,9 +114,8 @@ export const MonthlySchedule = () => {
     <p className="text-center text-muted-foreground py-8">{message}</p>
   );
 
-  // Shared date cell for desktop tables
   const renderDateCell = (day: DayData, isToday: boolean) => (
-    <td className={`py-2.5 px-3 ${isToday ? "border-l-[3px] border-l-primary" : "border-l-[3px] border-l-transparent"}`}>
+    <td className={`py-2.5 px-3 ${isToday ? "border-s-[3px] border-s-primary" : "border-s-[3px] border-s-transparent"}`}>
       <div className="flex items-center gap-2">
         <span
           className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
@@ -131,7 +130,7 @@ export const MonthlySchedule = () => {
           <span className="text-xs font-medium">{format(day.date, "EEE")}</span>
           {isToday && (
             <span className="text-[10px] text-primary font-bold uppercase tracking-wider">
-              Today
+              {t('common.today')}
             </span>
           )}
         </div>
@@ -139,7 +138,6 @@ export const MonthlySchedule = () => {
     </td>
   );
 
-  // Shared mobile date header
   const renderMobileDateHeader = (day: DayData, isToday: boolean) => (
     <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-border/40">
       <div className="flex items-center gap-2.5">
@@ -156,7 +154,7 @@ export const MonthlySchedule = () => {
       </div>
       {isToday && (
         <span className="text-[10px] bg-primary text-primary-foreground px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-          Today
+          {t('common.today')}
         </span>
       )}
     </div>
@@ -168,7 +166,7 @@ export const MonthlySchedule = () => {
         <div className="flex flex-wrap items-start justify-between gap-2">
           <CardTitle className="flex items-center gap-2">
             <Calendar className="h-5 w-5 text-primary" />
-            Monthly Schedule
+            {t('schedule.title')}
           </CardTitle>
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" onClick={handlePrevMonth} className="h-8 w-8">
@@ -187,14 +185,13 @@ export const MonthlySchedule = () => {
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="prayer">Prayer Times</TabsTrigger>
-            <TabsTrigger value="fasting">Fasting Times</TabsTrigger>
+            <TabsTrigger value="prayer">{t('schedule.prayerTimes')}</TabsTrigger>
+            <TabsTrigger value="fasting">{t('schedule.fastingTimes')}</TabsTrigger>
           </TabsList>
 
-          {/* ─── Prayer Times Tab ─── */}
           <TabsContent value="prayer" className="mt-4">
             {monthData.length === 0 ? (
-              renderEmptyState("Please set your location to view prayer times.")
+              renderEmptyState(t('schedule.noLocationPrayer'))
             ) : (
               <>
                 {/* Desktop Table */}
@@ -202,8 +199,8 @@ export const MonthlySchedule = () => {
                   <table className="w-full text-sm border-collapse">
                     <thead>
                       <tr className="islamic-gradient text-white">
-                        <th className="py-3.5 px-3 text-left font-semibold text-xs uppercase tracking-wider">
-                          Date
+                        <th className="py-3.5 px-3 text-start font-semibold text-xs uppercase tracking-wider">
+                          {t('schedule.date')}
                         </th>
                         {prayerColumns.map((col) => {
                           const Icon = col.icon;
@@ -256,7 +253,7 @@ export const MonthlySchedule = () => {
                 </div>
 
                 {/* Mobile Cards */}
-                <div className="md:hidden space-y-2 max-h-[70vh] overflow-y-auto pr-1">
+                <div className="md:hidden space-y-2 max-h-[70vh] overflow-y-auto pe-1">
                   {monthData.map((day) => {
                     const isToday =
                       todayStr === format(day.date, "yyyy-MM-dd");
@@ -271,7 +268,6 @@ export const MonthlySchedule = () => {
                       >
                         {renderMobileDateHeader(day, isToday)}
 
-                        {/* Prayer times grid */}
                         <div className="grid grid-cols-3 gap-x-2 gap-y-2.5">
                           {prayerColumns.map((col) => {
                             const Icon = col.icon;
@@ -304,10 +300,9 @@ export const MonthlySchedule = () => {
             )}
           </TabsContent>
 
-          {/* ─── Fasting Times Tab ─── */}
           <TabsContent value="fasting" className="mt-4">
             {monthData.length === 0 ? (
-              renderEmptyState("Please set your location to view fasting times.")
+              renderEmptyState(t('schedule.noLocationFasting'))
             ) : (
               <>
                 {/* Desktop Table */}
@@ -315,25 +310,25 @@ export const MonthlySchedule = () => {
                   <table className="w-full text-sm border-collapse">
                     <thead>
                       <tr className="islamic-gradient text-white">
-                        <th className="py-3.5 px-3 text-left font-semibold text-xs uppercase tracking-wider">
-                          Date
+                        <th className="py-3.5 px-3 text-start font-semibold text-xs uppercase tracking-wider">
+                          {t('schedule.date')}
                         </th>
                         <th className="py-3.5 px-3 text-center font-semibold text-xs uppercase tracking-wider">
                           <div className="flex flex-col items-center gap-1">
                             <UtensilsCrossed className="h-3.5 w-3.5 opacity-80" />
-                            <span>Sahur Ends</span>
+                            <span>{t('schedule.sahurEnds')}</span>
                           </div>
                         </th>
                         <th className="py-3.5 px-3 text-center font-semibold text-xs uppercase tracking-wider">
                           <div className="flex flex-col items-center gap-1">
                             <Sunset className="h-3.5 w-3.5 opacity-80" />
-                            <span>Iftar</span>
+                            <span>{t('fasting.iftar')}</span>
                           </div>
                         </th>
                         <th className="py-3.5 px-3 text-center font-semibold text-xs uppercase tracking-wider">
                           <div className="flex flex-col items-center gap-1">
                             <Timer className="h-3.5 w-3.5 opacity-80" />
-                            <span>Duration</span>
+                            <span>{t('fasting.duration')}</span>
                           </div>
                         </th>
                       </tr>
@@ -375,7 +370,7 @@ export const MonthlySchedule = () => {
                 </div>
 
                 {/* Mobile Cards */}
-                <div className="md:hidden space-y-2 max-h-[70vh] overflow-y-auto pr-1">
+                <div className="md:hidden space-y-2 max-h-[70vh] overflow-y-auto pe-1">
                   {monthData.map((day) => {
                     const isToday =
                       todayStr === format(day.date, "yyyy-MM-dd");
@@ -394,13 +389,12 @@ export const MonthlySchedule = () => {
                       >
                         {renderMobileDateHeader(day, isToday)}
 
-                        {/* Fasting times grid */}
                         <div className="grid grid-cols-3 gap-2">
                           <div className="flex flex-col items-center gap-0.5 py-1.5 rounded-lg bg-muted/25">
                             <div className="flex items-center gap-1">
                               <UtensilsCrossed className="h-3 w-3 text-indigo-400 dark:text-indigo-300" />
                               <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
-                                Sahur
+                                {t('fasting.sahur')}
                               </span>
                             </div>
                             <span className="text-sm font-bold tabular-nums">
@@ -411,7 +405,7 @@ export const MonthlySchedule = () => {
                             <div className="flex items-center gap-1">
                               <Sunset className="h-3 w-3 text-rose-400 dark:text-rose-300" />
                               <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
-                                Iftar
+                                {t('fasting.iftar')}
                               </span>
                             </div>
                             <span className="text-sm font-bold tabular-nums">
@@ -422,7 +416,7 @@ export const MonthlySchedule = () => {
                             <div className="flex items-center gap-1">
                               <Timer className="h-3 w-3 text-amber-500 dark:text-amber-400" />
                               <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
-                                Duration
+                                {t('fasting.duration')}
                               </span>
                             </div>
                             <span className="text-sm font-bold tabular-nums">

@@ -10,18 +10,18 @@ import { toHijri, toGregorian } from 'hijri-converter';
 
 // Hijri month names
 export const HIJRI_MONTHS = {
-  1: { en: 'Muharram', ar: 'محرم' },
-  2: { en: 'Safar', ar: 'صفر' },
-  3: { en: 'Rabi\' al-Awwal', ar: 'ربيع الأول' },
-  4: { en: 'Rabi\' al-Thani', ar: 'ربيع الثاني' },
-  5: { en: 'Jumada al-Awwal', ar: 'جمادى الأولى' },
-  6: { en: 'Jumada al-Thani', ar: 'جمادى الثانية' },
-  7: { en: 'Rajab', ar: 'رجب' },
-  8: { en: 'Sha\'ban', ar: 'شعبان' },
-  9: { en: 'Ramadan', ar: 'رمضان' },
-  10: { en: 'Shawwal', ar: 'شوال' },
-  11: { en: 'Dhu al-Qi\'dah', ar: 'ذو القعدة' },
-  12: { en: 'Dhu al-Hijjah', ar: 'ذو الحجة' },
+  1: { en: 'Muharram', ar: 'محرم', bn: 'মুহাররম' },
+  2: { en: 'Safar', ar: 'صفر', bn: 'সফর' },
+  3: { en: 'Rabi\' al-Awwal', ar: 'ربيع الأول', bn: 'রবিউল আউয়াল' },
+  4: { en: 'Rabi\' al-Thani', ar: 'ربيع الثاني', bn: 'রবিউস সানি' },
+  5: { en: 'Jumada al-Awwal', ar: 'جمادى الأولى', bn: 'জুমাদাল উলা' },
+  6: { en: 'Jumada al-Thani', ar: 'جمادى الثانية', bn: 'জুমাদাস সানি' },
+  7: { en: 'Rajab', ar: 'رجب', bn: 'রজব' },
+  8: { en: 'Sha\'ban', ar: 'شعبان', bn: 'শাবান' },
+  9: { en: 'Ramadan', ar: 'رمضان', bn: 'রমজান' },
+  10: { en: 'Shawwal', ar: 'شوال', bn: 'শাওয়াল' },
+  11: { en: 'Dhu al-Qi\'dah', ar: 'ذو القعدة', bn: 'জিলকদ' },
+  12: { en: 'Dhu al-Hijjah', ar: 'ذو الحجة', bn: 'জিলহজ' },
 } as const;
 
 // Arabic weekday names
@@ -35,11 +35,22 @@ export const ARABIC_WEEKDAYS = {
   6: 'السبت', // Saturday
 } as const;
 
+// Bangla weekday names
+export const BANGLA_WEEKDAYS = {
+  0: 'রবিবার', // Sunday
+  1: 'সোমবার', // Monday
+  2: 'মঙ্গলবার', // Tuesday
+  3: 'বুধবার', // Wednesday
+  4: 'বৃহস্পতিবার', // Thursday
+  5: 'শুক্রবার', // Friday
+  6: 'শনিবার', // Saturday
+} as const;
+
 export interface HijriDate {
   year: number;
   month: number;
   day: number;
-  monthName: { en: string; ar: string };
+  monthName: { en: string; ar: string; bn: string };
   formatted: string;
   formattedArabic: string;
 }

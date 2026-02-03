@@ -11,9 +11,12 @@ import { FastingTimesCard } from './components/fasting/FastingTimesCard';
 import { WhiteDays } from './components/fasting/WhiteDays';
 import { QiblaCompass } from './components/qibla/QiblaCompass';
 import { MonthlySchedule } from './components/MonthlySchedule';
+import { DuaCollection } from './components/dua/DuaCollection';
 import { useStore } from './store/useStore';
 import { useTheme } from './hooks/useTheme';
 import { useNotifications } from './hooks/useNotifications';
+import { useLanguageEffect } from './hooks/useLanguage';
+import { useTranslation } from './i18n/useTranslation';
 
 // Custom Icons
 const PrayerIcon = () => (
@@ -44,11 +47,21 @@ const CalendarIcon = () => (
   </svg>
 );
 
+const DuaIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    <path d="M8 7h8M8 11h6" strokeLinecap="round" />
+  </svg>
+);
+
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const location = useStore((state) => state.location);
+  const { t } = useTranslation();
   useTheme();
   useNotifications();
+  useLanguageEffect();
 
   const hasLocation = location !== null;
 
@@ -66,36 +79,44 @@ function App() {
             {/* Date Display */}
             <DateDisplay />
 
+
             {/* Main Content Tabs */}
             <Tabs defaultValue="prayer" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 h-14 p-1 bg-card/80 backdrop-blur-sm islamic-border">
+              <TabsList className="grid w-full grid-cols-5 h-14 p-1 bg-card/80 backdrop-blur-sm islamic-border">
                 <TabsTrigger
                   value="prayer"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <PrayerIcon />
-                  <span className="hidden sm:inline">Prayer</span>
+                  <span className="hidden sm:inline">{t('common.tabs.prayer')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="fasting"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <FastingIcon />
-                  <span className="hidden sm:inline">Fasting</span>
+                  <span className="hidden sm:inline">{t('common.tabs.fasting')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="qibla"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <QiblaIcon />
-                  <span className="hidden sm:inline">Qibla</span>
+                  <span className="hidden sm:inline">{t('common.tabs.qibla')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="schedule"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
                 >
                   <CalendarIcon />
-                  <span className="hidden sm:inline">Schedule</span>
+                  <span className="hidden sm:inline">{t('common.tabs.schedule')}</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="duas"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-dark data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <DuaIcon />
+                  <span className="hidden sm:inline">{t('common.tabs.duas')}</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -127,6 +148,11 @@ function App() {
               {/* Monthly Schedule Tab */}
               <TabsContent value="schedule" className="mt-6 fade-in">
                 <MonthlySchedule />
+              </TabsContent>
+
+              {/* Duas Tab */}
+              <TabsContent value="duas" className="mt-6 fade-in">
+                <DuaCollection />
               </TabsContent>
             </Tabs>
           </div>

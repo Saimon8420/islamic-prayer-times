@@ -9,6 +9,7 @@ import {
 } from '../ui/select';
 import { useTheme } from '../../hooks/useTheme';
 import { useLocation } from '../../hooks/useLocation';
+import { useTranslation } from '../../i18n/useTranslation';
 
 // Custom Mosque Icon
 const MosqueIcon = () => (
@@ -36,6 +37,7 @@ interface HeaderProps {
 export const Header = ({ onSettingsClick }: HeaderProps) => {
   const { theme, setTheme, isDark } = useTheme();
   const { name: locationName, hasLocation, loading, requestLocation } = useLocation();
+  const { t } = useTranslation();
 
   const ThemeIcon = isDark ? Moon : theme === 'system' ? Monitor : Sun;
 
@@ -51,7 +53,7 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold text-white flex items-center gap-2">
-                Prayer Times
+                {t('common.appName')}
                 <CrescentStarIcon />
               </h1>
               <p className="text-xs text-white/70 arabic-text">أوقات الصلاة</p>
@@ -80,7 +82,7 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
                 disabled={loading}
               >
                 <MapPin className="h-4 w-4" />
-                {loading ? 'Getting...' : 'Set Location'}
+                {loading ? t('settings.gettingLocation') : t('settings.setLocation')}
               </Button>
             )}
 
@@ -90,26 +92,26 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
               onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}
             >
               <SelectTrigger className="w-[110px] hidden sm:flex bg-white/20 border-white/30 text-white hover:bg-white/30">
-                <ThemeIcon className="h-4 w-4 mr-2" />
+                <ThemeIcon className="h-4 w-4 me-2" />
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="light">
                   <div className="flex items-center gap-2">
                     <Sun className="h-4 w-4" />
-                    Light
+                    {t('settings.themeLight')}
                   </div>
                 </SelectItem>
                 <SelectItem value="dark">
                   <div className="flex items-center gap-2">
                     <Moon className="h-4 w-4" />
-                    Dark
+                    {t('settings.themeDark')}
                   </div>
                 </SelectItem>
                 <SelectItem value="system">
                   <div className="flex items-center gap-2">
                     <Monitor className="h-4 w-4" />
-                    System
+                    {t('settings.themeSystem')}
                   </div>
                 </SelectItem>
               </SelectContent>

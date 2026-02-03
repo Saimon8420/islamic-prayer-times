@@ -199,12 +199,12 @@ export const formatCountdown = (seconds: number): string => {
   return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 };
 
-// Prayer names with Arabic
+// Prayer names with Arabic and Bangla
 export const PRAYER_NAMES = {
-  Fajr: { en: 'Fajr', ar: 'الفجر' },
-  Sunrise: { en: 'Sunrise', ar: 'الشروق' },
-  Dhuhr: { en: 'Dhuhr', ar: 'الظهر' },
-  Asr: { en: 'Asr', ar: 'العصر' },
-  Maghrib: { en: 'Maghrib', ar: 'المغرب' },
-  Isha: { en: 'Isha', ar: 'العشاء' },
+  Fajr: { en: 'Fajr', ar: 'الفجر', bn: 'ফজর' },
+  Sunrise: { en: 'Sunrise', ar: 'الشروق', bn: 'সূর্যোদয়' },
+  Dhuhr: { en: 'Dhuhr', ar: 'الظهر', bn: 'যোহর' },
+  Asr: { en: 'Asr', ar: 'العصر', bn: 'আসর' },
+  Maghrib: { en: 'Maghrib', ar: 'المغرب', bn: 'মাগরিব' },
+  Isha: { en: 'Isha', ar: 'العشاء', bn: 'ইশা' },
 } as const;

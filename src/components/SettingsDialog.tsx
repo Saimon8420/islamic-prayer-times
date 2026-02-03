@@ -20,6 +20,9 @@ import { useStore } from '../store/useStore';
 import { useLocation } from '../hooks/useLocation';
 import { CALCULATION_METHODS, MADHAB_OPTIONS } from '../services/prayerService';
 import { ADHAN_SOUNDS } from '../services/notificationService';
+import { useTranslation } from '../i18n/useTranslation';
+import { LANGUAGE_OPTIONS } from '../i18n';
+import type { Language } from '../i18n/types';
 
 interface SettingsDialogProps {
   open: boolean;
@@ -37,11 +40,14 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const setShowSeconds = useStore((state) => state.setShowSeconds);
   const theme = useStore((state) => state.theme);
   const setTheme = useStore((state) => state.setTheme);
+  const language = useStore((state) => state.language);
+  const setLanguage = useStore((state) => state.setLanguage);
   const notificationsEnabled = useStore((state) => state.notificationsEnabled);
   const setNotificationsEnabled = useStore((state) => state.setNotificationsEnabled);
   const selectedAdhan = useStore((state) => state.selectedAdhan);
   const setSelectedAdhan = useStore((state) => state.setSelectedAdhan);
   const resetSettings = useStore((state) => state.resetSettings);
+  const { t } = useTranslation();
 
   const { name: locationName, hasLocation, loading, requestLocation, clearLocation } = useLocation();
 
@@ -51,16 +57,16 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl">Settings</DialogTitle>
+          <DialogTitle className="text-xl">{t('settings.title')}</DialogTitle>
           <DialogDescription>
-            Customize prayer time calculations and app preferences.
+            {t('settings.description')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
           {/* Location */}
           <div className="space-y-3">
-            <label className="text-sm font-medium">Location</label>
+            <label className="text-sm font-medium">{t('settings.location')}</label>
             {hasLocation ? (
               <div className="flex items-center justify-between rounded-lg border p-3">
                 <div className="flex items-center gap-2">
@@ -77,7 +83,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                     <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                   </Button>
                   <Button variant="ghost" size="sm" onClick={clearLocation}>
-                    Clear
+                    {t('common.clear')}
                   </Button>
                 </div>
               </div>
@@ -88,21 +94,21 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 onClick={requestLocation}
                 disabled={loading}
               >
-                <MapPin className="mr-2 h-4 w-4" />
-                {loading ? 'Getting location...' : 'Set Location'}
+                <MapPin className="me-2 h-4 w-4" />
+                {loading ? t('settings.gettingLocation') : t('settings.setLocation')}
               </Button>
             )}
           </div>
 
           {/* Calculation Method */}
           <div className="space-y-3">
-            <label className="text-sm font-medium">Calculation Method</label>
+            <label className="text-sm font-medium">{t('settings.calculationMethod')}</label>
             <Select
               value={calculationMethod}
               onValueChange={(value) => setCalculationMethod(value as typeof calculationMethod)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select method" />
+                <SelectValue placeholder={t('settings.selectMethod')} />
               </SelectTrigger>
               <SelectContent>
                 {CALCULATION_METHODS.map((method) => (
@@ -113,19 +119,19 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Different organizations use different angles for Fajr and Isha calculations.
+              {t('settings.calculationMethodDesc')}
             </p>
           </div>
 
           {/* Juristic School (Madhab) */}
           <div className="space-y-3">
-            <label className="text-sm font-medium">Juristic School (Asr)</label>
+            <label className="text-sm font-medium">{t('settings.juristicSchool')}</label>
             <Select
               value={madhab}
               onValueChange={(value) => setMadhab(value as typeof madhab)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select school" />
+                <SelectValue placeholder={t('settings.selectSchool')} />
               </SelectTrigger>
               <SelectContent>
                 {MADHAB_OPTIONS.map((option) => (
@@ -136,24 +142,44 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </SelectContent>
             </Select>
             <p className="text-xs text-muted-foreground">
-              Affects the calculation of Asr prayer time.
+              {t('settings.juristicSchoolDesc')}
             </p>
+          </div>
+
+          {/* Language */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium">{t('settings.language')}</label>
+            <Select
+              value={language}
+              onValueChange={(value) => setLanguage(value as Language)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGE_OPTIONS.map((lang) => (
+                  <SelectItem key={lang.id} value={lang.id}>
+                    {lang.nativeLabel} ({lang.label})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Theme */}
           <div className="space-y-3">
-            <label className="text-sm font-medium">Theme</label>
+            <label className="text-sm font-medium">{t('settings.theme')}</label>
             <Select
               value={theme}
               onValueChange={(value) => setTheme(value as typeof theme)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select theme" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="light">{t('settings.themeLight')}</SelectItem>
+                <SelectItem value="dark">{t('settings.themeDark')}</SelectItem>
+                <SelectItem value="system">{t('settings.themeSystem')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -161,8 +187,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
           {/* Time Format */}
           <div className="flex items-center justify-between">
             <div>
-              <label className="text-sm font-medium">24-Hour Format</label>
-              <p className="text-xs text-muted-foreground">Use 24-hour time format</p>
+              <label className="text-sm font-medium">{t('settings.timeFormat24')}</label>
+              <p className="text-xs text-muted-foreground">{t('settings.timeFormat24Desc')}</p>
             </div>
             <Switch
               checked={use24HourFormat}
@@ -173,8 +199,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
           {/* Show Seconds */}
           <div className="flex items-center justify-between">
             <div>
-              <label className="text-sm font-medium">Show Seconds</label>
-              <p className="text-xs text-muted-foreground">Display seconds in countdown</p>
+              <label className="text-sm font-medium">{t('settings.showSeconds')}</label>
+              <p className="text-xs text-muted-foreground">{t('settings.showSecondsDesc')}</p>
             </div>
             <Switch
               checked={showSeconds}
@@ -187,13 +213,13 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             <div className="space-y-4 pt-4 border-t">
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4 text-primary" />
-                <label className="text-sm font-medium">Notifications</label>
+                <label className="text-sm font-medium">{t('settings.notifications')}</label>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <label className="text-sm font-medium">Prayer Notifications</label>
-                  <p className="text-xs text-muted-foreground">Get notified at each prayer time</p>
+                  <label className="text-sm font-medium">{t('settings.prayerNotifications')}</label>
+                  <p className="text-xs text-muted-foreground">{t('settings.prayerNotificationsDesc')}</p>
                 </div>
                 <Switch
                   checked={notificationsEnabled}
@@ -203,13 +229,13 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
 
               {notificationsEnabled && (
                 <div className="space-y-3">
-                  <label className="text-sm font-medium">Adhan Sound</label>
+                  <label className="text-sm font-medium">{t('settings.adhanSound')}</label>
                   <Select
                     value={selectedAdhan}
                     onValueChange={(value) => setSelectedAdhan(value as typeof selectedAdhan)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select adhan" />
+                      <SelectValue placeholder={t('settings.selectAdhan')} />
                     </SelectTrigger>
                     <SelectContent>
                       {ADHAN_SOUNDS.map((adhan) => (
@@ -220,7 +246,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                     </SelectContent>
                   </Select>
                   <p className="text-xs text-muted-foreground">
-                    Choose which adhan to play for prayer notifications.
+                    {t('settings.adhanSoundDesc')}
                   </p>
                 </div>
               )}
@@ -234,7 +260,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               className="w-full"
               onClick={resetSettings}
             >
-              Reset to Defaults
+              {t('settings.resetDefaults')}
             </Button>
           </div>
 
@@ -242,8 +268,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
           <div className="flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-xs text-muted-foreground">
             <Info className="h-4 w-4 shrink-0 mt-0.5" />
             <p>
-              Settings are saved locally on your device. Prayer times are calculated
-              locally using the <strong>Adhan</strong> library for accurate results.
+              {t('settings.infoText')}
             </p>
           </div>
         </div>

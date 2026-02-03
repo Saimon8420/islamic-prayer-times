@@ -64,6 +64,14 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Poppins', system-ui, sans-serif;
   }
+
+  body.lang-bn {
+    font-family: 'Noto Sans Bengali', 'Poppins', system-ui, sans-serif;
+  }
+
+  body.lang-ar {
+    font-family: 'Noto Sans Arabic', 'Poppins', system-ui, sans-serif;
+  }
 }
 
 @layer components {
@@ -297,6 +305,15 @@
   /* Rotate animation for compass */
   .rotate-smooth {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 

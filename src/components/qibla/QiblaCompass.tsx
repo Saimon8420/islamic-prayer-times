@@ -4,6 +4,7 @@ import { Card, CardContent } from '../ui/card';
 import { useStore } from '../../store/useStore';
 import { calculateQibla, calculateDistanceToMakkah } from '../../services/prayerService';
 import { degreesToCardinal } from '../../utils';
+import { useTranslation } from '../../i18n/useTranslation';
 
 // Kaaba Icon
 const KaabaIcon = () => (
@@ -19,6 +20,7 @@ export const QiblaCompass = () => {
   const [deviceHeading, setDeviceHeading] = useState<number | null>(null);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [isSupported, setIsSupported] = useState(true);
+  const { t } = useTranslation();
 
   const hasLocation = location !== null;
 
@@ -81,6 +83,13 @@ export const QiblaCompass = () => {
   const distance = qiblaData.distance;
   const qiblaRotation = deviceHeading !== null ? direction - deviceHeading : direction;
 
+  const cardinalDirs = [
+    { dir: t('qibla.cardinalDirections.N'), angle: 0, isNorth: true },
+    { dir: t('qibla.cardinalDirections.E'), angle: 90, isNorth: false },
+    { dir: t('qibla.cardinalDirections.S'), angle: 180, isNorth: false },
+    { dir: t('qibla.cardinalDirections.W'), angle: 270, isNorth: false },
+  ];
+
   return (
     <Card className="islamic-border overflow-hidden fade-in">
       {/* Header */}
@@ -89,9 +98,9 @@ export const QiblaCompass = () => {
         <div className="crescent-decoration w-32 h-32 -bottom-8 -left-8 rotate-180 opacity-20" />
 
         <div className="relative z-10">
-          <h2 className="text-2xl font-bold mb-1">Qibla Direction</h2>
+          <h2 className="text-2xl font-bold mb-1">{t('qibla.title')}</h2>
           <p className="text-white/80 text-sm">
-            Direction to the Holy Kaaba
+            {t('qibla.subtitle')}
           </p>
           <p className="text-2xl arabic-text mt-2">الكعبة المشرفة</p>
         </div>
@@ -118,12 +127,7 @@ export const QiblaCompass = () => {
             ))}
 
             {/* Cardinal directions */}
-            {[
-              { dir: 'N', angle: 0, ar: 'ش' },
-              { dir: 'E', angle: 90, ar: 'ش' },
-              { dir: 'S', angle: 180, ar: 'ج' },
-              { dir: 'W', angle: 270, ar: 'غ' },
-            ].map(({ dir, angle }) => (
+            {cardinalDirs.map(({ dir, angle, isNorth }) => (
               <div
                 key={dir}
                 className="absolute top-0 left-1/2 -translate-x-1/2 origin-bottom h-full"
@@ -131,7 +135,7 @@ export const QiblaCompass = () => {
               >
                 <span
                   className={`block text-sm font-bold mt-4 ${
-                    dir === 'N' ? 'text-primary' : 'text-muted-foreground'
+                    isNorth ? 'text-primary' : 'text-muted-foreground'
                   }`}
                   style={{ transform: `rotate(-${angle}deg)` }}
                 >
@@ -183,16 +187,16 @@ export const QiblaCompass = () => {
         {/* Info Cards */}
         <div className="grid grid-cols-2 gap-4">
           <div className="rounded-xl bg-primary/10 p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-1">Direction</p>
+            <p className="text-sm text-muted-foreground mb-1">{t('qibla.direction')}</p>
             <p className="text-2xl font-bold text-primary">{direction.toFixed(1)}°</p>
             <p className="text-xs text-muted-foreground">{degreesToCardinal(direction)}</p>
           </div>
           <div className="rounded-xl bg-secondary/10 p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-1">Distance</p>
+            <p className="text-sm text-muted-foreground mb-1">{t('qibla.distance')}</p>
             <p className="text-2xl font-bold text-secondary">
               {distance.toLocaleString()} km
             </p>
-            <p className="text-xs text-muted-foreground">to Makkah</p>
+            <p className="text-xs text-muted-foreground">{t('qibla.toMakkah')}</p>
           </div>
         </div>
 
@@ -201,7 +205,7 @@ export const QiblaCompass = () => {
           <div className="mt-4 flex items-center gap-2 rounded-xl bg-amber-500/10 p-4 text-sm">
             <AlertCircle className="h-5 w-5 text-amber-500 shrink-0" />
             <span className="text-amber-700 dark:text-amber-400">
-              Device compass not supported. Use the degree value above.
+              {t('qibla.compassNotSupported')}
             </span>
           </div>
         )}
@@ -210,20 +214,20 @@ export const QiblaCompass = () => {
           <div className="mt-4 flex items-center gap-2 rounded-xl bg-amber-500/10 p-4 text-sm">
             <AlertCircle className="h-5 w-5 text-amber-500 shrink-0" />
             <span className="text-amber-700 dark:text-amber-400">
-              Compass permission denied. Enable device orientation in settings.
+              {t('qibla.compassPermissionDenied')}
             </span>
           </div>
         )}
 
         {deviceHeading === null && isSupported && !permissionDenied && (
           <div className="mt-4 text-center text-sm text-muted-foreground rounded-xl bg-muted/50 p-4">
-            <p>Hold your device flat and level for accurate compass direction.</p>
+            <p>{t('qibla.holdDeviceFlat')}</p>
           </div>
         )}
 
         {/* Instructions */}
         <div className="mt-4 text-center text-xs text-muted-foreground">
-          <p>Face the direction shown by the Kaaba icon to pray towards Qibla</p>
+          <p>{t('qibla.faceDirection')}</p>
         </div>
       </CardContent>
     </Card>
