@@ -18,6 +18,7 @@ export interface TranslationKeys {
       qibla: string;
       schedule: string;
       duas: string;
+      hijriCalendar: string;
     };
   };
 
@@ -94,11 +95,18 @@ export interface TranslationKeys {
     compassPermissionDenied: string;
     holdDeviceFlat: string;
     faceDirection: string;
+    yourHeading: string;
+    youLabel: string;
+    qiblaLabel: string;
     cardinalDirections: {
       N: string;
+      NE: string;
       E: string;
+      SE: string;
       S: string;
+      SW: string;
       W: string;
+      NW: string;
     };
   };
 
@@ -215,6 +223,85 @@ export interface TranslationKeys {
     forUmmah: string;
     attribution: string;
     hijriDatesBy: string;
+  };
+
+  // Hijri Calendar
+  hijriCalendar: {
+    title: string;
+    subtitle: string;
+    today: string;
+    whiteDay: string;
+    ramadan: string;
+    jumpToToday: string;
+    eidUlFitr: string;
+    eidUlAdha: string;
+    dayOfArafah: string;
+    tashriq: string;
+    laylatulQadr: string;
+    weekdays: {
+      sat: string;
+      sun: string;
+      mon: string;
+      tue: string;
+      wed: string;
+      thu: string;
+      fri: string;
+    };
+  };
+
+  // Islamic Occasions
+  occasions: {
+    dismiss: string;
+    duaLabel: string;
+    ritualsLabel: string;
+    ramadan: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
+    laylatulQadr: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
+    eidUlFitr: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
+    eidUlAdha: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
+    dayOfArafah: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
+    daysOfTashriq: {
+      greeting: string;
+      subtitle: string;
+      duaArabic: string;
+      duaTranslation: string;
+      duaReference: string;
+      rituals: string[];
+    };
   };
 
   // Errors

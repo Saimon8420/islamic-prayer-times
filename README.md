@@ -35,12 +35,34 @@ A comprehensive Islamic prayer times and fasting schedule application built with
 - Accurate Gregorian to Hijri date conversion
 - Arabic and English date display
 - White Days (Ayyam Al-Beed) tracker - 13th, 14th, 15th of each Islamic month
+- Special Islamic day detection and highlighting (Eid ul-Fitr, Eid ul-Adha, Day of Arafah, Laylatul Qadr, Days of Tashriq)
+
+### Islamic Occasion Greeting Banner
+- Automatic detection of special Islamic occasions based on the Hijri date
+- Contextual greeting banners with Arabic calligraphy, authentic duas with references, and recommended rituals
+- Supported occasions: **Ramadan**, **Laylatul Qadr** (odd nights 21–29), **Eid ul-Fitr**, **Eid ul-Adha**, **Day of Arafah**, **Days of Tashriq**
+- Occasion-specific decorative SVG graphics and themed gradient colors
+- Dismissible per session — reappears on next visit
+- Full multilingual support (English, Bengali, Arabic)
+
+### Dua Collection
+- Curated collection of authentic duas with Arabic text, transliteration, and translation
+- 16 categories including Prayer, Morning & Evening, Forgiveness, Hajj & Umrah, and more
+- Search functionality across all duas
+- Daily dua highlight
+- Background and history for each dua
 
 ### Monthly Schedule
 - Full month prayer times table
 - Full month fasting times table
 - Navigate between months
 - Today's date highlighting
+
+### Multilingual Support (i18n)
+- **English**, **Bengali (বাংলা)**, and **Arabic (العربية)** fully supported
+- Automatic RTL layout for Arabic
+- All UI elements, prayer names, duas, occasion greetings, and settings translated
+- Language can be switched from Settings
 
 ### User Experience
 - Beautiful Islamic-themed UI with gradient designs
@@ -238,9 +260,10 @@ git push origin v1.0.0
 
 ```
 src/
-  components/       UI components (prayer, fasting, qibla, settings, layout)
-  hooks/            React hooks (useLocation, useTheme, useNotifications)
-  services/         Business logic (prayerService, notificationService, platformService)
+  components/       UI components (prayer, fasting, qibla, dua, calendar, common, layout)
+  hooks/            React hooks (useLocation, useTheme, useNotifications, useLanguage)
+  i18n/             Internationalization (en, bn, ar translations & useTranslation hook)
+  services/         Business logic (prayerService, hijriService, notificationService)
   store/            Zustand state management
   types/            TypeScript types
   utils/            Utility functions

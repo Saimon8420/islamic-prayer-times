@@ -265,6 +265,22 @@
     0% { transform: translateX(-100%); }
     100% { transform: translateX(100%); }
   }
+
+  /* Islamic Occasion Banner animations */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(30,125,92,0.3); }
+    50% { box-shadow: 0 0 30px rgba(30,125,92,0.5); }
+  }
 }
 
 @layer utilities {

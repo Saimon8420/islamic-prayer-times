@@ -12,10 +12,12 @@ import { WhiteDays } from './components/fasting/WhiteDays';
 import { QiblaCompass } from './components/qibla/QiblaCompass';
 import { MonthlySchedule } from './components/MonthlySchedule';
 import { DuaCollection } from './components/dua/DuaCollection';
+import { HijriCalendar } from './components/calendar/HijriCalendar';
 import { useStore } from './store/useStore';
 import { useTheme } from './hooks/useTheme';
 import { useNotifications } from './hooks/useNotifications';
 import { useLanguageEffect } from './hooks/useLanguage';
+import { IslamicOccasionBanner } from './components/common/IslamicOccasionBanner';
 import { useTranslation } from './i18n/useTranslation';
 
 // Custom Icons
@@ -55,6 +57,14 @@ const DuaIcon = () => (
   </svg>
 );
 
+const HijriIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <path d="M8 2v4M16 2v4" strokeLinecap="round" />
+    <path d="M16 14.4a4 4 0 1 1-3.2-3.9 3 3 0 0 0 3.2 3.9z" />
+  </svg>
+);
+
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const location = useStore((state) => state.location);
@@ -79,10 +89,12 @@ function App() {
             {/* Date Display */}
             <DateDisplay />
 
+            {/* Islamic Occasion Banner */}
+            <IslamicOccasionBanner />
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="prayer" className="w-full">
-              <TabsList className="grid w-full grid-cols-5 h-14 p-1 bg-card/80 backdrop-blur-sm islamic-border">
+              <TabsList className="grid w-full grid-cols-6 h-14 p-1 bg-card/80 backdrop-blur-sm islamic-border">
                 <TabsTrigger
                   value="prayer"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
@@ -117,6 +129,13 @@ function App() {
                 >
                   <DuaIcon />
                   <span className="hidden sm:inline">{t('common.tabs.duas')}</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="hijriCalendar"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
+                >
+                  <HijriIcon />
+                  <span className="hidden sm:inline">{t('common.tabs.hijriCalendar')}</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -153,6 +172,11 @@ function App() {
               {/* Duas Tab */}
               <TabsContent value="duas" className="mt-6 fade-in">
                 <DuaCollection />
+              </TabsContent>
+
+              {/* Hijri Calendar Tab */}
+              <TabsContent value="hijriCalendar" className="mt-6 fade-in">
+                <HijriCalendar />
               </TabsContent>
             </Tabs>
           </div>
