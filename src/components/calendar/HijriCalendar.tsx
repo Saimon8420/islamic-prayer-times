@@ -73,7 +73,8 @@ export function HijriCalendar() {
   const { t } = useTranslation();
   const language = useStore((state) => state.language);
 
-  const todayHijri = useMemo(() => gregorianToHijri(new Date()), []);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const todayHijri = useMemo(() => gregorianToHijri(new Date(), hijriAdjustment), [hijriAdjustment]);
 
   const [hijriYear, setHijriYear] = useState(todayHijri.year);
   const [hijriMonth, setHijriMonth] = useState(todayHijri.month);

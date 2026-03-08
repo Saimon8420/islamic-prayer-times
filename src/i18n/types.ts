@@ -184,6 +184,9 @@ export interface TranslationKeys {
     adhanSoundDesc: string;
     selectAdhan: string;
     language: string;
+    hijriAdjustment: string;
+    hijriAdjustmentDesc: string;
+    hijriAdjustmentDays: string;
     resetDefaults: string;
     infoText: string;
   };

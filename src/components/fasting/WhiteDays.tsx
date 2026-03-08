@@ -11,8 +11,9 @@ export const WhiteDays = () => {
   const hasLocation = location !== null;
   const { t } = useTranslation();
 
-  const whiteDays = useMemo(() => getUpcomingWhiteDays(6), []);
-  const todayHijri = useMemo(() => gregorianToHijri(new Date()), []);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const whiteDays = useMemo(() => getUpcomingWhiteDays(6, hijriAdjustment), [hijriAdjustment]);
+  const todayHijri = useMemo(() => gregorianToHijri(new Date(), hijriAdjustment), [hijriAdjustment]);
   const isTodayWhiteDay = useMemo(() => isWhiteDay(todayHijri.day), [todayHijri.day]);
 
   if (!hasLocation) return null;

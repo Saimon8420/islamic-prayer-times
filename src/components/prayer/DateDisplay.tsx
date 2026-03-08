@@ -46,6 +46,7 @@ export const DateDisplay = ({
   const calculationMethod = useStore((state) => state.calculationMethod);
   const madhab = useStore((state) => state.madhab);
   const use24HourFormat = useStore((state) => state.use24HourFormat);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
   const isDark = useIsDarkMode();
   const uid = useId().replace(/:/g, "");
 
@@ -63,7 +64,7 @@ export const DateDisplay = ({
   const effectiveDateStr = effectiveTime.toDateString();
 
   const today = useMemo(() => new Date(), []);
-  const hijriDate = useMemo(() => gregorianToHijri(today), [today]);
+  const hijriDate = useMemo(() => gregorianToHijri(today, hijriAdjustment), [today, hijriAdjustment]);
   const arabicWeekday = useMemo(() => getArabicWeekday(today), [today]);
 
   const todayTimes = useMemo(() => {

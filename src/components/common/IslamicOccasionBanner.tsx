@@ -27,8 +27,8 @@ const OCCASION_GRADIENTS = {
   daysOfTashriq: 'linear-gradient(135deg, hsl(173, 50%, 32%), hsl(158, 45%, 35%), hsl(173, 55%, 28%))',
 } as const;
 
-function detectOccasion(): OccasionConfig | null {
-  const hijri = gregorianToHijri(new Date());
+function detectOccasion(adjustment: number = 0): OccasionConfig | null {
+  const hijri = gregorianToHijri(new Date(), adjustment);
   const { month, day } = hijri;
 
   // Priority: Laylatul Qadr > Ramadan, Eid > Tashriq
@@ -160,7 +160,8 @@ function OccasionGraphics({ type }: { type: OccasionType }) {
 export function IslamicOccasionBanner() {
   const [dismissed, setDismissed] = useState(false);
   const language = useStore((state) => state.language);
-  const occasion = useMemo(() => detectOccasion(), []);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const occasion = useMemo(() => detectOccasion(hijriAdjustment), [hijriAdjustment]);
 
   if (!occasion || dismissed) return null;
 

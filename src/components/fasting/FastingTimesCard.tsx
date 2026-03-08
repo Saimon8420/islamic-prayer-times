@@ -60,9 +60,10 @@ export const FastingTimesCard = () => {
     );
   }, [hasLocation, location, calculationMethod, madhab]);
 
-  const hijriDate = useMemo(() => gregorianToHijri(new Date()), []);
-  const isCurrentlyRamadan = useMemo(() => isRamadan(), []);
-  const daysUntilRamadan = useMemo(() => getDaysUntilRamadan(), []);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const hijriDate = useMemo(() => gregorianToHijri(new Date(), hijriAdjustment), [hijriAdjustment]);
+  const isCurrentlyRamadan = useMemo(() => isRamadan(hijriAdjustment), [hijriAdjustment]);
+  const daysUntilRamadan = useMemo(() => getDaysUntilRamadan(hijriAdjustment), [hijriAdjustment]);
 
   useEffect(() => {
     const interval = setInterval(() => {

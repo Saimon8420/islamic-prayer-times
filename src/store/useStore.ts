@@ -34,6 +34,9 @@ export interface AppSettings {
 
   // Language
   language: Language;
+
+  // Hijri date adjustment (-2 to +2 days)
+  hijriAdjustment: number;
 }
 
 interface AppState extends AppSettings {
@@ -47,6 +50,7 @@ interface AppState extends AppSettings {
   setNotificationsEnabled: (enabled: boolean) => void;
   setSelectedAdhan: (adhan: AdhanSoundId) => void;
   setLanguage: (language: Language) => void;
+  setHijriAdjustment: (adjustment: number) => void;
   resetSettings: () => void;
 }
 
@@ -60,6 +64,7 @@ const defaultSettings: AppSettings = {
   notificationsEnabled: false,
   selectedAdhan: 'makkah',
   language: 'en' as Language,
+  hijriAdjustment: 0,
 };
 
 export const useStore = create<AppState>()(
@@ -84,6 +89,8 @@ export const useStore = create<AppState>()(
       setSelectedAdhan: (selectedAdhan) => set({ selectedAdhan }),
 
       setLanguage: (language) => set({ language }),
+
+      setHijriAdjustment: (hijriAdjustment) => set({ hijriAdjustment }),
 
       resetSettings: () => set(defaultSettings),
     }),

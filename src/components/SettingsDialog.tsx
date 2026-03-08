@@ -1,4 +1,4 @@
-import { MapPin, RefreshCw, Info, Bell } from 'lucide-react';
+import { MapPin, RefreshCw, Info, Bell, Minus, Plus } from 'lucide-react';
 import { isNativePlatform } from '../services/platformService';
 import {
   Dialog,
@@ -42,6 +42,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const setTheme = useStore((state) => state.setTheme);
   const language = useStore((state) => state.language);
   const setLanguage = useStore((state) => state.setLanguage);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const setHijriAdjustment = useStore((state) => state.setHijriAdjustment);
   const notificationsEnabled = useStore((state) => state.notificationsEnabled);
   const setNotificationsEnabled = useStore((state) => state.setNotificationsEnabled);
   const selectedAdhan = useStore((state) => state.selectedAdhan);
@@ -164,6 +166,35 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+
+          {/* Hijri Date Adjustment */}
+          <div className="space-y-3">
+            <label className="text-sm font-medium">{t('settings.hijriAdjustment')}</label>
+            <div className="flex items-center justify-between rounded-lg border p-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setHijriAdjustment(Math.max(-2, hijriAdjustment - 1))}
+                disabled={hijriAdjustment <= -2}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="text-lg font-semibold min-w-[3rem] text-center">
+                {hijriAdjustment > 0 ? `+${hijriAdjustment}` : hijriAdjustment}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setHijriAdjustment(Math.min(2, hijriAdjustment + 1))}
+                disabled={hijriAdjustment >= 2}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {t('settings.hijriAdjustmentDesc')}
+            </p>
           </div>
 
           {/* Theme */}

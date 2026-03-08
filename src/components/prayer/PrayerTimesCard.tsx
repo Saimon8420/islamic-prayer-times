@@ -158,7 +158,8 @@ export const PrayerTimesCard = () => {
   }, [hasLocation, location, calculationMethod, madhab]);
 
   // Get hijri date
-  const hijriDate = useMemo(() => gregorianToHijri(new Date()), []);
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
+  const hijriDate = useMemo(() => gregorianToHijri(new Date(), hijriAdjustment), [hijriAdjustment]);
 
   // Get next prayer
   const nextPrayer = useMemo(() => {

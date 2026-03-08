@@ -11,14 +11,57 @@ import { useTheme } from '../../hooks/useTheme';
 import { useLocation } from '../../hooks/useLocation';
 import { useTranslation } from '../../i18n/useTranslation';
 
-// Custom Mosque Icon
+// Custom Mosque Icon — bold, detailed with dome, minarets, crescent & stars
 const MosqueIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-    <path d="M12 2C11 2 10 2.5 10 3.5V4C8.5 4 7 5.5 7 7V8H5V7C5 5 6 4 7 3.5V3C7 2 8 1 9 1H15C16 1 17 2 17 3V3.5C18 4 19 5 19 7V8H17V7C17 5.5 15.5 4 14 4V3.5C14 2.5 13 2 12 2Z" />
-    <path d="M3 10H21V22H19V14H17V22H15V14H13V22H11V14H9V22H7V14H5V22H3V10Z" />
-    <path d="M12 6C11.4 6 11 6.4 11 7V8H13V7C13 6.4 12.6 6 12 6Z" />
-    <circle cx="6" cy="6" r="1" />
-    <circle cx="18" cy="6" r="1" />
+  <svg viewBox="0 0 64 64" fill="currentColor" className="w-7 h-7">
+    {/* Left minaret */}
+    <rect x="8" y="24" width="6" height="28" rx="1" opacity="0.85" />
+    <rect x="7" y="30" width="8" height="2" rx="0.5" opacity="0.5" />
+    <rect x="7" y="36" width="8" height="2" rx="0.5" opacity="0.5" />
+    {/* Left minaret top — pointed cap */}
+    <polygon points="11,14 14,24 8,24" opacity="0.9" />
+    <circle cx="11" cy="13" r="1.2" opacity="0.7" />
+    {/* Left minaret balcony */}
+    <rect x="6" y="24" width="10" height="2.5" rx="1" opacity="0.6" />
+
+    {/* Right minaret */}
+    <rect x="50" y="24" width="6" height="28" rx="1" opacity="0.85" />
+    <rect x="49" y="30" width="8" height="2" rx="0.5" opacity="0.5" />
+    <rect x="49" y="36" width="8" height="2" rx="0.5" opacity="0.5" />
+    {/* Right minaret top — pointed cap */}
+    <polygon points="53,14 56,24 50,24" opacity="0.9" />
+    <circle cx="53" cy="13" r="1.2" opacity="0.7" />
+    {/* Right minaret balcony */}
+    <rect x="48" y="24" width="10" height="2.5" rx="1" opacity="0.6" />
+
+    {/* Central dome */}
+    <ellipse cx="32" cy="28" rx="16" ry="14" opacity="0.9" />
+    {/* Dome highlight layer */}
+    <ellipse cx="30" cy="26" rx="10" ry="9" opacity="0.15" fill="white" />
+
+    {/* Dome tip finial */}
+    <rect x="31" y="12" width="2" height="6" rx="1" />
+
+    {/* Crescent moon above dome */}
+    <path d="M32 3a6 6 0 0 0 5.5 5.5A6 6 0 0 1 32 14a6 6 0 0 1 0-11z" opacity="0.95" />
+    {/* Accent stars */}
+    <circle cx="41" cy="5" r="1" opacity="0.7" />
+    <circle cx="44" cy="9" r="0.7" opacity="0.5" />
+    <circle cx="23" cy="7" r="0.6" opacity="0.4" />
+
+    {/* Building body */}
+    <rect x="16" y="32" width="32" height="20" rx="1" opacity="0.85" />
+
+    {/* Arched doorway */}
+    <path d="M27 52V40a5 5 0 0 1 10 0v12z" fill="currentColor" opacity="0.3" />
+    <path d="M27 52V40a5 5 0 0 1 10 0v12" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.6" />
+
+    {/* Side arched windows */}
+    <ellipse cx="21" cy="40" rx="2.5" ry="3.5" opacity="0.3" />
+    <ellipse cx="43" cy="40" rx="2.5" ry="3.5" opacity="0.3" />
+
+    {/* Base platform */}
+    <rect x="4" y="52" width="56" height="3" rx="1.5" opacity="0.7" />
   </svg>
 );
 
@@ -48,7 +91,7 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
         <div className="container flex h-16 items-center justify-between px-4">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm shadow-sm">
               <MosqueIcon />
             </div>
             <div className="hidden sm:block">
