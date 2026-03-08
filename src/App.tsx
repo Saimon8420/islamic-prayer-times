@@ -79,7 +79,11 @@ function App() {
     <div className="min-h-screen flex flex-col islamic-pattern-bg">
       <Header onSettingsClick={() => setSettingsOpen(true)} />
 
-      <main className="flex-1 container px-4 py-6 md:py-8">
+      <main className="flex-1 container px-4 py-6 md:py-8 relative">
+        {/* Decorative lanterns on sides — desktop only */}
+        <div className="lantern-decoration hidden xl:block w-8 h-16 -left-2 top-20 opacity-[0.06]" />
+        <div className="lantern-decoration hidden xl:block w-6 h-12 -right-1 top-40 opacity-[0.04]" style={{ animationDelay: '1s' }} />
+
         {!hasLocation ? (
           <div className="flex items-center justify-center min-h-[60vh]">
             <LocationPrompt />
@@ -94,45 +98,45 @@ function App() {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="prayer" className="w-full">
-              <TabsList className="grid w-full grid-cols-6 h-14 p-1 bg-card/80 backdrop-blur-sm islamic-border">
+              <TabsList className="grid w-full grid-cols-6 h-14 p-1.5 parchment-card islamic-border">
                 <TabsTrigger
                   value="prayer"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <PrayerIcon />
                   <span className="hidden sm:inline">{t('common.tabs.prayer')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="fasting"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <FastingIcon />
                   <span className="hidden sm:inline">{t('common.tabs.fasting')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="qibla"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <QiblaIcon />
                   <span className="hidden sm:inline">{t('common.tabs.qibla')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="schedule"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <CalendarIcon />
                   <span className="hidden sm:inline">{t('common.tabs.schedule')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="duas"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-dark data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-dark data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <DuaIcon />
                   <span className="hidden sm:inline">{t('common.tabs.duas')}</span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="hijriCalendar"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white rounded-lg transition-all"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <HijriIcon />
                   <span className="hidden sm:inline">{t('common.tabs.hijriCalendar')}</span>
@@ -142,7 +146,13 @@ function App() {
               {/* Prayer Times Tab */}
               <TabsContent value="prayer" className="mt-6 space-y-6 fade-in">
                 <div className="grid gap-6 lg:grid-cols-2">
-                  <PrayerTimesCard />
+                  <div className="relative">
+                    {/* Bismillah watermark */}
+                    <span className="bismillah-watermark -top-6 -right-4 arabic-text" style={{ fontSize: '4rem' }}>
+                      بسم الله
+                    </span>
+                    <PrayerTimesCard />
+                  </div>
                   <div className="space-y-6">
                     <AdditionalTimings />
                   </div>

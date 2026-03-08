@@ -63,15 +63,15 @@ export default {
           },
           gold: {
             50: "#fefce8",
-            100: "#fef9c3",
-            200: "#fef08a",
-            300: "#fde047",
-            400: "#facc15",
-            500: "#eab308",
-            600: "#ca8a04",
-            700: "#a16207",
-            800: "#854d0e",
-            900: "#713f12",
+            100: "#fef3c7",
+            200: "#fde68a",
+            300: "#fcd34d",
+            400: "#fbbf24",
+            500: "#d4a017",
+            600: "#b8860b",
+            700: "#996b2f",
+            800: "#7a5422",
+            900: "#5c3d18",
           },
           teal: {
             50: "#f0fdfa",
@@ -85,6 +85,18 @@ export default {
             800: "#115e59",
             900: "#134e4a",
           },
+          sand: {
+            50: "#fefdf8",
+            100: "#fdf8e8",
+            200: "#faf0d0",
+            300: "#f5e4a8",
+            400: "#edd47a",
+            500: "#d4b96a",
+            600: "#b89b50",
+            700: "#996b2f",
+            800: "#7a5422",
+            900: "#5c3d18",
+          },
         },
       },
       borderRadius: {
@@ -93,8 +105,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        arabic: ["Amiri", "serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        arabic: ["Amiri", "Scheherazade New", "serif"],
+        sans: ["Poppins", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -114,8 +126,12 @@ export default {
           to: { transform: "translateY(0)", opacity: "1" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(34, 197, 94, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(200, 168, 78, 0.25)" },
+          "50%": { boxShadow: "0 0 40px rgba(200, 168, 78, 0.5)" },
+        },
+        "lantern-sway": {
+          "0%, 100%": { transform: "rotate(-2deg)" },
+          "50%": { transform: "rotate(2deg)" },
         },
       },
       animation: {
@@ -124,6 +140,7 @@ export default {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-up": "slide-up 0.5s ease-out",
         "pulse-glow": "pulse-glow 2s infinite",
+        "lantern-sway": "lantern-sway 4s ease-in-out infinite",
       },
       backgroundImage: {
         "islamic-pattern": "url('/patterns/islamic-pattern.svg')",

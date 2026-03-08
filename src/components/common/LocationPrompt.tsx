@@ -35,7 +35,7 @@ export const LocationPrompt = () => {
 
       <Card className="islamic-border overflow-hidden relative">
         {/* Header */}
-        <div className="islamic-gradient p-8 text-white text-center relative overflow-hidden">
+        <div className="islamic-gradient-header mosque-skyline p-8 text-white text-center relative overflow-hidden">
           {/* Decorative elements */}
           <div className="crescent-decoration w-40 h-40 -top-10 -right-10" />
           <div className="crescent-decoration w-32 h-32 -bottom-8 -left-8 rotate-180" />
