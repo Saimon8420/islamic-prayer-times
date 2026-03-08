@@ -239,16 +239,15 @@ export function PreviewAllOccasions() {
           ramadan: 'رمضان مبارك', laylatulQadr: 'ليلة القدر', eidUlFitr: 'عيد مبارك',
           eidUlAdha: 'عيد أضحى مبارك', dayOfArafah: 'يوم عرفة', daysOfTashriq: 'أيام التشريق',
         };
-        return <SingleBanner key={type} type={type} gradient={gradient} arabicGreeting={arabicGreetings[type]} data={data} dismissLabel={t.dismiss} />;
+        return <SingleBanner key={type} type={type} gradient={gradient} arabicGreeting={arabicGreetings[type]} data={data} />;
       })}
     </div>
   );
 }
 
-function SingleBanner({ type, gradient, arabicGreeting, data, dismissLabel }: {
+function SingleBanner({ type, gradient, arabicGreeting, data }: {
   type: OccasionType; gradient: string; arabicGreeting: string;
   data: { greeting: string; subtitle: string; duaReference: string; duaArabic: string; duaTranslation: string; rituals: string[] };
-  dismissLabel: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const t_labels = locales[useStore((state) => state.language)].occasions;
