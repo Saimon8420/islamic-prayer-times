@@ -62,8 +62,24 @@ const DAYS_TO_SCHEDULE = 3;
 export const createNotificationChannels = async (): Promise<void> => {
   if (!isNativePlatform()) return;
 
+  // Delete old channels first — Android caches channel settings,
+  // so we must recreate them to pick up sound file changes
   for (const adhan of ALL_SOUNDS) {
     if (adhan.id === 'off') continue;
+    try {
+      await LocalNotifications.deleteChannel({ id: adhanChannelId(adhan.id) });
+    } catch { /* channel may not exist yet */ }
+  }
+  try {
+    await LocalNotifications.deleteChannel({ id: CHANNEL_REMINDER });
+  } catch { /* channel may not exist yet */ }
+
+  for (const adhan of ALL_SOUNDS) {
+    if (adhan.id === 'off') continue;
+    // Android res/raw sound files: filename without extension (e.g. "alafasy_regular")
+    const soundName = adhan.file
+      ? adhan.file.split('/').pop()?.replace(/\.[^.]+$/, '')
+      : undefined;
     await LocalNotifications.createChannel({
       id: adhanChannelId(adhan.id),
       name: adhan.id === 'default'
@@ -71,7 +87,7 @@ export const createNotificationChannels = async (): Promise<void> => {
         : `Prayer Time - ${adhan.name}`,
       description: `Prayer notifications with ${adhan.name}`,
       importance: 5,
-      sound: adhan.file ? adhan.file.split('/').pop() : undefined,
+      sound: soundName || undefined,
       vibration: true,
     });
   }
@@ -144,8 +160,10 @@ export const scheduleAllPrayerNotifications = async (
   const regularChannelId = isRegularOff ? CHANNEL_REMINDER : adhanChannelId(params.selectedAdhan);
   const fajrChannelId = isFajrOff ? CHANNEL_REMINDER : adhanChannelId(params.selectedFajrAdhan);
 
-  const regularSound = isRegularOff ? undefined : (getAdhanFile(params.selectedAdhan).split('/').pop() || undefined);
-  const fajrSound = isFajrOff ? undefined : (getAdhanFile(params.selectedFajrAdhan).split('/').pop() || undefined);
+  // Android res/raw: filename without extension
+  const toRawSound = (file: string) => file.split('/').pop()?.replace(/\.[^.]+$/, '') || undefined;
+  const regularSound = isRegularOff ? undefined : toRawSound(getAdhanFile(params.selectedAdhan));
+  const fajrSound = isFajrOff ? undefined : toRawSound(getAdhanFile(params.selectedFajrAdhan));
 
   for (let dayOffset = 0; dayOffset < DAYS_TO_SCHEDULE; dayOffset++) {
     const date = dayOffset === 0 ? new Date() : addDays(new Date(), dayOffset);

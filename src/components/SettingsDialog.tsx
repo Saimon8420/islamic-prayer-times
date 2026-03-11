@@ -1,4 +1,5 @@
-import { MapPin, RefreshCw, Info, Bell, Minus, Plus } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { MapPin, RefreshCw, Info, Bell, Minus, Plus, Play, Square } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -53,6 +54,38 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const { t } = useTranslation();
 
   const { name: locationName, hasLocation, loading, requestLocation, clearLocation } = useLocation();
+
+  // Adhan preview player
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const stopPreview = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    setPlayingId(null);
+  };
+
+  const togglePreview = (id: string, file: string) => {
+    if (playingId === id) {
+      stopPreview();
+      return;
+    }
+    stopPreview();
+    if (!file) return;
+    const audio = new Audio(file);
+    audio.addEventListener('ended', () => setPlayingId(null));
+    audio.play().catch(() => {});
+    audioRef.current = audio;
+    setPlayingId(id);
+  };
+
+  // Stop preview when dialog closes
+  useEffect(() => {
+    if (!open) stopPreview();
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -261,21 +294,40 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 {/* Regular Adhan (Dhuhr, Asr, Maghrib, Isha) */}
                 <div className="space-y-3">
                   <label className="text-sm font-medium">{t('settings.adhanSound')}</label>
-                  <Select
-                    value={selectedAdhan}
-                    onValueChange={setSelectedAdhan}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('settings.selectAdhan')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {REGULAR_ADHAN_SOUNDS.map((adhan) => (
-                        <SelectItem key={adhan.id} value={adhan.id}>
-                          {adhan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select
+                      value={selectedAdhan}
+                      onValueChange={(value) => { stopPreview(); setSelectedAdhan(value); }}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder={t('settings.selectAdhan')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {REGULAR_ADHAN_SOUNDS.map((adhan) => (
+                          <SelectItem key={adhan.id} value={adhan.id}>
+                            {adhan.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {(() => {
+                      const selected = REGULAR_ADHAN_SOUNDS.find((a) => a.id === selectedAdhan);
+                      return selected?.file ? (
+                        <Button
+                          variant={playingId === selectedAdhan ? 'default' : 'outline'}
+                          size="icon"
+                          className="shrink-0"
+                          onClick={() => togglePreview(selectedAdhan, selected.file)}
+                        >
+                          {playingId === selectedAdhan ? (
+                            <Square className="h-4 w-4 fill-current" />
+                          ) : (
+                            <Play className="h-4 w-4 fill-current" />
+                          )}
+                        </Button>
+                      ) : null;
+                    })()}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     {t('settings.adhanSoundDesc')}
                   </p>
@@ -284,21 +336,40 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 {/* Fajr Adhan */}
                 <div className="space-y-3">
                   <label className="text-sm font-medium">{t('settings.fajrAdhanSound')}</label>
-                  <Select
-                    value={selectedFajrAdhan}
-                    onValueChange={setSelectedFajrAdhan}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('settings.selectAdhan')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {FAJR_ADHAN_SOUNDS.map((adhan) => (
-                        <SelectItem key={adhan.id} value={adhan.id}>
-                          {adhan.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2">
+                    <Select
+                      value={selectedFajrAdhan}
+                      onValueChange={(value) => { stopPreview(); setSelectedFajrAdhan(value); }}
+                    >
+                      <SelectTrigger className="flex-1">
+                        <SelectValue placeholder={t('settings.selectAdhan')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {FAJR_ADHAN_SOUNDS.map((adhan) => (
+                          <SelectItem key={adhan.id} value={adhan.id}>
+                            {adhan.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {(() => {
+                      const selected = FAJR_ADHAN_SOUNDS.find((a) => a.id === selectedFajrAdhan);
+                      return selected?.file ? (
+                        <Button
+                          variant={playingId === selectedFajrAdhan ? 'default' : 'outline'}
+                          size="icon"
+                          className="shrink-0"
+                          onClick={() => togglePreview(selectedFajrAdhan, selected.file)}
+                        >
+                          {playingId === selectedFajrAdhan ? (
+                            <Square className="h-4 w-4 fill-current" />
+                          ) : (
+                            <Play className="h-4 w-4 fill-current" />
+                          )}
+                        </Button>
+                      ) : null;
+                    })()}
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     {t('settings.fajrAdhanSoundDesc')}
                   </p>
