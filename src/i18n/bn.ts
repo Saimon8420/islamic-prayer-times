@@ -174,6 +174,8 @@ export const bn: TranslationKeys = {
     prayerNotificationsDesc: 'প্রতিটি নামাজের সময় বিজ্ঞপ্তি পান',
     adhanSound: 'আযানের ধ্বনি',
     adhanSoundDesc: 'নামাজের বিজ্ঞপ্তির জন্য আযান নির্বাচন করুন।',
+    fajrAdhanSound: 'ফজরের আযান',
+    fajrAdhanSoundDesc: 'ফজর নামাজের আযান — "আস-সালাতু খাইরুম মিনান নাউম" সহ।',
     selectAdhan: 'আযান নির্বাচন করুন',
     language: 'ভাষা',
     hijriAdjustment: 'হিজরি তারিখ সমন্বয়',

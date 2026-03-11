@@ -64,8 +64,18 @@ const applyAdjustment = (date: Date, adjustment: number): Date => {
 };
 
 // Convert Gregorian date to Hijri (with optional day adjustment for local moon sighting)
-export const gregorianToHijri = (date: Date, adjustment: number = 0): HijriDate => {
-  const adjustedDate = applyAdjustment(date, adjustment);
+// If maghribTime is provided and date >= maghribTime, the Islamic day has changed,
+// so we convert the next Gregorian day to get the correct Hijri date.
+export const gregorianToHijri = (date: Date, adjustment: number = 0, maghribTime?: Date): HijriDate => {
+  let effectiveDate = date;
+
+  // After Maghrib, the new Islamic day begins → use next Gregorian day
+  if (maghribTime && date.getTime() >= maghribTime.getTime()) {
+    effectiveDate = new Date(date);
+    effectiveDate.setDate(effectiveDate.getDate() + 1);
+  }
+
+  const adjustedDate = applyAdjustment(effectiveDate, adjustment);
   const hijri = toHijri(adjustedDate.getFullYear(), adjustedDate.getMonth() + 1, adjustedDate.getDate());
   const monthName = HIJRI_MONTHS[hijri.hm as keyof typeof HIJRI_MONTHS];
 
@@ -112,12 +122,12 @@ export const getWhiteDays = (hijriYear: number, hijriMonth: number): Date[] => {
 };
 
 // Get upcoming White Days from today
-export const getUpcomingWhiteDays = (count: number = 3, adjustment: number = 0): Array<{
+export const getUpcomingWhiteDays = (count: number = 3, adjustment: number = 0, maghribTime?: Date): Array<{
   gregorianDate: Date;
   hijriDate: HijriDate;
 }> => {
   const today = new Date();
-  const todayHijri = gregorianToHijri(today, adjustment);
+  const todayHijri = gregorianToHijri(today, adjustment, maghribTime);
   const result: Array<{ gregorianDate: Date; hijriDate: HijriDate }> = [];
 
   let currentYear = todayHijri.year;
@@ -162,16 +172,16 @@ export const getUpcomingWhiteDays = (count: number = 3, adjustment: number = 0):
 };
 
 // Check if current month is Ramadan
-export const isRamadan = (adjustment: number = 0): boolean => {
+export const isRamadan = (adjustment: number = 0, maghribTime?: Date): boolean => {
   const today = new Date();
-  const hijri = gregorianToHijri(today, adjustment);
+  const hijri = gregorianToHijri(today, adjustment, maghribTime);
   return hijri.month === 9;
 };
 
 // Get days until Ramadan
-export const getDaysUntilRamadan = (adjustment: number = 0): number | null => {
+export const getDaysUntilRamadan = (adjustment: number = 0, maghribTime?: Date): number | null => {
   const today = new Date();
-  const hijri = gregorianToHijri(today, adjustment);
+  const hijri = gregorianToHijri(today, adjustment, maghribTime);
 
   if (hijri.month === 9) {
     return 0; // Already Ramadan

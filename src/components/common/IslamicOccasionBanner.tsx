@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { gregorianToHijri } from '../../services/hijriService';
 import { useStore } from '../../store/useStore';
+import { useHijriDate } from '../../hooks/useHijriDate';
 import { locales } from '../../i18n';
 
 type OccasionType = 'ramadan' | 'laylatulQadr' | 'eidUlFitr' | 'eidUlAdha' | 'dayOfArafah' | 'daysOfTashriq';
@@ -21,8 +21,7 @@ const OCCASION_GRADIENTS = {
   daysOfTashriq: 'linear-gradient(135deg, hsl(158, 45%, 24%) 0%, hsl(160, 40%, 30%) 40%, hsl(155, 45%, 22%) 100%)',
 } as const;
 
-function detectOccasion(adjustment: number = 0): OccasionConfig | null {
-  const hijri = gregorianToHijri(new Date(), adjustment);
+function detectOccasion(hijri: { month: number; day: number }): OccasionConfig | null {
   const { month, day } = hijri;
 
   if (month === 9 && [21, 23, 25, 27, 29].includes(day)) {
@@ -313,8 +312,8 @@ export function IslamicOccasionBanner() {
   const [dismissed, setDismissed] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const language = useStore((state) => state.language);
-  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
-  const occasion = useMemo(() => detectOccasion(hijriAdjustment), [hijriAdjustment]);
+  const { hijriDate } = useHijriDate();
+  const occasion = useMemo(() => detectOccasion(hijriDate), [hijriDate]);
 
   if (!occasion || dismissed) return null;
 

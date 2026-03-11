@@ -182,6 +182,8 @@ export interface TranslationKeys {
     prayerNotificationsDesc: string;
     adhanSound: string;
     adhanSoundDesc: string;
+    fajrAdhanSound: string;
+    fajrAdhanSoundDesc: string;
     selectAdhan: string;
     language: string;
     hijriAdjustment: string;

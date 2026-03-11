@@ -174,6 +174,8 @@ export const ar: TranslationKeys = {
     prayerNotificationsDesc: 'احصل على إشعار عند كل وقت صلاة',
     adhanSound: 'صوت الأذان',
     adhanSoundDesc: 'اختر الأذان لإشعارات الصلاة.',
+    fajrAdhanSound: 'أذان الفجر',
+    fajrAdhanSoundDesc: 'أذان صلاة الفجر — يتضمن "الصلاة خير من النوم".',
     selectAdhan: 'اختر الأذان',
     language: 'اللغة',
     hijriAdjustment: 'تعديل التاريخ الهجري',

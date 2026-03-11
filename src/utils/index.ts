@@ -21,19 +21,23 @@ export const formatTime = (time: Date | string | undefined, use24Hour: boolean =
 };
 
 // Format seconds to human-readable countdown
-export const formatCountdown = (seconds: number): string => {
-  if (!seconds || seconds < 0) return '0s';
+export const formatCountdown = (seconds: number, showSeconds: boolean = true): string => {
+  if (!seconds || seconds < 0) return showSeconds ? '0s' : '0m';
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
 
-  if (hours > 0) {
-    return `${hours}h ${minutes}m ${secs}s`;
+  if (showSeconds) {
+    if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+    if (minutes > 0) return `${minutes}m ${secs}s`;
+    return `${secs}s`;
   }
-  if (minutes > 0) {
-    return `${minutes}m ${secs}s`;
-  }
-  return `${secs}s`;
+  // Without seconds: round up so "0m" doesn't show when there's still time left
+  const totalMinutes = Math.ceil(seconds / 60);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
 };
 
 // Format duration in minutes to human readable

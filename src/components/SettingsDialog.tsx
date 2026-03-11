@@ -1,5 +1,4 @@
 import { MapPin, RefreshCw, Info, Bell, Minus, Plus } from 'lucide-react';
-import { isNativePlatform } from '../services/platformService';
 import {
   Dialog,
   DialogContent,
@@ -19,7 +18,7 @@ import { Switch } from './ui/switch';
 import { useStore } from '../store/useStore';
 import { useLocation } from '../hooks/useLocation';
 import { CALCULATION_METHODS, MADHAB_OPTIONS } from '../services/prayerService';
-import { ADHAN_SOUNDS } from '../services/notificationService';
+import { REGULAR_ADHAN_SOUNDS, FAJR_ADHAN_SOUNDS } from '../services/notificationService';
 import { useTranslation } from '../i18n/useTranslation';
 import { LANGUAGE_OPTIONS } from '../i18n';
 import type { Language } from '../i18n/types';
@@ -48,12 +47,12 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const setNotificationsEnabled = useStore((state) => state.setNotificationsEnabled);
   const selectedAdhan = useStore((state) => state.selectedAdhan);
   const setSelectedAdhan = useStore((state) => state.setSelectedAdhan);
+  const selectedFajrAdhan = useStore((state) => state.selectedFajrAdhan);
+  const setSelectedFajrAdhan = useStore((state) => state.setSelectedFajrAdhan);
   const resetSettings = useStore((state) => state.resetSettings);
   const { t } = useTranslation();
 
   const { name: locationName, hasLocation, loading, requestLocation, clearLocation } = useLocation();
-
-  const isNative = isNativePlatform();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -239,37 +238,38 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             />
           </div>
 
-          {/* Notifications - only visible on native platform */}
-          {isNative && (
-            <div className="space-y-4 pt-4 border-t">
-              <div className="flex items-center gap-2">
-                <Bell className="h-4 w-4 text-primary" />
-                <label className="text-sm font-medium">{t('settings.notifications')}</label>
-              </div>
+          {/* Notifications & Adhan — visible on ALL platforms */}
+          <div className="space-y-4 pt-4 border-t">
+            <div className="flex items-center gap-2">
+              <Bell className="h-4 w-4 text-primary" />
+              <label className="text-sm font-medium">{t('settings.notifications')}</label>
+            </div>
 
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="text-sm font-medium">{t('settings.prayerNotifications')}</label>
-                  <p className="text-xs text-muted-foreground">{t('settings.prayerNotificationsDesc')}</p>
-                </div>
-                <Switch
-                  checked={notificationsEnabled}
-                  onCheckedChange={setNotificationsEnabled}
-                />
+            <div className="flex items-center justify-between">
+              <div>
+                <label className="text-sm font-medium">{t('settings.prayerNotifications')}</label>
+                <p className="text-xs text-muted-foreground">{t('settings.prayerNotificationsDesc')}</p>
               </div>
+              <Switch
+                checked={notificationsEnabled}
+                onCheckedChange={setNotificationsEnabled}
+              />
+            </div>
 
-              {notificationsEnabled && (
+            {notificationsEnabled && (
+              <div className="space-y-4">
+                {/* Regular Adhan (Dhuhr, Asr, Maghrib, Isha) */}
                 <div className="space-y-3">
                   <label className="text-sm font-medium">{t('settings.adhanSound')}</label>
                   <Select
                     value={selectedAdhan}
-                    onValueChange={(value) => setSelectedAdhan(value as typeof selectedAdhan)}
+                    onValueChange={setSelectedAdhan}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder={t('settings.selectAdhan')} />
                     </SelectTrigger>
                     <SelectContent>
-                      {ADHAN_SOUNDS.map((adhan) => (
+                      {REGULAR_ADHAN_SOUNDS.map((adhan) => (
                         <SelectItem key={adhan.id} value={adhan.id}>
                           {adhan.name}
                         </SelectItem>
@@ -280,9 +280,32 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                     {t('settings.adhanSoundDesc')}
                   </p>
                 </div>
-              )}
-            </div>
-          )}
+
+                {/* Fajr Adhan */}
+                <div className="space-y-3">
+                  <label className="text-sm font-medium">{t('settings.fajrAdhanSound')}</label>
+                  <Select
+                    value={selectedFajrAdhan}
+                    onValueChange={setSelectedFajrAdhan}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder={t('settings.selectAdhan')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {FAJR_ADHAN_SOUNDS.map((adhan) => (
+                        <SelectItem key={adhan.id} value={adhan.id}>
+                          {adhan.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-muted-foreground">
+                    {t('settings.fajrAdhanSoundDesc')}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Reset */}
           <div className="pt-4 border-t">

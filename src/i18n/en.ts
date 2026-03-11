@@ -174,6 +174,8 @@ export const en: TranslationKeys = {
     prayerNotificationsDesc: 'Get notified at each prayer time',
     adhanSound: 'Adhan Sound',
     adhanSoundDesc: 'Choose which adhan to play for prayer notifications.',
+    fajrAdhanSound: 'Fajr Adhan Sound',
+    fajrAdhanSoundDesc: 'Adhan for Fajr prayer — includes "Prayer is better than sleep".',
     selectAdhan: 'Select adhan',
     language: 'Language',
     hijriAdjustment: 'Hijri Date Adjustment',

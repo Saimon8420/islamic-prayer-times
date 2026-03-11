@@ -191,12 +191,21 @@ export const formatPrayerTime = (date: Date, use24Hour: boolean = false): string
 };
 
 // Format countdown
-export const formatCountdown = (seconds: number): string => {
-  if (seconds < 0) return '0:00:00';
+export const formatCountdown = (seconds: number, showSeconds: boolean = true): string => {
+  if (seconds < 0) return showSeconds ? '0h 0m 0s' : '0m';
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
   const secs = seconds % 60;
-  return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  if (showSeconds) {
+    if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+    if (minutes > 0) return `${minutes}m ${secs}s`;
+    return `${secs}s`;
+  }
+  const totalMinutes = Math.ceil(seconds / 60);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
 };
 
 // Prayer names with Arabic and Bangla

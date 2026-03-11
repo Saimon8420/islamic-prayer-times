@@ -6,7 +6,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { CalculationMethodId, MadhabId } from '../services/prayerService';
-import type { AdhanSoundId } from '../services/notificationService';
 import type { Language } from '../i18n/types';
 
 export interface Location {
@@ -28,9 +27,10 @@ export interface AppSettings {
   use24HourFormat: boolean;
   showSeconds: boolean;
 
-  // Notifications
+  // Notifications & Adhan
   notificationsEnabled: boolean;
-  selectedAdhan: AdhanSoundId;
+  selectedAdhan: string;     // regular prayers adhan
+  selectedFajrAdhan: string; // fajr-specific adhan
 
   // Language
   language: Language;
@@ -48,7 +48,8 @@ interface AppState extends AppSettings {
   setUse24HourFormat: (use24Hour: boolean) => void;
   setShowSeconds: (show: boolean) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
-  setSelectedAdhan: (adhan: AdhanSoundId) => void;
+  setSelectedAdhan: (adhan: string) => void;
+  setSelectedFajrAdhan: (adhan: string) => void;
   setLanguage: (language: Language) => void;
   setHijriAdjustment: (adjustment: number) => void;
   resetSettings: () => void;
@@ -62,7 +63,8 @@ const defaultSettings: AppSettings = {
   use24HourFormat: false,
   showSeconds: true,
   notificationsEnabled: false,
-  selectedAdhan: 'makkah',
+  selectedAdhan: 'alafasy',
+  selectedFajrAdhan: 'alafasy-fajr',
   language: 'en' as Language,
   hijriAdjustment: 0,
 };
@@ -87,6 +89,8 @@ export const useStore = create<AppState>()(
       setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
 
       setSelectedAdhan: (selectedAdhan) => set({ selectedAdhan }),
+
+      setSelectedFajrAdhan: (selectedFajrAdhan) => set({ selectedFajrAdhan }),
 
       setLanguage: (language) => set({ language }),
 

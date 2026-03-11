@@ -2,10 +2,8 @@ import { useState, useEffect, useMemo, useId } from "react";
 import { format } from "date-fns";
 import { addDays, subDays } from "date-fns";
 import { useStore } from "../../store/useStore";
-import {
-  gregorianToHijri,
-  getArabicWeekday,
-} from "../../services/hijriService";
+import { getArabicWeekday } from "../../services/hijriService";
+import { useHijriDate } from "../../hooks/useHijriDate";
 import {
   calculatePrayerTimes,
   formatPrayerTime,
@@ -46,9 +44,9 @@ export const DateDisplay = ({
   const calculationMethod = useStore((state) => state.calculationMethod);
   const madhab = useStore((state) => state.madhab);
   const use24HourFormat = useStore((state) => state.use24HourFormat);
-  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
   const isDark = useIsDarkMode();
   const uid = useId().replace(/:/g, "");
+  const { hijriDate } = useHijriDate();
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -64,7 +62,6 @@ export const DateDisplay = ({
   const effectiveDateStr = effectiveTime.toDateString();
 
   const today = useMemo(() => new Date(), []);
-  const hijriDate = useMemo(() => gregorianToHijri(today, hijriAdjustment), [today, hijriAdjustment]);
   const arabicWeekday = useMemo(() => getArabicWeekday(today), [today]);
 
   const todayTimes = useMemo(() => {
