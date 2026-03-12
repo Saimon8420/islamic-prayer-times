@@ -1,6 +1,6 @@
 # Islamic Prayer Times & Fasting Schedule
 
-A comprehensive Islamic prayer times and fasting schedule application built with React, TypeScript, and modern web technologies. Available as both a **web app** and a **native Android app** with prayer time notifications and adhan sounds.
+A comprehensive Islamic prayer times and fasting schedule application built with React, TypeScript, and modern web technologies. Available as a **Progressive Web App (PWA)**, a **web app**, and a **native Android app** with prayer time notifications and adhan sounds.
 
 [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Saimon8420/islamic-prayer-times/releases/latest/download/islamic-prayer-times.apk)
 
@@ -14,42 +14,64 @@ A comprehensive Islamic prayer times and fasting schedule application built with
 - Accurate prayer time calculations for Fajr, Sunrise, Dhuhr, Asr, Maghrib, and Isha
 - Support for 12 different calculation methods used worldwide
 - Two madhab options for Asr calculation (Shafi/Standard and Hanafi)
-- Real-time countdown to the next prayer
+- Real-time countdown to the next prayer with `h m s` format and optional seconds toggle
 - Visual progress indicator showing time between prayers
-- Additional times: Imsak, Islamic Midnight, and Last Third of Night
+- Additional times: Imsak, Islamic Midnight, Last Third of Night, and Makruh times (Sunrise, Solar Noon, Sunset)
+- Sky tracker SVG arc showing real-time sun/moon position
 
 ### Fasting Schedule
-- Sahur (Sehri) end time with countdown
+- Sehri end time (Fajr-based, per Quran 2:187) with countdown
 - Iftar time with countdown
-- Fasting duration calculation
-- Progress indicator during fasting
-- Ramadan awareness with countdown to Ramadan
+- Fasting duration calculation with progress indicator
+- White Days (Ayyam Al-Beed) tracker — 13th, 14th, 15th of each Islamic month with Hijri adjustment support
+
+### Eid & Ramadan Countdown
+- Year-round countdown cycle: **Ramadan → Eid ul-Fitr → Eid ul-Adha → back to Ramadan**
+- Always shows the nearest upcoming Islamic event
+- Special Eid Mubarak greeting with dua (تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ) on Eid day
+- Hijri adjustment aware — respects local moon sighting settings
+- Distinct gradient styles: navy for Ramadan, emerald for Eid countdown, gold for Eid day
+
+### Daily Ayah & Hadith
+- 126 curated entries — 71 Quranic ayahs and 55 authentic hadiths
+- Sources include Sahih al-Bukhari, Sahih Muslim, Jami at-Tirmidhi, Sunan Ibn Majah, Musnad Ahmad
+- Arabic text with English and Bengali translations
+- Changes daily (same verse all day, cycles every ~4 months)
+- Fully offline — all data bundled locally, zero API calls
+- Arabian/Mamluk styled card with distinct gradients for Quran vs Hadith
+
+### Share Prayer Times
+- Share button on the Prayer Times card
+- Generates beautifully formatted text with emoji icons, dot-leader alignment, Hijri date, and Quranic verse
+- Uses Web Share API on mobile (triggers native Android share sheet) with clipboard fallback on desktop
+- Visual feedback: checkmark on success, auto-resets after 2 seconds
 
 ### Qibla Direction
 - Precise Qibla direction calculation based on your location
-- Interactive compass with device orientation support
+- 8-direction compass (N/NE/E/SE/S/SW/W/NW) with degree labels at 30° intervals
 - Distance to Makkah display
-- Visual compass pointing to the Holy Kaaba
+- Arabian/Mamluk aesthetic with tessellation overlay and arabesque corners
 
 ### Hijri Calendar
 - Accurate Gregorian to Hijri date conversion
-- Arabic and English date display
-- White Days (Ayyam Al-Beed) tracker - 13th, 14th, 15th of each Islamic month
-- Special Islamic day detection and highlighting (Eid ul-Fitr, Eid ul-Adha, Day of Arafah, Laylatul Qadr, Days of Tashriq)
+- Hijri date advances at Maghrib (sunset), not midnight — following Islamic tradition
+- Hijri date adjustment (-2 to +2 days) for local moon sighting differences
+- Full monthly calendar grid with occasion highlighting
+- Arabic, Bengali, and English date display
+- Special Islamic day detection: Eid ul-Fitr, Eid ul-Adha, Day of Arafah, Laylatul Qadr, Days of Tashriq
 
-### Islamic Occasion Greeting Banner
-- Automatic detection of special Islamic occasions based on the Hijri date
+### Islamic Occasion Greeting Banners
+- Automatic detection of 6 Islamic occasions based on the Hijri date
 - Contextual greeting banners with Arabic calligraphy, authentic duas with references, and recommended rituals
 - Supported occasions: **Ramadan**, **Laylatul Qadr** (odd nights 21–29), **Eid ul-Fitr**, **Eid ul-Adha**, **Day of Arafah**, **Days of Tashriq**
 - Occasion-specific decorative SVG graphics and themed gradient colors
-- Dismissible per session — reappears on next visit
+- Mobile-responsive with expand/collapse sections
 - Full multilingual support (English, Bengali, Arabic)
 
 ### Dua Collection
-- Curated collection of authentic duas with Arabic text, transliteration, and translation
-- 16 categories including Prayer, Morning & Evening, Forgiveness, Hajj & Umrah, and more
+- 200+ authentic duas with Arabic text, transliteration, and translation
+- 16 categories including Prayer, Morning & Evening, Food & Drink, Travel, Sleep, Protection, Forgiveness, Hajj & Umrah, and more
 - Search functionality across all duas
-- Daily dua highlight
 - Background and history for each dua
 
 ### Monthly Schedule
@@ -58,44 +80,72 @@ A comprehensive Islamic prayer times and fasting schedule application built with
 - Navigate between months
 - Today's date highlighting
 
+### Notifications & Adhan
+
+#### Web Notifications
+- Browser notification API with HTML5 Audio playback
+- Polls every 30 seconds and fires at prayer time
+- Separate Fajr adhan (with "الصلاة خير من النوم") and regular adhan selection
+- Silent notifications for Sehri and Iftar (default device sound, no adhan)
+- Friday reminders: Surah Al-Kahf at Fajr, Jummah preparation 1 hour before Dhuhr
+- Auto-stop audio when notification is closed
+
+#### Android Native Notifications
+- Scheduled via Capacitor LocalNotifications, 3 days ahead
+- `allowWhileIdle: true` — fires even in Android Doze mode
+- Refreshed on app launch, settings change, or app resume
+- Separate notification channels per adhan sound (deleted + recreated to avoid Android caching)
+- Friday reminders: Surah Al-Kahf and Jummah notifications
+
+#### Adhan Sound Options
+
+**Regular Adhan** (Dhuhr, Asr, Maghrib, Isha):
+| Option | File |
+|--------|------|
+| Mishary Rashid Alafasy | `alafasy_regular.mp3` |
+| Makkah — Sheikh Ali Mullah | `makkah_regular.mp3` |
+| Madinah | `madinah_regular.mp3` |
+| Default Sound | Device notification sound |
+| Silent | No sound |
+
+**Fajr Adhan** (separate selection):
+| Option | File |
+|--------|------|
+| Mishary Rashid Alafasy (Fajr) | `alafasy_fajr.mp3` |
+| Makkah — Sheikh Ali Mullah (Fajr) | `makkah_fajr.mp3` |
+| Default Sound | Device notification sound |
+| Silent | No sound |
+
+Adhan preview available in settings — play/stop button for the selected sound.
+
+### Offline PWA Support
+- Installable as a Progressive Web App on any device
+- Service worker with Workbox precaches app shell (JS, CSS, HTML, fonts)
+- Adhan audio files cached at runtime (CacheFirst, 1-year expiry) for fast initial load
+- Works fully offline — all prayer calculations are client-side
+- Auto-updates when new version is deployed
+
 ### Multilingual Support (i18n)
 - **English**, **Bengali (বাংলা)**, and **Arabic (العربية)** fully supported
 - Automatic RTL layout for Arabic
-- All UI elements, prayer names, duas, occasion greetings, and settings translated
+- Localized date formatting using `toLocaleDateString()` — dates display in the selected language
+- All UI elements, prayer names, duas, occasion greetings, daily verses, and settings translated
 - Language can be switched from Settings
 
-### User Experience
-- Beautiful Islamic-themed UI with gradient designs
+### Design System (Arabian/Mamluk Theme)
+- **Light mode**: Warm sand base, deep emerald primary, desert gold secondary
+- **Dark mode**: Arabian night palette, glowing gold accents, emerald highlights
+- Fonts: Poppins (English), Noto Sans Bengali, Noto Sans Arabic, Amiri/Scheherazade (decorative)
+- Arabesque tessellation backgrounds, 8-pointed star motifs, horseshoe arch headers
+- Hanging lanterns with swaying animation, mosque skyline silhouettes, gold shimmer sweep
+- Parchment effect cards with arabesque corner ornaments and gold+emerald gradient borders
 - Dark/Light/System theme support
-- 24-hour or 12-hour time format option
-- Responsive design for all screen sizes
-- Offline-capable with local calculations
-- Settings persist locally
 
 ---
 
 ## Android App (Capacitor)
 
 The web app is wrapped with **Capacitor 7** to produce a native Android APK — no separate codebase, same React UI.
-
-### Prayer Notifications
-- Notifications for all 5 daily prayers + Sehri, Iftar, and Sunrise
-- Scheduled 3 days ahead and refreshed on app launch, settings change, or app resume
-- `allowWhileIdle: true` — notifications fire even in Android Doze mode
-
-### Multiple Adhan Sounds
-Choose from 4 adhan recitations or use the device default:
-
-| Option | Sound File |
-|--------|-----------|
-| Makkah | `adhan_makkah.mp3` |
-| Madinah | `adhan_madinah.mp3` |
-| Mishary Alafasy | `adhan_alafasy.mp3` |
-| Abdul Basit | `adhan_abdulbasit.mp3` |
-| Default Sound | Device notification sound |
-| Silent | No sound |
-
-Each adhan variant gets its own Android notification channel, so switching between them works reliably.
 
 ### Android Permissions
 | Permission | Purpose |
@@ -131,6 +181,7 @@ Each adhan variant gets its own Android notification channel, so switching betwe
 | Date Utilities | date-fns 4 |
 | Icons | lucide-react |
 | UI Components | Radix UI (headless) |
+| PWA | vite-plugin-pwa (Workbox) |
 | Native Wrapper | Capacitor 7 |
 | Notifications | @capacitor/local-notifications |
 | CI/CD | GitHub Actions |
@@ -223,17 +274,25 @@ npm run cap:open
 
 ### Adding Adhan Sound Files
 
-Place MP3 files in `android/app/src/main/res/raw/`:
+Place MP3 files in both `public/audio/adhan/` (for web) and `android/app/src/main/res/raw/` (for Android native notifications):
 
 ```
+public/audio/adhan/
+  alafasy_regular.mp3
+  alafasy_fajr.mp3
+  makkah_regular.mp3
+  makkah_fajr.mp3
+  madinah_regular.mp3
+
 android/app/src/main/res/raw/
-  adhan_makkah.mp3
-  adhan_madinah.mp3
-  adhan_alafasy.mp3
-  adhan_abdulbasit.mp3
+  alafasy_regular.mp3
+  alafasy_fajr.mp3
+  makkah_regular.mp3
+  makkah_fajr.mp3
+  madinah_regular.mp3
 ```
 
-If a file is missing, the app falls back to the device default notification sound.
+Android notification sound names use the filename without extension (e.g., `alafasy_regular`). If a file is missing, the app falls back to the device default notification sound.
 
 ---
 
@@ -250,8 +309,8 @@ The project includes a GitHub Actions workflow (`.github/workflows/build-apk.yml
 To trigger a release:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.2.0
+git push origin v1.2.0
 ```
 
 ---
@@ -261,12 +320,17 @@ git push origin v1.0.0
 ```
 src/
   components/       UI components (prayer, fasting, qibla, dua, calendar, common, layout)
-  hooks/            React hooks (useLocation, useTheme, useNotifications, useLanguage)
+  hooks/            React hooks (useLocation, useTheme, useNotifications, useHijriDate, useLanguage)
   i18n/             Internationalization (en, bn, ar translations & useTranslation hook)
-  services/         Business logic (prayerService, hijriService, notificationService)
-  store/            Zustand state management
+  services/         Business logic (prayerService, hijriService, notificationService, platformService)
+  store/            Zustand state management (persisted settings)
+  data/             Static data (duas collection, daily verses)
   types/            TypeScript types
-  utils/            Utility functions
+  utils/            Utility functions (time formatting, distance calc, cardinal directions)
+  lib/              Shared utilities (cn class merger)
+public/
+  audio/adhan/      Offline adhan MP3 files (~11MB)
+  icons/            PWA icons (192x192, 512x512)
 android/            Capacitor Android project
 .github/workflows/  CI/CD for APK builds
 ```
@@ -274,11 +338,14 @@ android/            Capacitor Android project
 ## Usage
 
 1. **Set Location**: On first visit, the app will prompt you to share your location. This is required for accurate prayer times and Qibla direction.
-2. **View Prayer Times**: The main screen shows today's prayer times with countdown to the next prayer.
-3. **Fasting Times**: Navigate to the Fasting tab to see Sahur and Iftar times with countdown.
-4. **Qibla Direction**: Use the Qibla tab to find the direction to Makkah. For best results, hold your device flat.
-5. **Monthly Schedule**: View the full month's prayer and fasting times in the Schedule tab.
-6. **Settings**: Customize calculation method, madhab, theme, time format, and notification preferences.
+2. **View Prayer Times**: The main screen shows today's prayer times with countdown to the next prayer, daily inspiration verse, and Eid/Ramadan countdown.
+3. **Share Prayer Times**: Tap the share button on the prayer card to share today's times via WhatsApp, messaging apps, or copy to clipboard.
+4. **Fasting Times**: Navigate to the Fasting tab to see Sehri and Iftar times with countdown and White Days tracker.
+5. **Qibla Direction**: Use the Qibla tab to find the direction to Makkah. For best results, hold your device flat.
+6. **Hijri Calendar**: View the full Hijri calendar with occasion highlighting in the Hijri Calendar tab.
+7. **Duas**: Browse 200+ authentic duas across 16 categories in the Duas tab.
+8. **Monthly Schedule**: View the full month's prayer and fasting times in the Schedule tab.
+9. **Settings**: Customize calculation method, madhab, theme, language, time format, Hijri adjustment, and notification/adhan preferences.
 
 ## Privacy
 
@@ -286,6 +353,7 @@ android/            Capacitor Android project
 - Location data is stored only in your browser's local storage (web) or app storage (Android)
 - No data is sent to external servers for calculations
 - Location is used solely to calculate prayer times and Qibla direction
+- No analytics, tracking, or third-party services
 
 ## Credits
 
@@ -298,6 +366,7 @@ android/            Capacitor Android project
 - [Lucide React](https://github.com/lucide-icons/lucide) - Icons (ISC License)
 - [Tailwind CSS](https://tailwindcss.com/) - Styling (MIT License)
 - [Radix UI](https://www.radix-ui.com/) - UI primitives (MIT License)
+- [vite-plugin-pwa](https://github.com/vite-pwa/vite-plugin-pwa) - PWA support (MIT License)
 
 ### Geocoding
 - [OpenStreetMap Nominatim](https://nominatim.org/) - Reverse geocoding for location names
