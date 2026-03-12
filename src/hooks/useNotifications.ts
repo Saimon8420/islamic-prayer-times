@@ -105,19 +105,29 @@ export const useNotifications = () => {
         state.madhab
       );
 
-      // Prayer schedule: [key, title, body, time, isFajr]
-      const schedule: [string, string, string, Date, boolean][] = [
-        ['sehri', 'Sehri Time Ending', 'Sehri (Imsak) time is ending soon. Complete your suhoor.', times.imsak, true],
-        ['fajr', 'Fajr Prayer', 'It is time for Fajr prayer.', times.fajr, true],
-        ['dhuhr', 'Dhuhr Prayer', 'It is time for Dhuhr prayer.', times.dhuhr, false],
-        ['asr', 'Asr Prayer', 'It is time for Asr prayer.', times.asr, false],
-        ['maghrib', 'Maghrib Prayer', 'It is time for Maghrib prayer. Iftar time for those fasting.', times.maghrib, false],
-        ['isha', 'Isha Prayer', 'It is time for Isha prayer.', times.isha, false],
+      // Prayer schedule: [key, title, body, time, type]
+      // type: 'fajr' = fajr adhan, 'regular' = regular adhan, 'silent' = no adhan (default sound only)
+      const schedule: [string, string, string, Date, 'fajr' | 'regular' | 'silent'][] = [
+        ['sehri', 'Suhoor Reminder', 'Fajr is approaching. Complete your suhoor soon.', times.imsak, 'silent'],
+        ['fajr', 'Fajr Prayer', 'It is time for Fajr prayer.', times.fajr, 'fajr'],
+        ['dhuhr', 'Dhuhr Prayer', 'It is time for Dhuhr prayer.', times.dhuhr, 'regular'],
+        ['asr', 'Asr Prayer', 'It is time for Asr prayer.', times.asr, 'regular'],
+        ['iftar', 'Iftar Time', 'It is time to break your fast.', times.maghrib, 'silent'],
+        ['maghrib', 'Maghrib Prayer', 'It is time for Maghrib prayer.', new Date(times.maghrib.getTime() + 60000), 'regular'],
+        ['isha', 'Isha Prayer', 'It is time for Isha prayer.', times.isha, 'regular'],
       ];
+
+      // Friday reminders — Surah Kahf at Fajr, Jummah 1h before Dhuhr
+      if (now.getDay() === 5) {
+        schedule.push(
+          ['friday-kahf', 'Surah Al-Kahf Reminder', "It's Friday! Don't forget to read Surah Al-Kahf.", times.fajr, 'silent'],
+          ['friday-jummah', 'Jummah Prayer', 'Prepare for Jummah prayer. Go early and send salawat upon the Prophet (PBUH).', new Date(times.dhuhr.getTime() - 60 * 60000), 'silent'],
+        );
+      }
 
       const dateKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
 
-      for (const [key, title, body, time, isFajr] of schedule) {
+      for (const [key, title, body, time, type] of schedule) {
         const notifKey = `${dateKey}-${key}`;
         if (notifiedRef.current.has(notifKey)) continue;
 
@@ -125,10 +135,15 @@ export const useNotifications = () => {
         // Trigger if within 0–45 seconds after prayer time
         if (diff >= 0 && diff < 45000) {
           notifiedRef.current.add(notifKey);
-          const adhanId = isFajr ? state.selectedFajrAdhan : state.selectedAdhan;
-          if (adhanId === 'off') continue;
-          const audioFile = adhanId === 'default' ? '' : getAdhanFile(adhanId);
-          showWebNotification(title, body, audioFile);
+          if (type === 'silent') {
+            // No adhan — just browser notification with no audio
+            showWebNotification(title, body, '');
+          } else {
+            const adhanId = type === 'fajr' ? state.selectedFajrAdhan : state.selectedAdhan;
+            if (adhanId === 'off') continue;
+            const audioFile = adhanId === 'default' ? '' : getAdhanFile(adhanId);
+            showWebNotification(title, body, audioFile);
+          }
         }
       }
     };

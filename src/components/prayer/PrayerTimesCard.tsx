@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { format } from "date-fns";
 import { Card, CardContent } from "../ui/card";
 import { useStore } from "../../store/useStore";
@@ -211,6 +211,60 @@ export const PrayerTimesCard = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  const [shareStatus, setShareStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
+
+  const handleShare = useCallback(async () => {
+    if (!prayerTimes || !location) return;
+
+    const hijriStr = `${hijriDate.day} ${hijriDate.monthName.en} ${hijriDate.year} AH`;
+    const line = '─────────────────────────';
+    const fmt = (emoji: string, name: string, time: Date) => {
+      const t = formatPrayerTime(time, use24HourFormat);
+      // Use dot leaders for even distribution in proportional fonts
+      const dots = '·'.repeat(Math.max(2, 18 - name.length - t.length));
+      return `${emoji}  ${name} ${dots} ${t}`;
+    };
+    const lines = [
+      `🕌 ${t('share.title')}`,
+      line,
+      `📅 ${format(new Date(), 'EEEE, MMMM d, yyyy')}`,
+      `🌙 ${hijriStr}`,
+      `📍 ${location.name || t('common.unknownLocation')}`,
+      line,
+      fmt('🌅', 'Fajr', prayerTimes.fajr),
+      fmt('☀️', 'Sunrise', prayerTimes.sunrise),
+      fmt('🔆', 'Dhuhr', prayerTimes.dhuhr),
+      fmt('🌤', 'Asr', prayerTimes.asr),
+      fmt('🌇', 'Maghrib', prayerTimes.maghrib),
+      fmt('🌃', 'Isha', prayerTimes.isha),
+      line,
+      `"Indeed, prayer has been decreed`,
+      `upon the believers at specified`,
+      `times." — An-Nisa 4:103`,
+    ];
+    const text = lines.join('\n');
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: t('share.title'), text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        setShareStatus('copied');
+        setTimeout(() => setShareStatus('idle'), 2000);
+      }
+    } catch {
+      // User cancelled share or clipboard failed
+      try {
+        await navigator.clipboard.writeText(text);
+        setShareStatus('copied');
+        setTimeout(() => setShareStatus('idle'), 2000);
+      } catch {
+        setShareStatus('failed');
+        setTimeout(() => setShareStatus('idle'), 2000);
+      }
+    }
+  }, [prayerTimes, location, use24HourFormat, t]);
 
   if (!hasLocation || !prayerTimes) return null;
 
@@ -499,7 +553,35 @@ export const PrayerTimesCard = () => {
               </svg>
               {location.name || t("common.unknownLocation")}
             </span>
-            <span className="text-muted-foreground/50">{methodName.split(",")[0]}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground/50">{methodName.split(",")[0]}</span>
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-1 px-2 py-1 rounded-md hover:bg-muted/60 transition-colors text-muted-foreground/60 hover:text-muted-foreground"
+                title={t('share.button')}
+              >
+                {shareStatus === 'copied' ? (
+                  <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 text-green-500">
+                    <path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : shareStatus === 'failed' ? (
+                  <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 text-red-500">
+                    <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 16 16" className="w-3.5 h-3.5">
+                    <circle cx="12" cy="3" r="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                    <circle cx="4" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                    <circle cx="12" cy="13" r="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                    <line x1="5.8" y1="7" x2="10.2" y2="4" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="5.8" y1="9" x2="10.2" y2="12" stroke="currentColor" strokeWidth="1.2" />
+                  </svg>
+                )}
+                <span className="text-[10px] sm:text-xs">
+                  {shareStatus === 'copied' ? t('share.copied') : shareStatus === 'failed' ? t('share.failed') : t('share.button')}
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </CardContent>

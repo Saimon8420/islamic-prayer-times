@@ -140,6 +140,10 @@ export const getUpcomingWhiteDays = (count: number = 3, adjustment: number = 0, 
       try {
         const gregorian = toGregorian(currentYear, currentMonth, day);
         const date = new Date(gregorian.gy, gregorian.gm - 1, gregorian.gd);
+        // Shift gregorian date to match hijri adjustment
+        if (adjustment !== 0) {
+          date.setDate(date.getDate() - adjustment);
+        }
 
         // Only include future dates
         if (date >= today) {
@@ -194,8 +198,55 @@ export const getDaysUntilRamadan = (adjustment: number = 0, maghribTime?: Date):
   }
 
   const ramadanStart = hijriToGregorian(ramadanYear, 9, 1);
+  if (adjustment !== 0) {
+    ramadanStart.setDate(ramadanStart.getDate() - adjustment);
+  }
   const diffTime = ramadanStart.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
+  return diffDays > 0 ? diffDays : null;
+};
+
+// Get days until Eid ul-Fitr (1 Shawwal) — returns 0 on the day, null if past
+export const getDaysUntilEidFitr = (adjustment: number = 0, maghribTime?: Date): number | null => {
+  const today = new Date();
+  const hijri = gregorianToHijri(today, adjustment, maghribTime);
+
+  // Today is Eid ul-Fitr
+  if (hijri.month === 10 && hijri.day === 1) return 0;
+
+  let eidYear = hijri.year;
+  // If we're past Shawwal 1, look to next year
+  if (hijri.month > 10 || (hijri.month === 10 && hijri.day > 1)) {
+    eidYear++;
+  }
+
+  const eidDate = hijriToGregorian(eidYear, 10, 1);
+  if (adjustment !== 0) {
+    eidDate.setDate(eidDate.getDate() - adjustment);
+  }
+  const diffDays = Math.ceil((eidDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  return diffDays > 0 ? diffDays : null;
+};
+
+// Get days until Eid ul-Adha (10 Dhul Hijjah) — returns 0 on the day, null if past
+export const getDaysUntilEidAdha = (adjustment: number = 0, maghribTime?: Date): number | null => {
+  const today = new Date();
+  const hijri = gregorianToHijri(today, adjustment, maghribTime);
+
+  // Today is Eid ul-Adha
+  if (hijri.month === 12 && hijri.day === 10) return 0;
+
+  let eidYear = hijri.year;
+  // If we're past Dhul Hijjah 10, look to next year
+  if (hijri.month > 12 || (hijri.month === 12 && hijri.day > 10)) {
+    eidYear++;
+  }
+
+  const eidDate = hijriToGregorian(eidYear, 12, 10);
+  if (adjustment !== 0) {
+    eidDate.setDate(eidDate.getDate() - adjustment);
+  }
+  const diffDays = Math.ceil((eidDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   return diffDays > 0 ? diffDays : null;
 };

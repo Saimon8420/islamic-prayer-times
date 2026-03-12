@@ -55,6 +55,8 @@ const NOTIFICATION_BASE_IDS = {
   maghrib: 600,
   iftar: 700,
   isha: 800,
+  fridayKahf: 900,
+  fridayJummah: 1000,
 } as const;
 
 const DAYS_TO_SCHEDULE = 3;
@@ -172,13 +174,13 @@ export const scheduleAllPrayerNotifications = async (
       params.calculationMethod, params.madhab
     );
 
-    // Sehri — uses fajr adhan sound
+    // Sehri — reminder only (no adhan, default device sound)
     addNotification(notifications, {
       id: NOTIFICATION_BASE_IDS.sehri + dayOffset,
-      title: 'Sehri Time Ending',
-      body: 'Sehri (Imsak) time is ending soon. Complete your suhoor.',
+      title: 'Suhoor Reminder',
+      body: 'Fajr is approaching. Complete your suhoor soon.',
       time: times.imsak, now,
-      channelId: fajrChannelId, sound: fajrSound,
+      channelId: CHANNEL_REMINDER, sound: undefined,
     });
 
     // Fajr — uses fajr adhan
@@ -217,21 +219,22 @@ export const scheduleAllPrayerNotifications = async (
       channelId: regularChannelId, sound: regularSound,
     });
 
-    // Maghrib — regular adhan
-    addNotification(notifications, {
-      id: NOTIFICATION_BASE_IDS.maghrib + dayOffset,
-      title: 'Maghrib Prayer',
-      body: 'It is time for Maghrib prayer. Iftar time for those fasting.',
-      time: times.maghrib, now,
-      channelId: regularChannelId, sound: regularSound,
-    });
-
-    // Iftar
+    // Iftar — reminder only (no adhan, default device sound) — fires at Maghrib time
     addNotification(notifications, {
       id: NOTIFICATION_BASE_IDS.iftar + dayOffset,
       title: 'Iftar Time',
       body: 'It is time to break your fast.',
       time: times.maghrib, now,
+      channelId: CHANNEL_REMINDER, sound: undefined,
+    });
+
+    // Maghrib — regular adhan, 1 minute after so iftar notification comes first
+    const maghribAdhanTime = new Date(times.maghrib.getTime() + 60000);
+    addNotification(notifications, {
+      id: NOTIFICATION_BASE_IDS.maghrib + dayOffset,
+      title: 'Maghrib Prayer',
+      body: 'It is time for Maghrib prayer.',
+      time: maghribAdhanTime, now,
       channelId: regularChannelId, sound: regularSound,
     });
 
@@ -243,6 +246,25 @@ export const scheduleAllPrayerNotifications = async (
       time: times.isha, now,
       channelId: regularChannelId, sound: regularSound,
     });
+
+    // Friday reminders — Surah Kahf at Fajr, Jummah 1h before Dhuhr
+    if (date.getDay() === 5) {
+      addNotification(notifications, {
+        id: NOTIFICATION_BASE_IDS.fridayKahf + dayOffset,
+        title: 'Surah Al-Kahf Reminder',
+        body: "It's Friday! Don't forget to read Surah Al-Kahf.",
+        time: times.fajr, now,
+        channelId: CHANNEL_REMINDER, sound: undefined,
+      });
+      const jummahTime = new Date(times.dhuhr.getTime() - 60 * 60000);
+      addNotification(notifications, {
+        id: NOTIFICATION_BASE_IDS.fridayJummah + dayOffset,
+        title: 'Jummah Prayer',
+        body: 'Prepare for Jummah prayer. Go early and send salawat upon the Prophet (PBUH).',
+        time: jummahTime, now,
+        channelId: CHANNEL_REMINDER, sound: undefined,
+      });
+    }
   }
 
   if (notifications.length > 0) {

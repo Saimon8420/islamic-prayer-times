@@ -57,12 +57,12 @@ export const en: TranslationKeys = {
     ramadanMubarak: 'Ramadan Mubarak!',
     daysUntilRamadan: '{count} days until Ramadan',
     duration: 'Duration',
-    sahurEndsIn: 'Sahur ends in',
+    sahurEndsIn: 'Fajr in',
     iftarIn: 'Iftar in',
     sahur: 'Sahur',
-    sahurSehri: 'Sahur (Sehri)',
+    sahurSehri: 'Suhoor',
     iftar: 'Iftar',
-    endOfPreDawnMeal: 'End of pre-dawn meal',
+    endOfPreDawnMeal: 'Eat until Fajr adhan',
     timeToBreakFast: 'Time to break fast',
     currentlyFasting: 'You are currently fasting',
     mayAllahAccept: 'May Allah accept your fast',
@@ -325,6 +325,40 @@ export const en: TranslationKeys = {
         'Continue distributing Qurbani meat',
       ],
     },
+  },
+
+  eidCountdown: {
+    title: 'Eid Countdown',
+    daysUntilEidFitr: '{count} days until Eid ul-Fitr',
+    daysUntilEidAdha: '{count} days until Eid ul-Adha',
+    eidFitrToday: 'Eid ul-Fitr Mubarak!',
+    eidAdhaToday: 'Eid ul-Adha Mubarak!',
+    eidDuaArabic: 'تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ',
+    eidDuaTranslation: 'May Allah accept from us and from you.',
+    daysUntilRamadan: '{count} days until Ramadan',
+    ramadanMubarak: 'Ramadan Mubarak!',
+    days: 'days',
+    day: 'day',
+  },
+
+  share: {
+    button: 'Share',
+    title: 'Prayer Times',
+    copied: 'Copied to clipboard!',
+    failed: 'Sharing failed',
+  },
+
+  friday: {
+    surahKahfReminder: 'Surah Al-Kahf Reminder',
+    surahKahfBody: "It's Friday! Don't forget to read Surah Al-Kahf.",
+    jummahReminder: 'Jummah Prayer',
+    jummahBody: 'Prepare for Jummah prayer. Go early and send salawat upon the Prophet (PBUH).',
+  },
+
+  dailyVerse: {
+    title: 'Daily Inspiration',
+    ayah: 'Quran',
+    hadith: 'Hadith',
   },
 
   errors: {

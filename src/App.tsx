@@ -18,6 +18,8 @@ import { useTheme } from './hooks/useTheme';
 import { useNotifications } from './hooks/useNotifications';
 import { useLanguageEffect } from './hooks/useLanguage';
 import { IslamicOccasionBanner } from './components/common/IslamicOccasionBanner';
+import { DailyVerse } from './components/common/DailyVerse';
+import { EidCountdown } from './components/prayer/EidCountdown';
 import { useTranslation } from './i18n/useTranslation';
 
 // Custom Icons
@@ -93,6 +95,9 @@ function App() {
             {/* Date Display */}
             <DateDisplay />
 
+            {/* Daily Ayah / Hadith */}
+            <DailyVerse />
+
             {/* Islamic Occasion Banner */}
             <IslamicOccasionBanner />
 
@@ -145,6 +150,7 @@ function App() {
 
               {/* Prayer Times Tab */}
               <TabsContent value="prayer" className="mt-6 space-y-6 fade-in">
+                <EidCountdown />
                 <div className="grid gap-6 lg:grid-cols-2">
                   <div className="relative">
                     {/* Bismillah watermark */}

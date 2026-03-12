@@ -309,6 +309,44 @@ export interface TranslationKeys {
     };
   };
 
+  // Eid Countdown
+  eidCountdown: {
+    title: string;
+    daysUntilEidFitr: string;
+    daysUntilEidAdha: string;
+    eidFitrToday: string;
+    eidAdhaToday: string;
+    eidDuaArabic: string;
+    eidDuaTranslation: string;
+    daysUntilRamadan: string;
+    ramadanMubarak: string;
+    days: string;
+    day: string;
+  };
+
+  // Share
+  share: {
+    button: string;
+    title: string;
+    copied: string;
+    failed: string;
+  };
+
+  // Friday
+  friday: {
+    surahKahfReminder: string;
+    surahKahfBody: string;
+    jummahReminder: string;
+    jummahBody: string;
+  };
+
+  // Daily Verse
+  dailyVerse: {
+    title: string;
+    ayah: string;
+    hadith: string;
+  };
+
   // Errors
   errors: {
     locationPermissionDenied: string;

@@ -110,6 +110,7 @@ export function HijriCalendar() {
   const language = useStore((state) => state.language);
 
   const { hijriDate: todayHijri } = useHijriDate();
+  const hijriAdjustment = useStore((state) => state.hijriAdjustment);
 
   const [hijriYear, setHijriYear] = useState(todayHijri.year);
   const [hijriMonth, setHijriMonth] = useState(todayHijri.month);
@@ -133,10 +134,18 @@ export function HijriCalendar() {
       special: SpecialDay;
     }> = [];
 
+    const today = new Date();
+
     for (let day = 1; day <= 30; day++) {
       try {
         const gregDate = hijriToGregorian(hijriYear, hijriMonth, day);
-        const today = new Date();
+        // Shift gregorian date to match hijri adjustment
+        // e.g. adjustment=-1 means local calendar is 1 day behind,
+        // so each hijri day maps to 1 day later in gregorian
+        if (hijriAdjustment !== 0) {
+          gregDate.setDate(gregDate.getDate() - hijriAdjustment);
+        }
+
         const isToday =
           gregDate.getFullYear() === today.getFullYear() &&
           gregDate.getMonth() === today.getMonth() &&
@@ -156,7 +165,7 @@ export function HijriCalendar() {
     }
 
     return days;
-  }, [hijriYear, hijriMonth]);
+  }, [hijriYear, hijriMonth, hijriAdjustment]);
 
   const firstDayOfWeek = calendarDays.length > 0
     ? (calendarDays[0].gregorianDate.getDay() + 1) % 7

@@ -57,12 +57,12 @@ export const bn: TranslationKeys = {
     ramadanMubarak: 'রমজান মোবারক!',
     daysUntilRamadan: 'রমজানের {count} দিন বাকি',
     duration: 'সময়কাল',
-    sahurEndsIn: 'সেহরি শেষ হবে',
+    sahurEndsIn: 'ফজর আর',
     iftarIn: 'ইফতারের বাকি',
     sahur: 'সেহরি',
     sahurSehri: 'সেহরি',
     iftar: 'ইফতার',
-    endOfPreDawnMeal: 'সেহরির শেষ সময়',
+    endOfPreDawnMeal: 'ফজরের আযান পর্যন্ত খেতে পারবেন',
     timeToBreakFast: 'রোজা ভাঙার সময়',
     currentlyFasting: 'আপনি বর্তমানে রোজা রেখেছেন',
     mayAllahAccept: 'আল্লাহ আপনার রোজা কবুল করুন',
@@ -325,6 +325,40 @@ export const bn: TranslationKeys = {
         'কোরবানির গোশত বিতরণ অব্যাহত রাখুন',
       ],
     },
+  },
+
+  eidCountdown: {
+    title: 'ঈদ কাউন্টডাউন',
+    daysUntilEidFitr: 'ঈদুল ফিতরের {count} দিন বাকি',
+    daysUntilEidAdha: 'ঈদুল আযহার {count} দিন বাকি',
+    eidFitrToday: 'ঈদুল ফিতর মোবারক!',
+    eidAdhaToday: 'ঈদুল আযহা মোবারক!',
+    eidDuaArabic: 'تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ',
+    eidDuaTranslation: 'আল্লাহ আমাদের ও আপনাদের (আমল) কবুল করুন।',
+    daysUntilRamadan: 'রমজানের {count} দিন বাকি',
+    ramadanMubarak: 'রমজান মোবারক!',
+    days: 'দিন',
+    day: 'দিন',
+  },
+
+  share: {
+    button: 'শেয়ার',
+    title: 'নামাজের সময়',
+    copied: 'ক্লিপবোর্ডে কপি হয়েছে!',
+    failed: 'শেয়ার ব্যর্থ হয়েছে',
+  },
+
+  friday: {
+    surahKahfReminder: 'সূরা কাহফের স্মরণ',
+    surahKahfBody: 'আজ জুমাবার! সূরা কাহফ পড়তে ভুলবেন না।',
+    jummahReminder: 'জুমার নামাজ',
+    jummahBody: 'জুমার নামাজের প্রস্তুতি নিন। তাড়াতাড়ি যান এবং নবী (সাঃ)-এর উপর দরুদ পাঠান।',
+  },
+
+  dailyVerse: {
+    title: 'আজকের অনুপ্রেরণা',
+    ayah: 'কুরআন',
+    hadith: 'হাদিস',
   },
 
   errors: {

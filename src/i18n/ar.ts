@@ -57,12 +57,12 @@ export const ar: TranslationKeys = {
     ramadanMubarak: 'رمضان مبارك!',
     daysUntilRamadan: '{count} يوم حتى رمضان',
     duration: 'المدة',
-    sahurEndsIn: 'السحور ينتهي بعد',
+    sahurEndsIn: 'الفجر بعد',
     iftarIn: 'الإفطار بعد',
     sahur: 'السحور',
-    sahurSehri: 'السحور',
+    sahurSehri: 'السُّحور',
     iftar: 'الإفطار',
-    endOfPreDawnMeal: 'نهاية وجبة السحور',
+    endOfPreDawnMeal: 'كُلوا حتى أذان الفجر',
     timeToBreakFast: 'وقت الإفطار',
     currentlyFasting: 'أنت صائم حالياً',
     mayAllahAccept: 'تقبل الله صيامك',
@@ -325,6 +325,40 @@ export const ar: TranslationKeys = {
         'الاستمرار في توزيع لحوم الأضاحي',
       ],
     },
+  },
+
+  eidCountdown: {
+    title: 'العد التنازلي للعيد',
+    daysUntilEidFitr: '{count} يوم حتى عيد الفطر',
+    daysUntilEidAdha: '{count} يوم حتى عيد الأضحى',
+    eidFitrToday: 'عيد فطر مبارك!',
+    eidAdhaToday: 'عيد أضحى مبارك!',
+    eidDuaArabic: 'تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ',
+    eidDuaTranslation: 'تقبل الله منا ومنكم.',
+    daysUntilRamadan: '{count} يوم حتى رمضان',
+    ramadanMubarak: 'رمضان مبارك!',
+    days: 'أيام',
+    day: 'يوم',
+  },
+
+  share: {
+    button: 'مشاركة',
+    title: 'أوقات الصلاة',
+    copied: 'تم النسخ!',
+    failed: 'فشلت المشاركة',
+  },
+
+  friday: {
+    surahKahfReminder: 'تذكير سورة الكهف',
+    surahKahfBody: 'اليوم الجمعة! لا تنسَ قراءة سورة الكهف.',
+    jummahReminder: 'صلاة الجمعة',
+    jummahBody: 'استعد لصلاة الجمعة. بكّر وأكثر من الصلاة على النبي ﷺ.',
+  },
+
+  dailyVerse: {
+    title: 'إلهام اليوم',
+    ayah: 'القرآن',
+    hadith: 'الحديث',
   },
 
   errors: {

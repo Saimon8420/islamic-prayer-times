@@ -44,9 +44,12 @@ export const DateDisplay = ({
   const calculationMethod = useStore((state) => state.calculationMethod);
   const madhab = useStore((state) => state.madhab);
   const use24HourFormat = useStore((state) => state.use24HourFormat);
+  const language = useStore((state) => state.language);
   const isDark = useIsDarkMode();
   const uid = useId().replace(/:/g, "");
   const { hijriDate } = useHijriDate();
+
+  const locale = language === 'bn' ? 'bn-BD' : language === 'ar' ? 'ar-SA' : 'en-US';
 
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -198,10 +201,10 @@ export const DateDisplay = ({
             </div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-foreground leading-tight truncate">
-                {format(today, "EEEE")}
+                {today.toLocaleDateString(locale, { weekday: 'long' })}
               </p>
               <p className="text-[11px] text-muted-foreground leading-tight truncate">
-                {format(today, "d MMMM yyyy")}
+                {today.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
             </div>
           </div>
@@ -220,7 +223,7 @@ export const DateDisplay = ({
                 {arabicWeekday}
               </p>
               <p className="text-[11px] text-muted-foreground leading-tight truncate">
-                {hijriDate.day} {hijriDate.monthName.en} {hijriDate.year}
+                {hijriDate.day} {language === 'ar' ? hijriDate.monthName.ar : language === 'bn' ? hijriDate.monthName.bn : hijriDate.monthName.en} {hijriDate.year}
               </p>
             </div>
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl islamic-gradient-gold text-white shadow-md relative overflow-hidden">

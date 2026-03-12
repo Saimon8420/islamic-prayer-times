@@ -116,16 +116,16 @@ export const FastingTimesCard = () => {
 
   if (!hasLocation || !prayerTimes) return null;
 
-  const sahurTime = prayerTimes.imsak;
+  const fajrTime = prayerTimes.fajr;
   const iftarTime = prayerTimes.maghrib;
-  const fastingDuration = Math.floor((iftarTime.getTime() - prayerTimes.fajr.getTime()) / (1000 * 60));
-  const isFasting = currentTime >= prayerTimes.fajr && currentTime < iftarTime;
+  const fastingDuration = Math.floor((iftarTime.getTime() - fajrTime.getTime()) / (1000 * 60));
+  const isFasting = currentTime >= fajrTime && currentTime < iftarTime;
 
   const getTimeUntil = () => {
-    if (currentTime < sahurTime) {
+    if (currentTime < fajrTime) {
       return {
         event: t('fasting.sahurEndsIn'),
-        seconds: Math.floor((sahurTime.getTime() - currentTime.getTime()) / 1000),
+        seconds: Math.floor((fajrTime.getTime() - currentTime.getTime()) / 1000),
         type: 'sahur' as const,
       };
     }
@@ -262,7 +262,7 @@ export const FastingTimesCard = () => {
           {/* Sahur */}
           <div className={cn(
             'relative overflow-hidden rounded-xl sm:rounded-2xl p-4 sm:p-5 transition-all',
-            currentTime < sahurTime
+            currentTime < fajrTime
               ? 'bg-gradient-to-br from-blue-500/15 to-blue-600/5 ring-1 ring-blue-500/30'
               : 'bg-muted/40'
           )}>
@@ -274,7 +274,7 @@ export const FastingTimesCard = () => {
               <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-400 mb-0.5 sm:mb-1">
                 {t('fasting.sahurSehri')}
               </p>
-              <p className="text-2xl sm:text-3xl font-bold">{formatPrayerTime(sahurTime, use24HourFormat)}</p>
+              <p className="text-2xl sm:text-3xl font-bold">{formatPrayerTime(fajrTime, use24HourFormat)}</p>
               <p className="text-[10px] sm:text-xs text-muted-foreground/70 mt-1.5 sm:mt-2">{t('fasting.endOfPreDawnMeal')}</p>
             </div>
           </div>
@@ -318,7 +318,7 @@ export const FastingTimesCard = () => {
                 <span className="arabic-text mx-2">تقبل الله</span>
               </p>
             </div>
-          ) : currentTime < sahurTime ? (
+          ) : currentTime < fajrTime ? (
             <div>
               <p className="font-semibold text-sm sm:text-base">{t('fasting.prepareForSahur')}</p>
               <p className="text-xs sm:text-sm text-muted-foreground/70 mt-0.5 sm:mt-1">
