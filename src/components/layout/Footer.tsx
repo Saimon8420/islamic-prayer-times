@@ -1,4 +1,5 @@
-import { Heart, ExternalLink, Code2, Globe } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, ExternalLink, Code2, Globe, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { useTranslation } from '../../i18n/useTranslation';
 
 // Crescent Star Icon
@@ -29,8 +30,47 @@ const developerProjects = [
   },
 ];
 
+type SectionId = 'about' | 'powered' | 'features' | 'developer';
+
 export const Footer = () => {
   const { t } = useTranslation();
+  // Mobile-only collapsible state — closed by default. Desktop ignores this.
+  const [openSections, setOpenSections] = useState<Set<SectionId>>(new Set());
+  const isOpen = (id: SectionId) => openSections.has(id);
+  const toggle = (id: SectionId) =>
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  const SectionHeader = ({
+    id,
+    children,
+  }: {
+    id: SectionId;
+    children: React.ReactNode;
+  }) => (
+    <button
+      type="button"
+      onClick={() => toggle(id)}
+      className="w-full flex items-center justify-between gap-2 lg:cursor-default lg:pointer-events-none"
+      aria-expanded={isOpen(id)}
+    >
+      <span className="flex items-center gap-1.5 text-sm font-semibold text-white">
+        {children}
+      </span>
+      <ChevronDown
+        className={`h-4 w-4 text-white/60 lg:hidden transition-transform ${
+          isOpen(id) ? 'rotate-180' : ''
+        }`}
+      />
+    </button>
+  );
+
+  const sectionBody = (id: SectionId) =>
+    `${isOpen(id) ? 'block' : 'hidden'} lg:block mt-2`;
 
   return (
     <footer className="relative overflow-hidden">
@@ -46,24 +86,27 @@ export const Footer = () => {
           </svg>
         </div>
 
-        <div className="container px-4 py-6 pt-12">
-          {/* Top grid */}
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="container px-4 py-4 pt-10 sm:py-6 sm:pt-12">
+          {/* Top grid — 2 cols on mobile to halve height, 4 on desktop */}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {/* About */}
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <SectionHeader id="about">
                 <CrescentStarIcon />
-                <h3 className="text-base font-bold text-white">{t('common.appName')}</h3>
-              </div>
-              <p className="text-white/60 text-xs leading-relaxed">
+                {t('common.appName')}
+              </SectionHeader>
+              <p className={`${sectionBody('about')} text-white/60 text-xs leading-relaxed`}>
                 {t('footer.about')}
               </p>
             </div>
 
             {/* Powered By */}
             <div>
-              <h3 className="text-sm font-semibold mb-2 text-white">{t('footer.poweredBy')}</h3>
-              <div className="space-y-1.5">
+              <SectionHeader id="powered">
+                <Sparkles className="h-3.5 w-3.5" />
+                {t('footer.poweredBy')}
+              </SectionHeader>
+              <div className={`${sectionBody('powered')} space-y-1.5`}>
                 <div>
                   <a
                     href="https://github.com/batoulapps/adhan-js"
@@ -97,8 +140,11 @@ export const Footer = () => {
 
             {/* Features */}
             <div>
-              <h3 className="text-sm font-semibold mb-2 text-white">{t('footer.features')}</h3>
-              <ul className="space-y-1 text-[11px] text-white/60">
+              <SectionHeader id="features">
+                <Star className="h-3.5 w-3.5" />
+                {t('footer.features')}
+              </SectionHeader>
+              <ul className={`${sectionBody('features')} space-y-1 text-[11px] text-white/60`}>
                 <li className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rotate-45 bg-secondary/70 shrink-0" />
                   {t('footer.featureAccurate')}
@@ -124,10 +170,11 @@ export const Footer = () => {
 
             {/* Developer */}
             <div>
-              <h3 className="text-sm font-semibold mb-2 flex items-center gap-1.5 text-white">
+              <SectionHeader id="developer">
                 <Code2 className="h-3.5 w-3.5" />
                 {t('footer.developer')}
-              </h3>
+              </SectionHeader>
+              <div className={sectionBody('developer')}>
               <p className="text-white/60 text-[11px] leading-relaxed mb-2">
                 {t('footer.developerDesc')}
               </p>
@@ -158,11 +205,12 @@ export const Footer = () => {
                   ))}
                 </div>
               </div>
+              </div>
             </div>
           </div>
 
           {/* Arabesque Divider with 8-pointed star */}
-          <div className="islamic-divider my-4">
+          <div className="islamic-divider my-2 sm:my-4">
             <span className="px-3 text-secondary">
               <EightPointedStar />
             </span>

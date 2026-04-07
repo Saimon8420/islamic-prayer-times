@@ -1,103 +1,179 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { format } from 'date-fns';
 import { getDailyVerse } from '../../data/dailyVerses';
 import { useTranslation } from '../../i18n/useTranslation';
+import { useStore } from '../../store/useStore';
+import { getArabicWeekday } from '../../services/hijriService';
+import { useHijriDate } from '../../hooks/useHijriDate';
+
+// ── Decorative pieces matching PrayerTimesCard's aesthetic ──
+
+const ArabesqueCorner = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 80 80" className={className} fill="none">
+    <path d="M0 0L20 10L10 20Z" fill="rgba(200,168,78,0.25)" />
+    <path d="M0 0L40 5L35 15L15 35L5 40Z" fill="rgba(200,168,78,0.12)" />
+    <path
+      d="M40 5L35 15L50 20L60 10Z"
+      stroke="rgba(200,168,78,0.2)"
+      strokeWidth="0.5"
+      fill="rgba(200,168,78,0.06)"
+    />
+    <circle cx="20" cy="20" r="3" fill="rgba(200,168,78,0.2)" />
+    <circle cx="20" cy="20" r="6" stroke="rgba(200,168,78,0.15)" strokeWidth="0.5" fill="none" />
+  </svg>
+);
+
+const HangingLantern = ({ className = '' }: { className?: string }) => (
+  <svg viewBox="0 0 30 60" fill="none" className={className}>
+    <line x1="15" y1="0" x2="15" y2="12" stroke="rgba(200,168,78,0.4)" strokeWidth="1" />
+    <path d="M10 12h10l-1 3H11z" fill="rgba(200,168,78,0.5)" />
+    <path
+      d="M9 15Q9 10 15 10Q21 10 21 15v18Q21 40 15 44Q9 40 9 33z"
+      fill="rgba(200,168,78,0.15)"
+      stroke="rgba(200,168,78,0.35)"
+      strokeWidth="1"
+    />
+    <ellipse cx="15" cy="25" rx="4" ry="8" fill="rgba(200,168,78,0.12)" />
+  </svg>
+);
+
+const TessellationOverlay = () => (
+  <div
+    className="absolute inset-0 opacity-[0.05] pointer-events-none"
+    style={{
+      backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c8a84e' stroke-width='0.5'%3E%3Cpath d='M30 0L37.5 7.5L30 15L22.5 7.5Z'/%3E%3Cpath d='M30 15L37.5 22.5L30 30L22.5 22.5Z'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/svg%3E")`,
+    }}
+  />
+);
 
 export const DailyVerse = () => {
   const { t, language } = useTranslation();
   const verse = useMemo(() => getDailyVerse(), []);
+  const { hijriDate } = useHijriDate();
+  const location = useStore((s) => s.location);
 
-  const translation = language === 'bn' ? verse.translationBn
-    : language === 'ar' ? verse.translation
-    : verse.translation;
+  const locale = language === 'bn' ? 'bn-BD' : language === 'ar' ? 'ar-SA' : 'en-US';
 
+  const [today, setToday] = useState(() => new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setToday(new Date()), 60_000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const arabicWeekday = useMemo(() => getArabicWeekday(today), [today]);
+  const translation = language === 'bn' ? verse.translationBn : verse.translation;
   const typeLabel = verse.type === 'ayah' ? t('dailyVerse.ayah') : t('dailyVerse.hadith');
 
+  // Normalize references to "Name-[ref]" form:
+  //   "Surah Al-Baqarah 2:152" → "Surah Al-Baqarah-[2:152]"
+  //   "Sunan Ibn Majah 2341"   → "Sunan Ibn Majah-[2341]"
+  const formattedReference = useMemo(() => {
+    const ref = verse.reference.trim();
+    const match = ref.match(/^(.*?)\s+(\d[\d:.\-]*)$/);
+    if (match) {
+      return `${match[1]}-[${match[2]}]`;
+    }
+    return ref;
+  }, [verse]);
+
   return (
-    <div className="islamic-border rounded-xl overflow-hidden fade-in">
-      <div
-        className="relative px-3 py-2.5 sm:px-4 sm:py-3 overflow-hidden"
-        style={{
-          background: verse.type === 'ayah'
-            ? 'linear-gradient(135deg, hsl(158,50%,16%) 0%, hsl(160,45%,22%) 50%, hsl(155,50%,14%) 100%)'
-            : 'linear-gradient(135deg, hsl(222,30%,14%) 0%, hsl(225,28%,20%) 50%, hsl(220,30%,12%) 100%)',
-        }}
-      >
-        {/* Tessellation overlay */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c8a84e' stroke-width='0.5'%3E%3Cpath d='M30 0L37.5 7.5L30 15L22.5 7.5Z'/%3E%3Cpath d='M30 15L37.5 22.5L30 30L22.5 22.5Z'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+    <div className="islamic-border overflow-hidden fade-in">
+      {/* ═══ HEADER — Rich Arabian gradient with decorations ═══ */}
+      <div className="islamic-gradient-header relative overflow-hidden">
+        <TessellationOverlay />
 
-        {/* Decorative corner arabesque */}
-        <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 opacity-[0.08] pointer-events-none">
-          <svg viewBox="0 0 80 80" fill="none">
-            <path d="M80 0L60 10L70 20Z" fill="rgba(200,168,78,0.5)" />
-            <path d="M80 0L40 5L45 15L65 35L75 40Z" fill="rgba(200,168,78,0.3)" />
-            <circle cx="60" cy="20" r="3" fill="rgba(200,168,78,0.4)" />
-          </svg>
+        {/* Arabesque corners */}
+        <ArabesqueCorner className="absolute top-0 left-0 w-12 h-12 sm:w-16 sm:h-16 opacity-60" />
+        <ArabesqueCorner className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 opacity-60 -scale-x-100" />
+
+        {/* Hanging lanterns */}
+        <div
+          className="absolute top-0 left-[18%] w-3.5 h-7 opacity-40 hidden sm:block"
+          style={{ animation: 'lantern-sway 5s ease-in-out infinite' }}
+        >
+          <HangingLantern className="w-full h-full" />
+        </div>
+        <div
+          className="absolute top-0 right-[18%] w-3 h-6 opacity-30 hidden sm:block"
+          style={{ animation: 'lantern-sway 4s ease-in-out infinite 0.5s' }}
+        >
+          <HangingLantern className="w-full h-full" />
         </div>
 
-        {/* Bottom left arabesque */}
-        <div className="absolute bottom-0 left-0 w-14 h-14 sm:w-16 sm:h-16 opacity-[0.06] pointer-events-none rotate-180">
-          <svg viewBox="0 0 80 80" fill="none">
-            <path d="M80 0L60 10L70 20Z" fill="rgba(200,168,78,0.5)" />
-            <path d="M80 0L40 5L45 15L65 35L75 40Z" fill="rgba(200,168,78,0.3)" />
-          </svg>
-        </div>
-
-        <div className="relative z-10">
-          {/* Header row */}
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-1.5">
-              <div className="w-5 h-5 sm:w-6 sm:h-6 rounded flex items-center justify-center shrink-0" style={{
-                background: 'rgba(200,168,78,0.12)',
-                border: '1px solid rgba(200,168,78,0.2)',
-              }}>
-                {verse.type === 'ayah' ? (
-                  <svg viewBox="0 0 24 24" fill="none" className="w-3 h-3 sm:w-3.5 sm:h-3.5">
-                    <path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" stroke="rgba(200,168,78,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="none" className="w-3 h-3 sm:w-3.5 sm:h-3.5">
-                    <path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.2 48.2 0 0 0 5.023-.458c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.009Z" stroke="rgba(200,168,78,0.8)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                )}
+        {/* Date row */}
+        {location && (
+          <div className="relative z-10 px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+            {/* Gregorian — left */}
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 backdrop-blur-sm border border-white/15 text-white shadow-sm">
+                <span className="text-sm font-bold">{format(today, 'd')}</span>
               </div>
-              <p className="text-[10px] sm:text-xs font-semibold text-white/90">{t('dailyVerse.title')}</p>
+              <div className="min-w-0 leading-tight">
+                <p className="text-xs sm:text-sm font-semibold text-white truncate">
+                  {today.toLocaleDateString(locale, { weekday: 'long' })}
+                </p>
+                <p className="text-[10px] text-white/65 truncate">
+                  {today.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })}
+                </p>
+              </div>
             </div>
-            <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full font-medium" style={{
-              background: 'rgba(200,168,78,0.15)',
-              color: 'rgba(200,168,78,0.9)',
-              border: '1px solid rgba(200,168,78,0.2)',
-            }}>
+
+            {/* Type pill — middle */}
+            <span className="hidden sm:inline-block text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide shrink-0 bg-[hsl(40,85%,52%/0.18)] border border-[hsl(40,85%,52%/0.45)] text-[hsl(40,85%,72%)]">
               {typeLabel}
             </span>
+
+            {/* Hijri — right */}
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="min-w-0 text-right leading-tight">
+                <p className="text-xs sm:text-sm font-semibold text-white arabic-text truncate">
+                  {arabicWeekday}
+                </p>
+                <p className="text-[10px] text-white/65 truncate">
+                  {hijriDate.day}{' '}
+                  {language === 'ar'
+                    ? hijriDate.monthName.ar
+                    : language === 'bn'
+                    ? hijriDate.monthName.bn
+                    : hijriDate.monthName.en}{' '}
+                  {hijriDate.year}
+                </p>
+              </div>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[hsl(40,85%,52%/0.25)] backdrop-blur-sm border border-[hsl(40,85%,52%/0.4)] text-white shadow-sm">
+                <span className="text-sm font-bold">{hijriDate.day}</span>
+              </div>
+            </div>
           </div>
-
-          {/* Arabic text */}
-          <p className="text-sm sm:text-base leading-relaxed text-white/90 arabic-text text-center mb-2 px-1" dir="rtl">
-            {verse.arabic}
-          </p>
-
-          {/* Ornamental divider */}
-          <div className="flex items-center gap-2 mb-1.5">
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[rgba(200,168,78,0.3)] to-transparent" />
-            <svg viewBox="0 0 16 16" className="w-1.5 h-1.5 text-[rgba(200,168,78,0.5)]">
-              <path d="M8 0L9.5 5.5L16 8L9.5 10.5L8 16L6.5 10.5L0 8L6.5 5.5Z" fill="currentColor" />
-            </svg>
-            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[rgba(200,168,78,0.3)] to-transparent" />
-          </div>
-
-          {/* Translation */}
-          <p className="text-xs sm:text-sm text-white/70 text-center leading-snug italic mb-1 px-1">
-            &ldquo;{translation}&rdquo;
-          </p>
-
-          {/* Reference */}
-          <p className="text-[9px] sm:text-[10px] text-center font-medium" style={{ color: 'rgba(200,168,78,0.7)' }}>
-            — {verse.reference}
-          </p>
-        </div>
+        )}
       </div>
+
+      {/* ═══ VERSE CONTENT — translucent so SkyBackground shows through ═══ */}
+      <div className="relative px-4 py-3 text-center">
+        {/* Subtle arabesque corner */}
+        <div className="absolute top-1 right-1 w-10 h-10 opacity-20 pointer-events-none">
+          <svg viewBox="0 0 50 50" fill="rgba(200,168,78,0.5)">
+            <path d="M25 5L28 15L38 12L32 20L45 25L32 30L38 38L28 35L25 45L22 35L12 38L18 30L5 25L18 20L12 12L22 15Z" />
+          </svg>
+        </div>
+
+        <p
+          className="relative text-sm sm:text-base leading-relaxed text-foreground arabic-text px-1"
+          dir="rtl"
+        >
+          {verse.arabic}
+        </p>
+
+        <p className="relative text-[11px] sm:text-xs text-muted-foreground italic px-1 mt-1">
+          &ldquo;{translation}&rdquo;{' '}
+          <span className="not-italic font-semibold text-[hsl(40,85%,32%)] dark:text-[hsl(40,80%,65%)]">
+            — {formattedReference}
+          </span>
+          <span className="sm:hidden ml-2 text-[9px] px-1.5 py-0.5 rounded-full font-semibold uppercase tracking-wide bg-[hsl(40,85%,52%/0.15)] border border-[hsl(40,85%,52%/0.35)] text-[hsl(40,85%,32%)] dark:text-[hsl(40,80%,65%)]">
+            {typeLabel}
+          </span>
+        </p>
+      </div>
+
       <div className="gold-border-strip" />
     </div>
   );

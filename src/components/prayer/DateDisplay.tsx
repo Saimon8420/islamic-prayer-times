@@ -31,6 +31,8 @@ interface DateDisplayProps {
   timeOffset?: number;
   /** Hide the date header row (for test preview cards) */
   hideDate?: boolean;
+  /** Hide the inline sky-tracker SVG (used when SkyBackground is rendered globally) */
+  hideSky?: boolean;
   /** Optional label shown top-left inside the SVG */
   previewLabel?: string;
 }
@@ -38,6 +40,7 @@ interface DateDisplayProps {
 export const DateDisplay = ({
   timeOffset = 0,
   hideDate = false,
+  hideSky = false,
   previewLabel,
 }: DateDisplayProps) => {
   const location = useStore((state) => state.location);
@@ -238,6 +241,7 @@ export const DateDisplay = ({
       )}
 
       {/* ── Sky tracker arc ── */}
+      {!hideSky && (
       <svg
         viewBox={`0 0 ${W} ${H}`}
         className="w-full"
@@ -427,6 +431,7 @@ export const DateDisplay = ({
           {isDay ? `${maghribLabel} ☾` : `${nextFajrLabel} ☀`}
         </text>
       </svg>
+      )}
     </div>
   );
 };

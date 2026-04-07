@@ -6,7 +6,6 @@ import { SettingsDialog } from './components/SettingsDialog';
 import { LocationPrompt } from './components/common/LocationPrompt';
 import { PrayerTimesCard } from './components/prayer/PrayerTimesCard';
 import { AdditionalTimings } from './components/prayer/AdditionalTimings';
-import { DateDisplay } from './components/prayer/DateDisplay';
 import { FastingTimesCard } from './components/fasting/FastingTimesCard';
 import { WhiteDays } from './components/fasting/WhiteDays';
 import { QiblaCompass } from './components/qibla/QiblaCompass';
@@ -18,6 +17,7 @@ import { useTheme } from './hooks/useTheme';
 import { useNotifications } from './hooks/useNotifications';
 import { useLanguageEffect } from './hooks/useLanguage';
 import { IslamicOccasionBanner } from './components/common/IslamicOccasionBanner';
+import { SkyBackground } from './components/common/SkyBackground';
 import { DailyVerse } from './components/common/DailyVerse';
 import { EidCountdown } from './components/prayer/EidCountdown';
 import { useTranslation } from './i18n/useTranslation';
@@ -78,10 +78,11 @@ function App() {
   const hasLocation = location !== null;
 
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern-bg">
+    <div className="min-h-screen flex flex-col islamic-pattern-bg relative">
+      <SkyBackground />
       <Header onSettingsClick={() => setSettingsOpen(true)} />
 
-      <main className="flex-1 container px-4 py-6 md:py-8 relative">
+      <main className="flex-1 container px-4 py-6 md:py-8 relative z-10">
         {/* Decorative lanterns on sides — desktop only */}
         <div className="lantern-decoration hidden xl:block w-8 h-16 -left-2 top-20 opacity-[0.06]" />
         <div className="lantern-decoration hidden xl:block w-6 h-12 -right-1 top-40 opacity-[0.04]" style={{ animationDelay: '1s' }} />
@@ -92,10 +93,7 @@ function App() {
           </div>
         ) : (
           <div className="space-y-6 slide-up">
-            {/* Date Display */}
-            <DateDisplay />
-
-            {/* Daily Ayah / Hadith */}
+            {/* Date Display + Daily Ayah / Hadith (merged card) */}
             <DailyVerse />
 
             {/* Islamic Occasion Banner */}
