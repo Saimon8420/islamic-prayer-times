@@ -17,17 +17,34 @@ export const useLocation = () => {
     error: null,
   });
 
+  const formatCoords = (lat: number, lon: number): string => {
+    const latStr = `${Math.abs(lat).toFixed(2)}°${lat >= 0 ? 'N' : 'S'}`;
+    const lonStr = `${Math.abs(lon).toFixed(2)}°${lon >= 0 ? 'E' : 'W'}`;
+    return `${latStr}, ${lonStr}`;
+  };
+
   const getLocationName = async (lat: number, lon: number): Promise<string> => {
+    // Skip the network call entirely if offline — saves time and avoids errors
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return formatCoords(lat, lon);
+    }
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+        { signal: controller.signal }
       );
+      clearTimeout(timeoutId);
+      if (!response.ok) return formatCoords(lat, lon);
       const data = await response.json();
       const city = data.address?.city || data.address?.town || data.address?.village || '';
       const country = data.address?.country || '';
-      return city ? `${city}, ${country}` : country || 'Unknown Location';
+      if (city) return `${city}, ${country}`;
+      if (country) return country;
+      return formatCoords(lat, lon);
     } catch {
-      return 'Unknown Location';
+      return formatCoords(lat, lon);
     }
   };
 
@@ -106,6 +123,14 @@ export const useLocation = () => {
     [setLocation]
   );
 
+  const setCityLocation = useCallback(
+    (lat: number, lon: number, name: string) => {
+      setLocation({ lat, lon, name });
+      setState({ loading: false, error: null });
+    },
+    [setLocation]
+  );
+
   const clearLocation = useCallback(() => {
     setLocation(null);
     setState({ loading: false, error: null });
@@ -120,6 +145,7 @@ export const useLocation = () => {
     hasLocation: location !== null,
     requestLocation,
     setManualLocation,
+    setCityLocation,
     clearLocation,
   };
 };

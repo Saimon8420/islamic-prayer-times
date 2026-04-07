@@ -163,6 +163,11 @@ export interface TranslationKeys {
     location: string;
     gettingLocation: string;
     setLocation: string;
+    chooseCity: string;
+    chooseCityDesc: string;
+    searchCity: string;
+    noCityFound: string;
+    locationOrLabel: string;
     calculationMethod: string;
     calculationMethodDesc: string;
     selectMethod: string;
