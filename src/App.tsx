@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { App as CapacitorApp } from '@capacitor/app';
+import { isNativePlatform } from './services/platformService';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
@@ -67,8 +69,12 @@ const HijriIcon = () => (
   </svg>
 );
 
+const DEFAULT_TAB = 'prayer';
+
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>(DEFAULT_TAB);
+  const tabHistoryRef = useRef<string[]>([DEFAULT_TAB]);
   const location = useStore((state) => state.location);
   const { t } = useTranslation();
   useTheme();
@@ -76,6 +82,56 @@ function App() {
   useLanguageEffect();
 
   const hasLocation = location !== null;
+
+  // Track tab history for Android back-button navigation
+  const handleTabChange = (next: string) => {
+    setActiveTab(next);
+    const history = tabHistoryRef.current;
+    // Avoid duplicate consecutive entries
+    if (history[history.length - 1] !== next) {
+      history.push(next);
+      // Cap history to avoid unbounded growth
+      if (history.length > 20) history.shift();
+    }
+  };
+
+  // Android hardware back button: close dialog → pop tab history → exit app
+  useEffect(() => {
+    if (!isNativePlatform()) return;
+    let handle: { remove: () => void } | undefined;
+    let cancelled = false;
+
+    CapacitorApp.addListener('backButton', () => {
+      // 1. If settings dialog is open, close it
+      if (settingsOpen) {
+        setSettingsOpen(false);
+        return;
+      }
+      // 2. If we have previous tabs in history, pop and switch
+      const history = tabHistoryRef.current;
+      if (history.length > 1) {
+        history.pop(); // remove current
+        const prev = history[history.length - 1];
+        setActiveTab(prev);
+        return;
+      }
+      // 3. If on default tab with no history, exit the app
+      if (activeTab !== DEFAULT_TAB) {
+        tabHistoryRef.current = [DEFAULT_TAB];
+        setActiveTab(DEFAULT_TAB);
+        return;
+      }
+      CapacitorApp.exitApp();
+    }).then((h) => {
+      if (cancelled) h.remove();
+      else handle = h;
+    });
+
+    return () => {
+      cancelled = true;
+      handle?.remove();
+    };
+  }, [settingsOpen, activeTab]);
 
   return (
     <div className="min-h-screen flex flex-col islamic-pattern-bg relative">
@@ -100,7 +156,7 @@ function App() {
             <IslamicOccasionBanner />
 
             {/* Main Content Tabs */}
-            <Tabs defaultValue="prayer" className="w-full">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <TabsList className="grid w-full grid-cols-6 h-14 p-1.5 parchment-card islamic-border">
                 <TabsTrigger
                   value="prayer"
