@@ -23,6 +23,7 @@ import { SkyBackground } from './components/common/SkyBackground';
 import { DailyVerse } from './components/common/DailyVerse';
 import { EidCountdown } from './components/prayer/EidCountdown';
 import { PrayerComparison } from './components/explore/PrayerComparison';
+import { AthanGlobe } from './components/explore/AthanGlobe';
 import { WordOfTheDay } from './components/dua/WordOfTheDay';
 import { useTranslation } from './i18n/useTranslation';
 
@@ -79,6 +80,39 @@ const ExploreIcon = () => (
 );
 
 const DEFAULT_TAB = 'prayer';
+
+// ── Explore tab sub-content with toggle ──
+function ExploreContent() {
+  const [view, setView] = useState<'comparison' | 'globe'>('comparison');
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className="flex gap-1.5 parchment-card islamic-border p-1.5 w-fit mx-auto">
+        <button
+          onClick={() => setView('comparison')}
+          className={`px-4 py-1.5 text-xs font-medium rounded-xl transition-all ${
+            view === 'comparison'
+              ? 'islamic-gradient-gold text-white shadow-sm'
+              : 'text-muted-foreground hover:bg-muted/50'
+          }`}
+        >
+          {t('explore.tabComparison')}
+        </button>
+        <button
+          onClick={() => setView('globe')}
+          className={`px-4 py-1.5 text-xs font-medium rounded-xl transition-all ${
+            view === 'globe'
+              ? 'islamic-gradient-gold text-white shadow-sm'
+              : 'text-muted-foreground hover:bg-muted/50'
+          }`}
+        >
+          {t('explore.tabGlobe')}
+        </button>
+      </div>
+      {view === 'comparison' ? <PrayerComparison /> : <AthanGlobe />}
+    </>
+  );
+}
 
 function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -267,8 +301,8 @@ function App() {
               </TabsContent>
 
               {/* Explore Tab */}
-              <TabsContent value="explore" className="mt-6 space-y-6 fade-in">
-                <PrayerComparison />
+              <TabsContent value="explore" className="mt-6 space-y-4 fade-in">
+                <ExploreContent />
               </TabsContent>
             </Tabs>
           </div>

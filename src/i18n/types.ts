@@ -397,6 +397,13 @@ export interface TranslationKeys {
       latest: string;
       spread: string;
     };
+    globe: {
+      title: string;
+      citiesNow: string;
+      tapCity: string;
+    };
+    tabComparison: string;
+    tabGlobe: string;
   };
 
   // Errors

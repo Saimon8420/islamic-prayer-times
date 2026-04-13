@@ -409,6 +409,13 @@ export const bn: TranslationKeys = {
       latest: 'শেষ',
       spread: 'ব্যবধান',
     },
+    globe: {
+      title: 'বিশ্বজুড়ে আযান',
+      citiesNow: '{count}টি শহরে আযান হচ্ছে',
+      tapCity: 'বিস্তারিত জানতে শহরে ট্যাপ করুন',
+    },
+    tabComparison: 'তুলনা',
+    tabGlobe: 'গ্লোব',
   },
 
   errors: {

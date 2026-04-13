@@ -409,6 +409,13 @@ export const en: TranslationKeys = {
       latest: 'Latest',
       spread: 'Spread',
     },
+    globe: {
+      title: 'Athan Around the World',
+      citiesNow: '{count} cities calling athan',
+      tapCity: 'Tap a city for details',
+    },
+    tabComparison: 'Compare',
+    tabGlobe: 'Globe',
   },
 
   errors: {

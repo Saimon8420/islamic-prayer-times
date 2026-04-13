@@ -409,6 +409,13 @@ export const ar: TranslationKeys = {
       latest: 'الأحدث',
       spread: 'الفارق',
     },
+    globe: {
+      title: 'الأذان حول العالم',
+      citiesNow: '{count} مدن تؤذن الآن',
+      tapCity: 'انقر على مدينة للتفاصيل',
+    },
+    tabComparison: 'مقارنة',
+    tabGlobe: 'الكرة الأرضية',
   },
 
   errors: {
