@@ -394,6 +394,12 @@ export const ar: TranslationKeys = {
     },
   },
 
+  wordOfTheDay: {
+    title: 'كلمة اليوم',
+    root: 'الجذر',
+    foundInQuran: 'وردت {count} مرة في القرآن',
+  },
+
   explore: {
     comparison: {
       title: 'مقارنة أوقات الصلاة',

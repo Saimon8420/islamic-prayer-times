@@ -394,6 +394,12 @@ export const en: TranslationKeys = {
     },
   },
 
+  wordOfTheDay: {
+    title: 'Word of the Day',
+    root: 'Root',
+    foundInQuran: 'Found {count} times in the Quran',
+  },
+
   explore: {
     comparison: {
       title: 'Prayer Time Comparison',

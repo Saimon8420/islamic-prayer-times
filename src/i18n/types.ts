@@ -380,6 +380,13 @@ export interface TranslationKeys {
     };
   };
 
+  // Word of the Day
+  wordOfTheDay: {
+    title: string;
+    root: string;
+    foundInQuran: string;
+  };
+
   // Explore
   explore: {
     comparison: {

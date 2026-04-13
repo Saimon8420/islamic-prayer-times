@@ -23,6 +23,7 @@ import { SkyBackground } from './components/common/SkyBackground';
 import { DailyVerse } from './components/common/DailyVerse';
 import { EidCountdown } from './components/prayer/EidCountdown';
 import { PrayerComparison } from './components/explore/PrayerComparison';
+import { WordOfTheDay } from './components/dua/WordOfTheDay';
 import { useTranslation } from './i18n/useTranslation';
 
 // Custom Icons
@@ -255,7 +256,8 @@ function App() {
               </TabsContent>
 
               {/* Duas Tab */}
-              <TabsContent value="duas" className="mt-6 fade-in">
+              <TabsContent value="duas" className="mt-6 space-y-6 fade-in">
+                <WordOfTheDay />
                 <DuaCollection />
               </TabsContent>
 

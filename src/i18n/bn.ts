@@ -394,6 +394,12 @@ export const bn: TranslationKeys = {
     },
   },
 
+  wordOfTheDay: {
+    title: 'আজকের শব্দ',
+    root: 'মূল',
+    foundInQuran: 'কুরআনে {count} বার পাওয়া যায়',
+  },
+
   explore: {
     comparison: {
       title: 'নামাজের সময় তুলনা',
