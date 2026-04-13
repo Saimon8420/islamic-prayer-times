@@ -350,6 +350,33 @@ export interface TranslationKeys {
     title: string;
     ayah: string;
     hadith: string;
+    context: {
+      fajr: string;
+      morning: string;
+      dhuhr: string;
+      afternoon: string;
+      asr: string;
+      evening: string;
+      maghrib: string;
+      isha: string;
+      night: string;
+      friday: string;
+      ramadan: string;
+      laylatul_qadr: string;
+      eid_fitr: string;
+      eid_adha: string;
+      dhul_hijjah: string;
+      day_of_arafah: string;
+      muharram: string;
+      ashura: string;
+      rajab: string;
+      shaban: string;
+      spring: string;
+      summer: string;
+      autumn: string;
+      winter: string;
+      general: string;
+    };
   };
 
   // Errors

@@ -1,10 +1,11 @@
 import { useMemo, useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { getDailyVerse } from '../../data/dailyVerses';
 import { useTranslation } from '../../i18n/useTranslation';
 import { useStore } from '../../store/useStore';
 import { getArabicWeekday } from '../../services/hijriService';
 import { useHijriDate } from '../../hooks/useHijriDate';
+import { calculatePrayerTimes } from '../../services/prayerService';
+import { selectContextualVerse } from '../../services/verseSelectionService';
 
 // ── Decorative pieces matching PrayerTimesCard's aesthetic ──
 
@@ -48,33 +49,52 @@ const TessellationOverlay = () => (
 
 export const DailyVerse = () => {
   const { t, language } = useTranslation();
-  const verse = useMemo(() => getDailyVerse(), []);
   const { hijriDate } = useHijriDate();
   const location = useStore((s) => s.location);
+  const calculationMethod = useStore((s) => s.calculationMethod);
+  const madhab = useStore((s) => s.madhab);
 
   const locale = language === 'bn' ? 'bn-BD' : language === 'ar' ? 'ar-SA' : 'en-US';
 
-  const [today, setToday] = useState(() => new Date());
+  const [now, setNow] = useState(() => new Date());
   useEffect(() => {
-    const interval = setInterval(() => setToday(new Date()), 60_000);
+    const interval = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(interval);
   }, []);
 
-  const arabicWeekday = useMemo(() => getArabicWeekday(today), [today]);
+  // Calculate prayer times for context detection
+  const prayerTimes = useMemo(() => {
+    if (!location) return null;
+    return calculatePrayerTimes(location.lat, location.lon, now, calculationMethod, madhab);
+  }, [location, calculationMethod, madhab, now]);
+
+  // Select contextual verse
+  const selection = useMemo(() => {
+    if (!prayerTimes) return null;
+    return selectContextualVerse(now, prayerTimes, hijriDate);
+  }, [now, prayerTimes, hijriDate]);
+
+  const arabicWeekday = useMemo(() => getArabicWeekday(now), [now]);
+
+  if (!selection) return null;
+
+  const { verse, contextLabel } = selection;
   const translation = language === 'bn' ? verse.translationBn : verse.translation;
+
+  // Get the translated context label
+  const contextKey = `dailyVerse.context.${contextLabel}` as const;
+  const contextDisplay = t(contextKey as Parameters<typeof t>[0]) || contextLabel;
   const typeLabel = verse.type === 'ayah' ? t('dailyVerse.ayah') : t('dailyVerse.hadith');
 
-  // Normalize references to "Name-[ref]" form:
-  //   "Surah Al-Baqarah 2:152" → "Surah Al-Baqarah-[2:152]"
-  //   "Sunan Ibn Majah 2341"   → "Sunan Ibn Majah-[2341]"
-  const formattedReference = useMemo(() => {
+  // Normalize references to "Name-[ref]" form
+  const formattedReference = (() => {
     const ref = verse.reference.trim();
     const match = ref.match(/^(.*?)\s+(\d[\d:.\-]*)$/);
     if (match) {
       return `${match[1]}-[${match[2]}]`;
     }
     return ref;
-  }, [verse]);
+  })();
 
   return (
     <div className="islamic-border overflow-hidden fade-in">
@@ -106,21 +126,21 @@ export const DailyVerse = () => {
             {/* Gregorian — left */}
             <div className="flex items-center gap-2 min-w-0">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/12 backdrop-blur-sm border border-white/15 text-white shadow-sm">
-                <span className="text-sm font-bold">{format(today, 'd')}</span>
+                <span className="text-sm font-bold">{format(now, 'd')}</span>
               </div>
               <div className="min-w-0 leading-tight">
                 <p className="text-xs sm:text-sm font-semibold text-white truncate">
-                  {today.toLocaleDateString(locale, { weekday: 'long' })}
+                  {now.toLocaleDateString(locale, { weekday: 'long' })}
                 </p>
                 <p className="text-[10px] text-white/65 truncate">
-                  {today.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })}
+                  {now.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })}
                 </p>
               </div>
             </div>
 
-            {/* Type pill — middle */}
+            {/* Context + type pill — middle */}
             <span className="hidden sm:inline-block text-[9px] px-2 py-0.5 rounded-full font-semibold uppercase tracking-wide shrink-0 bg-[hsl(40,85%,52%/0.18)] border border-[hsl(40,85%,52%/0.45)] text-[hsl(40,85%,72%)]">
-              {typeLabel}
+              {contextDisplay} &middot; {typeLabel}
             </span>
 
             {/* Hijri — right */}
@@ -169,7 +189,7 @@ export const DailyVerse = () => {
             — {formattedReference}
           </span>
           <span className="sm:hidden ml-2 text-[9px] px-1.5 py-0.5 rounded-full font-semibold uppercase tracking-wide bg-[hsl(40,85%,52%/0.15)] border border-[hsl(40,85%,52%/0.35)] text-[hsl(40,85%,32%)] dark:text-[hsl(40,80%,65%)]">
-            {typeLabel}
+            {contextDisplay} &middot; {typeLabel}
           </span>
         </p>
       </div>
