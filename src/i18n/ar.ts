@@ -17,6 +17,7 @@ export const ar: TranslationKeys = {
       schedule: 'الجدول',
       duas: 'الأدعية',
       hijriCalendar: 'التقويم',
+      explore: 'استكشاف',
     },
   },
 
@@ -390,6 +391,17 @@ export const ar: TranslationKeys = {
       autumn: 'الخريف',
       winter: 'الشتاء',
       general: 'إلهام',
+    },
+  },
+
+  explore: {
+    comparison: {
+      title: 'مقارنة أوقات الصلاة',
+      addCity: 'إضافة مدينة',
+      removeCity: 'إزالة المدينة',
+      earliest: 'الأقدم',
+      latest: 'الأحدث',
+      spread: 'الفارق',
     },
   },
 

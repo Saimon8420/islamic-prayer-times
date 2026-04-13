@@ -19,6 +19,7 @@ export interface TranslationKeys {
       schedule: string;
       duas: string;
       hijriCalendar: string;
+      explore: string;
     };
   };
 
@@ -376,6 +377,18 @@ export interface TranslationKeys {
       autumn: string;
       winter: string;
       general: string;
+    };
+  };
+
+  // Explore
+  explore: {
+    comparison: {
+      title: string;
+      addCity: string;
+      removeCity: string;
+      earliest: string;
+      latest: string;
+      spread: string;
     };
   };
 

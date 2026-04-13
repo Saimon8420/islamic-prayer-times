@@ -17,6 +17,7 @@ export const en: TranslationKeys = {
       schedule: 'Schedule',
       duas: 'Duas',
       hijriCalendar: 'Hijri',
+      explore: 'Explore',
     },
   },
 
@@ -390,6 +391,17 @@ export const en: TranslationKeys = {
       autumn: 'Autumn',
       winter: 'Winter',
       general: 'Inspiration',
+    },
+  },
+
+  explore: {
+    comparison: {
+      title: 'Prayer Time Comparison',
+      addCity: 'Add city',
+      removeCity: 'Remove city',
+      earliest: 'Earliest',
+      latest: 'Latest',
+      spread: 'Spread',
     },
   },
 

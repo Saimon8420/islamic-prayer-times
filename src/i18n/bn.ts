@@ -17,6 +17,7 @@ export const bn: TranslationKeys = {
       schedule: 'সময়সূচি',
       duas: 'দোয়া',
       hijriCalendar: 'হিজরি',
+      explore: 'অন্বেষণ',
     },
   },
 
@@ -390,6 +391,17 @@ export const bn: TranslationKeys = {
       autumn: 'শরৎ',
       winter: 'শীত',
       general: 'অনুপ্রেরণা',
+    },
+  },
+
+  explore: {
+    comparison: {
+      title: 'নামাজের সময় তুলনা',
+      addCity: 'শহর যোগ করুন',
+      removeCity: 'শহর সরান',
+      earliest: 'প্রথম',
+      latest: 'শেষ',
+      spread: 'ব্যবধান',
     },
   },
 

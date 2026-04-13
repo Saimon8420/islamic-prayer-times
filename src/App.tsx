@@ -22,6 +22,7 @@ import { IslamicOccasionBanner } from './components/common/IslamicOccasionBanner
 import { SkyBackground } from './components/common/SkyBackground';
 import { DailyVerse } from './components/common/DailyVerse';
 import { EidCountdown } from './components/prayer/EidCountdown';
+import { PrayerComparison } from './components/explore/PrayerComparison';
 import { useTranslation } from './i18n/useTranslation';
 
 // Custom Icons
@@ -66,6 +67,13 @@ const HijriIcon = () => (
     <rect x="3" y="4" width="18" height="18" rx="2" />
     <path d="M8 2v4M16 2v4" strokeLinecap="round" />
     <path d="M16 14.4a4 4 0 1 1-3.2-3.9 3 3 0 0 0 3.2 3.9z" />
+  </svg>
+);
+
+const ExploreIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+    <circle cx="12" cy="12" r="10" />
+    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
   </svg>
 );
 
@@ -157,7 +165,7 @@ function App() {
 
             {/* Main Content Tabs */}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <TabsList className="grid w-full grid-cols-6 h-14 p-1.5 parchment-card islamic-border">
+              <TabsList className="grid w-full grid-cols-7 h-14 p-1.5 parchment-card islamic-border">
                 <TabsTrigger
                   value="prayer"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
@@ -199,6 +207,13 @@ function App() {
                 >
                   <HijriIcon />
                   <span className="hidden sm:inline">{t('common.tabs.hijriCalendar')}</span>
+                </TabsTrigger>
+                <TabsTrigger
+                  value="explore"
+                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
+                >
+                  <ExploreIcon />
+                  <span className="hidden sm:inline">{t('common.tabs.explore')}</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -247,6 +262,11 @@ function App() {
               {/* Hijri Calendar Tab */}
               <TabsContent value="hijriCalendar" className="mt-6 fade-in">
                 <HijriCalendar />
+              </TabsContent>
+
+              {/* Explore Tab */}
+              <TabsContent value="explore" className="mt-6 space-y-6 fade-in">
+                <PrayerComparison />
               </TabsContent>
             </Tabs>
           </div>
