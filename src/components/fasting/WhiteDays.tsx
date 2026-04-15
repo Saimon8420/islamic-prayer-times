@@ -127,10 +127,7 @@ export const WhiteDays = () => {
         </div>
       </div>
 
-      {/* Gold border strip */}
-      <div className="h-[3px]" style={{
-        background: 'repeating-linear-gradient(90deg, hsl(40,85%,52%) 0px, hsl(43,90%,58%) 4px, hsl(38,80%,42%) 8px, hsl(40,85%,52%) 12px)',
-      }} />
+      <div className="gold-border-strip" />
 
       {/* ═══ CONTENT ═══ */}
       <CardContent className="px-2 sm:px-3 pt-0 pb-2 sm:pb-3">

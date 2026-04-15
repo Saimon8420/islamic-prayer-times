@@ -171,10 +171,7 @@ export const AdditionalTimings = () => {
           </div>
         </div>
 
-        {/* Gold border strip */}
-        <div className="h-[3px]" style={{
-          background: 'repeating-linear-gradient(90deg, hsl(40,85%,52%) 0px, hsl(43,90%,58%) 4px, hsl(38,80%,42%) 8px, hsl(40,85%,52%) 12px)',
-        }} />
+        <div className="gold-border-strip" />
 
         {/* Content — Parchment style items */}
         <CardContent className="px-1 sm:px-2 py-1.5 sm:py-2">
@@ -243,10 +240,7 @@ export const AdditionalTimings = () => {
           </div>
         </div>
 
-        {/* Amber border strip */}
-        <div className="h-[3px]" style={{
-          background: 'repeating-linear-gradient(90deg, hsl(38,80%,42%) 0px, hsl(40,85%,52%) 4px, hsl(43,90%,58%) 8px, hsl(38,80%,42%) 12px)',
-        }} />
+        <div className="gold-border-strip" />
 
         {/* Content */}
         <CardContent className="px-1 sm:px-2 pt-0 pb-1.5 sm:pb-2">

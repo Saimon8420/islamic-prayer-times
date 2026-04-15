@@ -137,35 +137,57 @@
     pointer-events: none;
   }
 
-  /* ── Gold Ornamental Border Strip ── */
+  /* ── Gold Ornamental Border Strip ── refined: smooth gradient + center diamond motif ── */
   .gold-border-strip {
-    height: 6px;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        hsl(40, 85%, 52%) 0px,
-        hsl(43, 90%, 58%) 4px,
-        hsl(38, 80%, 42%) 8px,
-        hsl(40, 85%, 52%) 12px
-      );
+    height: 5px;
     position: relative;
+    background:
+      linear-gradient(
+        90deg,
+        hsl(38, 70%, 35%) 0%,
+        hsl(40, 85%, 52%) 20%,
+        hsl(45, 95%, 65%) 50%,
+        hsl(40, 85%, 52%) 80%,
+        hsl(38, 70%, 35%) 100%
+      );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 230, 160, 0.5),
+      inset 0 -1px 0 rgba(120, 70, 10, 0.4),
+      0 1px 2px rgba(0, 0, 0, 0.08);
   }
 
+  /* soft horizontal shimmer line */
   .gold-border-strip::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      repeating-linear-gradient(
-        90deg,
-        transparent 0px,
-        transparent 10px,
-        rgba(255,255,255,0.3) 10px,
-        rgba(255,255,255,0.3) 12px
-      );
+    top: 50%;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 250, 220, 0.55) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* center diamond ornament */
+  .gold-border-strip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: linear-gradient(135deg, hsl(45, 95%, 70%) 0%, hsl(38, 75%, 38%) 100%);
+    box-shadow:
+      0 0 0 1px hsl(38, 70%, 30%),
+      0 0 6px rgba(255, 200, 80, 0.6);
+    pointer-events: none;
   }
 
   /* ── Cards with Arabesque Corners ── */

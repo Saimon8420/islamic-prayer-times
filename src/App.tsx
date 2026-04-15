@@ -19,7 +19,7 @@ import { useTheme } from "./hooks/useTheme";
 import { useNotifications } from "./hooks/useNotifications";
 import { useLanguageEffect } from "./hooks/useLanguage";
 import { IslamicOccasionBanner } from "./components/common/IslamicOccasionBanner";
-import { SkyBackground } from "./components/common/SkyBackground";
+// import { SkyBackground } from "./components/common/SkyBackground"; // perf test: disabled
 import { DailyVerse } from "./components/common/DailyVerse";
 import { EidCountdown } from "./components/prayer/EidCountdown";
 import { PrayerComparison } from "./components/explore/PrayerComparison";
@@ -220,7 +220,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col islamic-pattern-bg relative">
-      <SkyBackground />
+      {/* <SkyBackground /> perf test: disabled to check if SVG sky is the slowdown culprit */}
       <Header onSettingsClick={() => setSettingsOpen(true)} />
 
       <main className="flex-1 container px-4 py-6 md:py-8 relative z-10">
