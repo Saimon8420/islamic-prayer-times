@@ -1,48 +1,66 @@
-import { useState, useEffect, useRef } from 'react';
-import { App as CapacitorApp } from '@capacitor/app';
-import { isNativePlatform } from './services/platformService';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
-import { Header } from './components/layout/Header';
-import { Footer } from './components/layout/Footer';
-import { SettingsDialog } from './components/SettingsDialog';
-import { LocationPrompt } from './components/common/LocationPrompt';
-import { PrayerTimesCard } from './components/prayer/PrayerTimesCard';
-import { AdditionalTimings } from './components/prayer/AdditionalTimings';
-import { FastingTimesCard } from './components/fasting/FastingTimesCard';
-import { WhiteDays } from './components/fasting/WhiteDays';
-import { QiblaCompass } from './components/qibla/QiblaCompass';
-import { MonthlySchedule } from './components/MonthlySchedule';
-import { DuaCollection } from './components/dua/DuaCollection';
-import { HijriCalendar } from './components/calendar/HijriCalendar';
-import { useStore } from './store/useStore';
-import { useTheme } from './hooks/useTheme';
-import { useNotifications } from './hooks/useNotifications';
-import { useLanguageEffect } from './hooks/useLanguage';
-import { IslamicOccasionBanner } from './components/common/IslamicOccasionBanner';
-import { SkyBackground } from './components/common/SkyBackground';
-import { DailyVerse } from './components/common/DailyVerse';
-import { EidCountdown } from './components/prayer/EidCountdown';
-import { PrayerComparison } from './components/explore/PrayerComparison';
-import { AthanGlobe } from './components/explore/AthanGlobe';
-import { WordOfTheDay } from './components/dua/WordOfTheDay';
-import { useTranslation } from './i18n/useTranslation';
+import { useState, useEffect, useRef } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
+import { isNativePlatform } from "./services/platformService";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
+import { Header } from "./components/layout/Header";
+import { Footer } from "./components/layout/Footer";
+import { SettingsDialog } from "./components/SettingsDialog";
+import { LocationPrompt } from "./components/common/LocationPrompt";
+import { PrayerTimesCard } from "./components/prayer/PrayerTimesCard";
+import { AdditionalTimings } from "./components/prayer/AdditionalTimings";
+import { FastingTimesCard } from "./components/fasting/FastingTimesCard";
+import { WhiteDays } from "./components/fasting/WhiteDays";
+import { QiblaCompass } from "./components/qibla/QiblaCompass";
+import { MonthlySchedule } from "./components/MonthlySchedule";
+import { DuaCollection } from "./components/dua/DuaCollection";
+import { HijriCalendar } from "./components/calendar/HijriCalendar";
+import { useStore } from "./store/useStore";
+import { useTheme } from "./hooks/useTheme";
+import { useNotifications } from "./hooks/useNotifications";
+import { useLanguageEffect } from "./hooks/useLanguage";
+import { IslamicOccasionBanner } from "./components/common/IslamicOccasionBanner";
+import { SkyBackground } from "./components/common/SkyBackground";
+import { DailyVerse } from "./components/common/DailyVerse";
+import { EidCountdown } from "./components/prayer/EidCountdown";
+import { PrayerComparison } from "./components/explore/PrayerComparison";
+import { AthanGlobe } from "./components/explore/AthanGlobe";
+import { WordOfTheDay } from "./components/dua/WordOfTheDay";
+import { useTranslation } from "./i18n/useTranslation";
 
 // Custom Icons
 const PrayerIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <circle cx="12" cy="12" r="4" />
     <path d="M12 2v4M12 18v4M2 12h4M18 12h4" strokeLinecap="round" />
   </svg>
 );
 
 const FastingIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
   </svg>
 );
 
 const QiblaIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <circle cx="12" cy="12" r="10" />
     <path d="M12 2v4M12 18v4M2 12h4M18 12h4" strokeLinecap="round" />
     <path d="M12 8v4l2 2" strokeLinecap="round" strokeLinejoin="round" />
@@ -50,14 +68,26 @@ const QiblaIcon = () => (
 );
 
 const CalendarIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <rect x="3" y="4" width="18" height="18" rx="2" />
     <path d="M16 2v4M8 2v4M3 10h18" strokeLinecap="round" />
   </svg>
 );
 
 const DuaIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
     <path d="M8 7h8M8 11h6" strokeLinecap="round" />
@@ -65,7 +95,13 @@ const DuaIcon = () => (
 );
 
 const HijriIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <rect x="3" y="4" width="18" height="18" rx="2" />
     <path d="M8 2v4M16 2v4" strokeLinecap="round" />
     <path d="M16 14.4a4 4 0 1 1-3.2-3.9 3 3 0 0 0 3.2 3.9z" />
@@ -73,43 +109,49 @@ const HijriIcon = () => (
 );
 
 const ExploreIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5">
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="w-5 h-5"
+  >
     <circle cx="12" cy="12" r="10" />
     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
   </svg>
 );
 
-const DEFAULT_TAB = 'prayer';
+const DEFAULT_TAB = "prayer";
 
 // ── Explore tab sub-content with toggle ──
 function ExploreContent() {
-  const [view, setView] = useState<'comparison' | 'globe'>('comparison');
+  const [view, setView] = useState<"comparison" | "globe">("comparison");
   const { t } = useTranslation();
   return (
     <>
       <div className="flex gap-1.5 parchment-card islamic-border p-1.5 w-fit mx-auto">
         <button
-          onClick={() => setView('comparison')}
+          onClick={() => setView("comparison")}
           className={`px-4 py-1.5 text-xs font-medium rounded-xl transition-all ${
-            view === 'comparison'
-              ? 'islamic-gradient-gold text-white shadow-sm'
-              : 'text-muted-foreground hover:bg-muted/50'
+            view === "comparison"
+              ? "islamic-gradient-gold text-white shadow-sm"
+              : "text-muted-foreground hover:bg-muted/50"
           }`}
         >
-          {t('explore.tabComparison')}
+          {t("explore.tabComparison")}
         </button>
         <button
-          onClick={() => setView('globe')}
+          onClick={() => setView("globe")}
           className={`px-4 py-1.5 text-xs font-medium rounded-xl transition-all ${
-            view === 'globe'
-              ? 'islamic-gradient-gold text-white shadow-sm'
-              : 'text-muted-foreground hover:bg-muted/50'
+            view === "globe"
+              ? "islamic-gradient-gold text-white shadow-sm"
+              : "text-muted-foreground hover:bg-muted/50"
           }`}
         >
-          {t('explore.tabGlobe')}
+          {t("explore.tabGlobe")}
         </button>
       </div>
-      {view === 'comparison' ? <PrayerComparison /> : <AthanGlobe />}
+      {view === "comparison" ? <PrayerComparison /> : <AthanGlobe />}
     </>
   );
 }
@@ -144,7 +186,7 @@ function App() {
     let handle: { remove: () => void } | undefined;
     let cancelled = false;
 
-    CapacitorApp.addListener('backButton', () => {
+    CapacitorApp.addListener("backButton", () => {
       // 1. If settings dialog is open, close it
       if (settingsOpen) {
         setSettingsOpen(false);
@@ -184,7 +226,10 @@ function App() {
       <main className="flex-1 container px-4 py-6 md:py-8 relative z-10">
         {/* Decorative lanterns on sides — desktop only */}
         <div className="lantern-decoration hidden xl:block w-8 h-16 -left-2 top-20 opacity-[0.06]" />
-        <div className="lantern-decoration hidden xl:block w-6 h-12 -right-1 top-40 opacity-[0.04]" style={{ animationDelay: '1s' }} />
+        <div
+          className="lantern-decoration hidden xl:block w-6 h-12 -right-1 top-40 opacity-[0.04]"
+          style={{ animationDelay: "1s" }}
+        />
 
         {!hasLocation ? (
           <div className="flex items-center justify-center min-h-[60vh]">
@@ -199,56 +244,74 @@ function App() {
             <IslamicOccasionBanner />
 
             {/* Main Content Tabs */}
-            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+            <Tabs
+              value={activeTab}
+              onValueChange={handleTabChange}
+              className="w-full"
+            >
               <TabsList className="grid w-full grid-cols-7 h-14 p-1.5 parchment-card islamic-border">
                 <TabsTrigger
                   value="prayer"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <PrayerIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.prayer')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.prayer")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="fasting"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <FastingIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.fasting')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.fasting")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="qibla"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <QiblaIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.qibla')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.qibla")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="schedule"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <CalendarIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.schedule')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.schedule")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="duas"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient-dark data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <DuaIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.duas')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.duas")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="hijriCalendar"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <HijriIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.hijriCalendar')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.hijriCalendar")}
+                  </span>
                 </TabsTrigger>
                 <TabsTrigger
                   value="explore"
                   className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
                 >
                   <ExploreIcon />
-                  <span className="hidden sm:inline">{t('common.tabs.explore')}</span>
+                  <span className="hidden sm:inline">
+                    {t("common.tabs.explore")}
+                  </span>
                 </TabsTrigger>
               </TabsList>
 
@@ -258,7 +321,10 @@ function App() {
                 <div className="grid gap-6 lg:grid-cols-2">
                   <div className="relative">
                     {/* Bismillah watermark */}
-                    <span className="bismillah-watermark -top-6 -right-4 arabic-text" style={{ fontSize: '4rem' }}>
+                    <span
+                      className="bismillah-watermark -top-6 -right-4 arabic-text"
+                      style={{ fontSize: "4rem" }}
+                    >
                       بسم الله
                     </span>
                     <PrayerTimesCard />
