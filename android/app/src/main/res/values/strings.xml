@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Islamic Prayer Times</string>
-    <string name="title_activity_main">Islamic Prayer Times</string>
-    <string name="package_name">com.latifulkabir.prayertimes</string>
-    <string name="custom_url_scheme">com.latifulkabir.prayertimes</string>
+    <string name="app_name">Falah</string>
+    <string name="title_activity_main">Falah</string>
+    <string name="package_name">com.latifulkabir.falah</string>
+    <string name="custom_url_scheme">com.latifulkabir.falah</string>
 </resources>
