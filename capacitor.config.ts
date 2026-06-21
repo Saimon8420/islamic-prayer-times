@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.latifulkabir.prayertimes',
-  appName: 'Islamic Prayer Times',
+  appId: 'com.latifulkabir.falah',
+  appName: 'Falah',
   webDir: 'dist',
   server: {
     androidScheme: 'https',

@@ -1,9 +1,9 @@
 {
-  "name": "islamic-prayer-times",
+  "name": "falah",
   "private": true,
-  "version": "1.3.1",
+  "version": "1.4.0",
   "type": "module",
-  "description": "A comprehensive Islamic prayer times and fasting schedule application",
+  "description": "Falah — Islamic prayer times, fasting schedule, Qibla, Hijri calendar, and duas",
   "author": "Md. Latiful Kabir",
   "license": "MIT",
   "scripts": {
