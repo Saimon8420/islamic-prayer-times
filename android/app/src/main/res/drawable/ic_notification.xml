@@ -3,8 +3,8 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Mosque dome / crescent icon for prayer notification -->
+    <!-- 8-pointed Islamic star (Rub el Hizb): square + diamond union -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10,-4.48 10,-10S17.52,2 12,2zM12,4c1.46,0 2.83,0.4 4,1.08 -1.39,1.13 -2.28,2.84 -2.28,4.76 0,1.92 0.89,3.63 2.28,4.76 -1.17,0.68 -2.54,1.08 -4,1.08 -4.41,0 -8,-3.59 -8,-8s3.59,-8 8,-8z" />
+        android:pathData="M5,5 H19 V19 H5 Z M12,2 L22,12 L12,22 L2,12 Z" />
 </vector>
