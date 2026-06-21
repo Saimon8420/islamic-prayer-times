@@ -2,7 +2,7 @@ import type { TranslationKeys } from './types';
 
 export const bn: TranslationKeys = {
   common: {
-    appName: 'নামাজের সময়',
+    appName: 'ফালাহ',
     loading: 'লোড হচ্ছে',
     error: 'ত্রুটি',
     today: 'আজ',
@@ -193,7 +193,7 @@ export const bn: TranslationKeys = {
 
   location: {
     greeting: 'আসসালামু আলাইকুম',
-    welcome: 'নামাজের সময়তে স্বাগতম',
+    welcome: 'ফালাহ-তে স্বাগতম',
     setYourLocation: 'আপনার অবস্থান সেট করুন',
     locationNeeded: 'সঠিক নামাজের সময় ও কিবলার দিক দেখাতে আপনার অবস্থান প্রয়োজন।',
     gettingLocation: 'অবস্থান পাওয়া যাচ্ছে...',
