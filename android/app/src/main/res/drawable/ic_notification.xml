@@ -6,5 +6,5 @@
     <!-- 8-pointed Islamic star (Rub el Hizb): square + diamond union -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M5,5 H19 V19 H5 Z M12,2 L22,12 L12,22 L2,12 Z" />
+        android:pathData="M5,5 H19 V19 H5 Z M12,3 L21,12 L12,21 L3,12 Z" />
 </vector>
