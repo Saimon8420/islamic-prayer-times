@@ -1,6 +1,8 @@
-# Islamic Prayer Times & Fasting Schedule
+# Falah — Prayer, Fasting & Qibla
 
-A comprehensive Islamic prayer times and fasting schedule application built with React, TypeScript, and modern web technologies. Available as a **Progressive Web App (PWA)**, a **web app**, and a **native Android app** with prayer time notifications and adhan sounds.
+**Falah** is a comprehensive Islamic prayer times and fasting schedule application built with React, TypeScript, and modern web technologies. Available as a **Progressive Web App (PWA)**, a **web app**, and a **native Android app** (Capacitor) with prayer time notifications and adhan sounds.
+
+> *Falah* (فلاح) means "success" — from the call to prayer, *Hayya 'ala'l-Falah* ("Come to success").
 
 [![Download APK](https://img.shields.io/badge/Download-APK-green?style=for-the-badge&logo=android)](https://github.com/Saimon8420/islamic-prayer-times/releases/latest/download/islamic-prayer-times.apk)
 
