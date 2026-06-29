@@ -19,7 +19,7 @@ import { Switch } from './ui/switch';
 import { useStore } from '../store/useStore';
 import { useLocation } from '../hooks/useLocation';
 import { CALCULATION_METHODS, MADHAB_OPTIONS } from '../services/prayerService';
-import { CITIES, type City } from '../data/cities';
+import { LocationPicker } from './LocationPicker';
 import { REGULAR_ADHAN_SOUNDS, FAJR_ADHAN_SOUNDS } from '../services/notificationService';
 import { useTranslation } from '../i18n/useTranslation';
 import { LANGUAGE_OPTIONS } from '../i18n';
@@ -55,23 +55,6 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const { t } = useTranslation();
 
   const { name: locationName, hasLocation, loading, requestLocation, setCityLocation, clearLocation } = useLocation();
-
-  // Offline city picker
-  const [cityQuery, setCityQuery] = useState('');
-  const filteredCities = (() => {
-    const q = cityQuery.trim().toLowerCase();
-    if (!q) return CITIES.slice(0, 50);
-    return CITIES.filter(
-      (c) =>
-        c.name.toLowerCase().includes(q) ||
-        c.country.toLowerCase().includes(q)
-    ).slice(0, 50);
-  })();
-
-  const handlePickCity = (city: City) => {
-    setCityLocation(city.lat, city.lon, `${city.name}, ${city.country}`);
-    setCityQuery('');
-  };
 
   // Adhan preview player
   const [playingId, setPlayingId] = useState<string | null>(null);
@@ -151,38 +134,8 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </Button>
             )}
 
-            {/* Offline city picker */}
-            <div className="space-y-2 rounded-lg border border-dashed p-3">
-              <div>
-                <p className="text-xs font-medium">{t('settings.chooseCity')}</p>
-                <p className="text-[11px] text-muted-foreground">{t('settings.chooseCityDesc')}</p>
-              </div>
-              <input
-                type="text"
-                value={cityQuery}
-                onChange={(e) => setCityQuery(e.target.value)}
-                placeholder={t('settings.searchCity')}
-                className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/40"
-              />
-              {filteredCities.length === 0 ? (
-                <p className="px-1 py-2 text-xs text-muted-foreground">{t('settings.noCityFound')}</p>
-              ) : (
-                <ul className="max-h-44 overflow-y-auto rounded-md border bg-background/50">
-                  {filteredCities.map((city) => (
-                    <li key={`${city.name}-${city.country}-${city.lat}`}>
-                      <button
-                        type="button"
-                        onClick={() => handlePickCity(city)}
-                        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-sm hover:bg-muted focus:bg-muted focus:outline-none"
-                      >
-                        <span className="truncate">{city.name}</span>
-                        <span className="shrink-0 text-xs text-muted-foreground">{city.country}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            {/* Offline location picker — Bangladesh (comprehensive) + International */}
+            <LocationPicker onPick={(lat, lon, label) => setCityLocation(lat, lon, label)} />
           </div>
 
           {/* Calculation Method */}
