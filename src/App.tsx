@@ -7,7 +7,6 @@ import { Footer } from "./components/layout/Footer";
 import { SettingsDialog } from "./components/SettingsDialog";
 import { LocationPrompt } from "./components/common/LocationPrompt";
 import { PrayerTimesCard } from "./components/prayer/PrayerTimesCard";
-import { AdditionalTimings } from "./components/prayer/AdditionalTimings";
 import { FastingTimesCard } from "./components/fasting/FastingTimesCard";
 import { WhiteDays } from "./components/fasting/WhiteDays";
 import { QiblaCompass } from "./components/qibla/QiblaCompass";
@@ -318,20 +317,15 @@ function App() {
               {/* Prayer Times Tab */}
               <TabsContent value="prayer" className="mt-6 space-y-6 fade-in">
                 <EidCountdown />
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <div className="relative">
-                    {/* Bismillah watermark */}
-                    <span
-                      className="bismillah-watermark -top-6 -right-4 arabic-text"
-                      style={{ fontSize: "4rem" }}
-                    >
-                      بسم الله
-                    </span>
-                    <PrayerTimesCard />
-                  </div>
-                  <div className="space-y-6">
-                    <AdditionalTimings />
-                  </div>
+                <div className="relative mx-auto w-full max-w-5xl">
+                  {/* Bismillah watermark */}
+                  <span
+                    className="bismillah-watermark -top-6 -right-4 arabic-text"
+                    style={{ fontSize: "4rem" }}
+                  >
+                    بسم الله
+                  </span>
+                  <PrayerTimesCard />
                 </div>
               </TabsContent>
 

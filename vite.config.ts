@@ -41,8 +41,8 @@ export default defineConfig(({ command }) => ({
         ],
       },
       manifest: {
-        name: "Islamic Prayer Times & Fasting Schedule",
-        short_name: "Prayer Times",
+        name: "Falah — Prayer, Fasting & Qibla",
+        short_name: "Falah",
         description:
           "Accurate prayer times, Qibla direction, Hijri calendar, fasting schedule, and duas",
         theme_color: "#166534",
@@ -69,7 +69,7 @@ export default defineConfig(({ command }) => ({
             type: "image/png",
           },
           {
-            src: "pwa-512x512.png",
+            src: "pwa-512x512-maskable.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",

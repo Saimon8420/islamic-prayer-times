@@ -167,6 +167,9 @@ export interface TranslationKeys {
     chooseCity: string;
     chooseCityDesc: string;
     searchCity: string;
+    locationTabBd: string;
+    locationTabIntl: string;
+    searchUpazila: string;
     noCityFound: string;
     locationOrLabel: string;
     calculationMethod: string;

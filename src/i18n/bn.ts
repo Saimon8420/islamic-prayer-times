@@ -2,7 +2,7 @@ import type { TranslationKeys } from './types';
 
 export const bn: TranslationKeys = {
   common: {
-    appName: 'নামাজের সময়',
+    appName: 'ফালাহ',
     loading: 'লোড হচ্ছে',
     error: 'ত্রুটি',
     today: 'আজ',
@@ -159,6 +159,9 @@ export const bn: TranslationKeys = {
     chooseCity: 'একটি শহর বেছে নিন',
     chooseCityDesc: 'অফলাইনে ব্যবহারের জন্য একটি শহর বেছে নিন (ইন্টারনেট বা জিপিএস ছাড়াই কাজ করে)।',
     searchCity: 'শহর খুঁজুন...',
+    locationTabBd: 'বাংলাদেশ',
+    locationTabIntl: 'আন্তর্জাতিক',
+    searchUpazila: 'উপজেলা খুঁজুন...',
     noCityFound: 'কোনো শহর পাওয়া যায়নি',
     locationOrLabel: 'অথবা তালিকা থেকে বেছে নিন',
     calculationMethod: 'গণনা পদ্ধতি',
@@ -193,7 +196,7 @@ export const bn: TranslationKeys = {
 
   location: {
     greeting: 'আসসালামু আলাইকুম',
-    welcome: 'নামাজের সময়তে স্বাগতম',
+    welcome: 'ফালাহ-তে স্বাগতম',
     setYourLocation: 'আপনার অবস্থান সেট করুন',
     locationNeeded: 'সঠিক নামাজের সময় ও কিবলার দিক দেখাতে আপনার অবস্থান প্রয়োজন।',
     gettingLocation: 'অবস্থান পাওয়া যাচ্ছে...',

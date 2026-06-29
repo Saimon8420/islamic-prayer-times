@@ -13,22 +13,11 @@ export interface City {
 }
 
 export const CITIES: City[] = [
-  // Bangladesh
+  // Bangladesh \u2014 comprehensive offline coverage lives in bdLocations.ts.
+  // Only the capital is kept here so the Explore comparison/globe defaults
+  // (which read from CITIES) keep working. The International picker tab
+  // filters Bangladesh out, so this entry never appears as a duplicate there.
   { name: 'Dhaka', country: 'Bangladesh', lat: 23.8103, lon: 90.4125 },
-  { name: 'Chattogram', country: 'Bangladesh', lat: 22.3569, lon: 91.7832 },
-  { name: 'Khulna', country: 'Bangladesh', lat: 22.8456, lon: 89.5403 },
-  { name: 'Rajshahi', country: 'Bangladesh', lat: 24.3745, lon: 88.6042 },
-  { name: 'Sylhet', country: 'Bangladesh', lat: 24.8949, lon: 91.8687 },
-  { name: 'Barishal', country: 'Bangladesh', lat: 22.7010, lon: 90.3535 },
-  { name: 'Rangpur', country: 'Bangladesh', lat: 25.7439, lon: 89.2752 },
-  { name: 'Mymensingh', country: 'Bangladesh', lat: 24.7471, lon: 90.4203 },
-  { name: 'Cumilla', country: 'Bangladesh', lat: 23.4607, lon: 91.1809 },
-  { name: 'Narayanganj', country: 'Bangladesh', lat: 23.6238, lon: 90.5000 },
-  { name: 'Gazipur', country: 'Bangladesh', lat: 23.9999, lon: 90.4203 },
-  { name: 'Jessore', country: 'Bangladesh', lat: 23.1685, lon: 89.2072 },
-  { name: 'Bogura', country: 'Bangladesh', lat: 24.8465, lon: 89.3776 },
-  { name: 'Dinajpur', country: 'Bangladesh', lat: 25.6217, lon: 88.6354 },
-  { name: 'Cox\u2019s Bazar', country: 'Bangladesh', lat: 21.4272, lon: 92.0058 },
 
   // Saudi Arabia
   { name: 'Makkah', country: 'Saudi Arabia', lat: 21.4225, lon: 39.8262 },

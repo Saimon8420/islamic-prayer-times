@@ -2,7 +2,7 @@ import type { TranslationKeys } from './types';
 
 export const ar: TranslationKeys = {
   common: {
-    appName: 'أوقات الصلاة',
+    appName: 'فلاح',
     loading: 'جارٍ التحميل',
     error: 'خطأ',
     today: 'اليوم',
@@ -159,6 +159,9 @@ export const ar: TranslationKeys = {
     chooseCity: 'اختر مدينة',
     chooseCityDesc: 'اختر مدينة لاستخدامها دون اتصال (تعمل بدون إنترنت أو GPS).',
     searchCity: 'ابحث عن مدينة...',
+    locationTabBd: 'بنغلاديش',
+    locationTabIntl: 'دولي',
+    searchUpazila: 'ابحث عن المنطقة...',
     noCityFound: 'لم يتم العثور على مدينة',
     locationOrLabel: 'أو اختر من القائمة',
     calculationMethod: 'طريقة الحساب',
@@ -193,7 +196,7 @@ export const ar: TranslationKeys = {
 
   location: {
     greeting: 'السلام عليكم',
-    welcome: 'مرحباً بك في أوقات الصلاة',
+    welcome: 'مرحباً بك في فلاح',
     setYourLocation: 'حدد موقعك',
     locationNeeded: 'لعرض أوقات الصلاة واتجاه القبلة بدقة، نحتاج إلى موقعك.',
     gettingLocation: 'جارٍ تحديد الموقع...',

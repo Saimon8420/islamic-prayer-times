@@ -146,8 +146,7 @@ export const Header = ({ onSettingsClick }: HeaderProps) => {
               value={theme}
               onValueChange={(value: 'light' | 'dark' | 'system') => setTheme(value)}
             >
-              <SelectTrigger className="w-[110px] hidden sm:flex bg-white/15 border-white/15 text-white hover:bg-white/25">
-                <ThemeIcon className="h-4 w-4 me-2" />
+              <SelectTrigger className="w-[140px] hidden sm:flex bg-white/15 border-white/15 text-white hover:bg-white/25">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

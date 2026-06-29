@@ -1,4 +1,4 @@
-package com.latifulkabir.prayertimes;
+package com.latifulkabir.falah;
 
 import com.getcapacitor.BridgeActivity;
 

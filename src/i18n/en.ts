@@ -2,7 +2,7 @@ import type { TranslationKeys } from './types';
 
 export const en: TranslationKeys = {
   common: {
-    appName: 'Prayer Times',
+    appName: 'Falah',
     loading: 'Loading',
     error: 'Error',
     today: 'Today',
@@ -159,6 +159,9 @@ export const en: TranslationKeys = {
     chooseCity: 'Choose a City',
     chooseCityDesc: 'Pick a city to use offline (works without internet or GPS).',
     searchCity: 'Search city...',
+    locationTabBd: 'Bangladesh',
+    locationTabIntl: 'International',
+    searchUpazila: 'Search upazila...',
     noCityFound: 'No city found',
     locationOrLabel: 'or pick from list',
     calculationMethod: 'Calculation Method',
@@ -193,7 +196,7 @@ export const en: TranslationKeys = {
 
   location: {
     greeting: 'Assalamu Alaikum',
-    welcome: 'Welcome to Prayer Times',
+    welcome: 'Welcome to Falah',
     setYourLocation: 'Set Your Location',
     locationNeeded: 'To show accurate prayer times and Qibla direction, we need your location.',
     gettingLocation: 'Getting Location...',
