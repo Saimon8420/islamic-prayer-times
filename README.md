@@ -82,6 +82,18 @@
 - Navigate between months
 - Today's date highlighting
 
+### Offline Location Selection
+- Choose your location from a **bundled database** — works with no internet and no GPS
+- **Comprehensive Bangladesh coverage**: all 64 districts at **upazila level (570+ upazilas)** with English and Bengali names, so a user anywhere in the country can pick their exact area and get accurate times fully offline
+- **Bangladesh / International tabs**: browse Bangladesh by district (collapsible groups) or search instantly — matches English *or* Bengali (e.g. `Savar` or `সাভার`); the International tab covers ~190 major world cities
+- All prayer, fasting, and Qibla calculations run locally from the selected coordinates — zero network calls
+- Dataset is generated reproducibly (`npm run gen:bd`) and integrity-checked (`npm run validate:bd` — coordinate bounds, completeness, no duplicates)
+
+### Explore — Athan Around the World
+- **Globe**: see which cities are currently calling the athan in real time; tap a city for details
+- **Compare**: add multiple cities and compare their prayer times side by side, with earliest / latest / spread highlights
+- Country flags and localized city names
+
 ### Notifications & Adhan
 
 #### Web Notifications
@@ -262,7 +274,7 @@ The built files will be in the `dist` directory.
 npm run build:apk
 ```
 
-Requires Android SDK and JDK 17. The APK will be at `android/app/build/outputs/apk/debug/islamic-prayer-times.apk`.
+Requires Android SDK and JDK 21. The APK will be at `android/app/build/outputs/apk/debug/app-debug.apk`. (The CI workflow renames this to `islamic-prayer-times.apk` when attaching it to a GitHub Release.)
 
 ### Other Capacitor Commands
 
@@ -311,9 +323,11 @@ The project includes a GitHub Actions workflow (`.github/workflows/build-apk.yml
 To trigger a release:
 
 ```bash
-git tag v1.2.0
-git push origin v1.2.0
+git tag v1.4.0
+git push origin v1.4.0
 ```
+
+The "Download APK" badge at the top points to `releases/latest/download/islamic-prayer-times.apk`, so it **always serves the most recent release** — once a new tag's build publishes, the same link delivers the new APK with no edit needed.
 
 ---
 
@@ -326,7 +340,7 @@ src/
   i18n/             Internationalization (en, bn, ar translations & useTranslation hook)
   services/         Business logic (prayerService, hijriService, notificationService, platformService)
   store/            Zustand state management (persisted settings)
-  data/             Static data (duas collection, daily verses)
+  data/             Static data (duas, daily/contextual verses, offline locations: bdLocations + cities)
   types/            TypeScript types
   utils/            Utility functions (time formatting, distance calc, cardinal directions)
   lib/              Shared utilities (cn class merger)
