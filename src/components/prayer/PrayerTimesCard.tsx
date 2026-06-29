@@ -13,6 +13,7 @@ import {
 import { cn } from "../../lib/utils";
 import { useTranslation } from "../../i18n/useTranslation";
 import { useHijriDate } from "../../hooks/useHijriDate";
+import { SupplementaryTimes } from "./SupplementaryTimes";
 
 /* ═══════════════════════════════════════════
    DECORATIVE SVG COMPONENTS
@@ -455,6 +456,8 @@ export const PrayerTimesCard = () => {
           </svg>
         </div>
 
+        <div className="grid lg:grid-cols-2 lg:gap-x-6 lg:items-start">
+          <div>
           {mainPrayers.map((prayer, index) => {
             const IconComponent = PrayerIcons[prayer];
             const isNext = nextPrayer?.name === prayer;
@@ -468,7 +471,7 @@ export const PrayerTimesCard = () => {
 
                 <div
                   className={cn(
-                    "flex items-center justify-between px-3 py-3 sm:px-5 sm:py-4 rounded-xl transition-all duration-300 mx-1 sm:mx-2",
+                    "flex items-center justify-between px-3 py-3 sm:px-5 sm:py-3.5 rounded-xl transition-all duration-300 mx-1 sm:mx-2",
                     isNext && "relative bg-primary/8 dark:bg-primary/12 shadow-sm",
                     isPassed && "opacity-40",
                     !isNext && !isPassed && "hover:bg-muted/40",
@@ -531,7 +534,15 @@ export const PrayerTimesCard = () => {
               </div>
             );
           })}
+          </div>
 
+          <SupplementaryTimes
+            prayerTimes={prayerTimes}
+            use24HourFormat={use24HourFormat}
+          />
+        </div>
+
+        <div className="w-full">
         {/* ═══ FOOTER — Ornamental divider + method info ═══ */}
         <div className="px-3 sm:px-4 pb-3 sm:pb-4">
           {/* Arabesque divider */}
@@ -557,7 +568,7 @@ export const PrayerTimesCard = () => {
               <span className="text-muted-foreground/50">{methodName.split(",")[0]}</span>
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md hover:bg-muted/60 transition-colors text-muted-foreground/60 hover:text-muted-foreground"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-primary/25 bg-primary/5 text-primary hover:bg-primary/10 hover:border-primary/40 active:scale-[0.98] transition-all font-medium"
                 title={t('share.button')}
               >
                 {shareStatus === 'copied' ? (
@@ -583,6 +594,7 @@ export const PrayerTimesCard = () => {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </CardContent>
     </Card>
