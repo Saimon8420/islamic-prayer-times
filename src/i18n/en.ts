@@ -355,6 +355,21 @@ export const en: TranslationKeys = {
     title: 'Prayer Times',
     copied: 'Copied to clipboard!',
     failed: 'Sharing failed',
+    dialogTitle: 'Share prayer times',
+    dialogDescription: 'Pick a background, then share or save the image.',
+    chooseBackground: 'Background',
+    shareImage: 'Share image',
+    download: 'Download',
+    copyText: 'Copy as text',
+    preparing: 'Preparing…',
+    saved: 'Saved!',
+    cardFooter: 'Prayer times by Falah',
+    bg: {
+      emerald: 'Emerald',
+      midnight: 'Midnight',
+      golden: 'Golden Hour',
+      parchment: 'Parchment',
+    },
   },
 
   friday: {

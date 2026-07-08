@@ -339,6 +339,21 @@ export interface TranslationKeys {
     title: string;
     copied: string;
     failed: string;
+    dialogTitle: string;
+    dialogDescription: string;
+    chooseBackground: string;
+    shareImage: string;
+    download: string;
+    copyText: string;
+    preparing: string;
+    saved: string;
+    cardFooter: string;
+    bg: {
+      emerald: string;
+      midnight: string;
+      golden: string;
+      parchment: string;
+    };
   };
 
   // Friday
