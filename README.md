@@ -43,10 +43,11 @@
 - Arabian/Mamluk styled card with distinct gradients for Quran vs Hadith
 
 ### Share Prayer Times
-- Share button on the Prayer Times card
-- Generates beautifully formatted text with emoji icons, dot-leader alignment, Hijri date, and Quranic verse
-- Uses Web Share API on mobile (triggers native Android share sheet) with clipboard fallback on desktop
-- Visual feedback: checkmark on success, auto-resets after 2 seconds
+- Share button on the Prayer Times card opens a live preview modal
+- Renders today's times as a polished **1080×1350 (4:5 portrait) image** with the Falah brand, Gregorian + Hijri date, location, all six prayer times (next prayer highlighted), and the contextual verse of the day
+- Four designed backgrounds to choose from: **Emerald**, **Midnight**, **Golden Hour**, and **Parchment**
+- Delivery via the Web Share API (shares the image file to WhatsApp, Instagram, etc. on mobile) with a PNG **download** fallback, plus a **Copy as text** option
+- Image is generated entirely on-device with bundled fonts — works fully offline
 
 ### Qibla Direction
 - Precise Qibla direction calculation based on your location
@@ -323,8 +324,8 @@ The project includes a GitHub Actions workflow (`.github/workflows/build-apk.yml
 To trigger a release:
 
 ```bash
-git tag v1.4.0
-git push origin v1.4.0
+git tag v1.6.0
+git push origin v1.6.0
 ```
 
 The "Download APK" badge at the top points to `releases/latest/download/islamic-prayer-times.apk`, so it **always serves the most recent release** — once a new tag's build publishes, the same link delivers the new APK with no edit needed.
@@ -355,7 +356,7 @@ android/            Capacitor Android project
 
 1. **Set Location**: On first visit, the app will prompt you to share your location. This is required for accurate prayer times and Qibla direction.
 2. **View Prayer Times**: The main screen shows today's prayer times with countdown to the next prayer, daily inspiration verse, and Eid/Ramadan countdown.
-3. **Share Prayer Times**: Tap the share button on the prayer card to share today's times via WhatsApp, messaging apps, or copy to clipboard.
+3. **Share Prayer Times**: Tap the share button on the prayer card to open the preview, pick a background, then share the image via WhatsApp/Instagram, download the PNG, or copy as text.
 4. **Fasting Times**: Navigate to the Fasting tab to see Sehri and Iftar times with countdown and White Days tracker.
 5. **Qibla Direction**: Use the Qibla tab to find the direction to Makkah. For best results, hold your device flat.
 6. **Hijri Calendar**: View the full Hijri calendar with occasion highlighting in the Hijri Calendar tab.
