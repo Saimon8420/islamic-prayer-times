@@ -28,6 +28,11 @@ const developerProjects = [
     url: 'https://hadith-explorer-bay.vercel.app/',
     description: 'Search & browse Hadith collections',
   },
+  {
+    name: 'Awqat',
+    url: 'https://awqat-dev.vercel.app',
+    description: 'Design shareable prayer & fasting timetables',
+  },
 ];
 
 type SectionId = 'about' | 'powered' | 'features' | 'developer';
