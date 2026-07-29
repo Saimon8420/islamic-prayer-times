@@ -47,16 +47,6 @@ const COUNTRY_FLAGS: Record<string, string> = {
   'New Zealand': '🇳🇿', 'Brazil': '🇧🇷', 'Argentina': '🇦🇷',
 };
 
-// ── Decorative ──
-
-const ArabesqueCorner = ({ className = '' }: { className?: string }) => (
-  <svg viewBox="0 0 80 80" className={className} fill="none">
-    <path d="M0 0L20 10L10 20Z" fill="rgba(200,168,78,0.25)" />
-    <path d="M0 0L40 5L35 15L15 35L5 40Z" fill="rgba(200,168,78,0.12)" />
-    <circle cx="20" cy="20" r="3" fill="rgba(200,168,78,0.2)" />
-  </svg>
-);
-
 // ── Helper ──
 
 function formatTime(date: Date, use24h: boolean): string {
@@ -159,27 +149,25 @@ export const PrayerComparison = () => {
   };
 
   return (
-    <div className="islamic-border overflow-hidden fade-in">
-      {/* ═══ HEADER ═══ */}
-      <div className="islamic-gradient-header relative overflow-hidden px-3 sm:px-4 py-2.5 sm:py-3">
-        <ArabesqueCorner className="absolute top-0 left-0 w-10 h-10 sm:w-12 sm:h-12 opacity-50" />
-        <ArabesqueCorner className="absolute top-0 right-0 w-10 h-10 sm:w-12 sm:h-12 opacity-50 -scale-x-100" />
+    <div className="obs-panel overflow-hidden fade-in">
+      {/* faint heritage watermark, top-right */}
+      <div className="girih-watermark pointer-events-none absolute right-3 top-3 h-16 w-16 sm:h-20 sm:w-20" />
 
-        <h3 className="relative z-10 text-sm sm:text-base font-bold text-white text-center sm:text-left">
-          {t('explore.comparison.title')}
-        </h3>
+      {/* ═══ HEADER ═══ */}
+      <div className="relative px-3 sm:px-4 pt-3 sm:pt-4 pb-1">
+        <p className="label-mono">{t('explore.comparison.title')}</p>
       </div>
 
       {/* ═══ PRAYER SELECTOR — horizontal scrollable pills ═══ */}
-      <div className="px-3 sm:px-4 pt-3 pb-1">
+      <div className="relative px-3 sm:px-4 pt-2 pb-1">
         <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
           {PRAYER_KEYS.map(key => (
             <button
               key={key}
               onClick={() => setSelectedPrayer(key)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+              className={`shrink-0 rounded-full px-3 py-1.5 font-display text-xs font-semibold transition-colors ${
                 key === selectedPrayer
-                  ? 'bg-[hsl(158,64%,28%)] text-white shadow-md'
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-muted/60 text-muted-foreground hover:bg-muted'
               }`}
             >
@@ -190,11 +178,11 @@ export const PrayerComparison = () => {
       </div>
 
       {/* ═══ CITY LIST WITH INLINE TIMES ═══ */}
-      <div className="px-3 sm:px-4 py-2 space-y-0.5">
+      <div className="relative px-3 sm:px-4 py-2 space-y-0.5">
         {/* Time axis — only on sm+ */}
-        <div className="hidden sm:flex justify-between text-[9px] text-muted-foreground pl-[140px] mb-1">
+        <div className="hidden sm:flex justify-between label-mono pl-[140px] mb-1">
           {[0, 0.25, 0.5, 0.75, 1].map(frac => (
-            <span key={frac}>
+            <span key={frac} className="font-mono tabular-nums">
               {timeLabel(Math.round(timelineRange.min + frac * (timelineRange.max - timelineRange.min)))}
             </span>
           ))}
@@ -206,9 +194,12 @@ export const PrayerComparison = () => {
           const flag = COUNTRY_FLAGS[city.country] || '';
 
           return (
-            <div key={city.name} className="group">
+            <div
+              key={city.name}
+              className="group rounded-lg px-1 transition-colors odd:bg-foreground/[0.02] hover:bg-foreground/[0.04]"
+            >
               {/* ── Mobile layout: stacked city name + bar ── */}
-              <div className="sm:hidden">
+              <div className="sm:hidden py-1">
                 <div className="flex items-center justify-between mb-0.5">
                   <div className="flex items-center gap-1.5 min-w-0">
                     <button
@@ -222,18 +213,18 @@ export const PrayerComparison = () => {
                       {flag} {city.name}
                     </span>
                   </div>
-                  <span className="text-[11px] font-mono font-semibold text-[hsl(40,85%,38%)] dark:text-[hsl(40,80%,60%)] shrink-0">
+                  <span className="text-[11px] font-mono tabular-nums font-semibold text-primary shrink-0">
                     {formatTime(time, use24HourFormat)}
                   </span>
                 </div>
                 {/* Progress bar showing relative position */}
-                <div className="relative h-2 rounded-full bg-muted/50 mb-1.5">
+                <div className="relative h-2 rounded-full bg-foreground/10 mb-1.5">
                   <div
-                    className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-[hsl(158,64%,28%)] to-[hsl(40,85%,52%)]"
+                    className="absolute top-0 left-0 h-full rounded-full bg-gradient-to-r from-secondary to-primary"
                     style={{ width: `${Math.max(3, Math.min(100, position))}%` }}
                   />
                   {/* Rank number */}
-                  <span className="absolute -top-0.5 text-[8px] font-bold text-[hsl(40,85%,42%)] dark:text-[hsl(40,80%,60%)]"
+                  <span className="absolute -top-0.5 font-mono text-[8px] font-bold tabular-nums text-primary"
                     style={{ left: `${Math.max(3, Math.min(95, position))}%`, transform: 'translateX(-50%)' }}
                   >
                     #{index + 1}
@@ -242,7 +233,7 @@ export const PrayerComparison = () => {
               </div>
 
               {/* ── Desktop layout: side-by-side city name + timeline bar ── */}
-              <div className="hidden sm:flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-2 py-1">
                 <div className="w-[135px] shrink-0 flex items-center gap-1.5 min-w-0">
                   <button
                     onClick={() => removeCity(city.name)}
@@ -260,8 +251,8 @@ export const PrayerComparison = () => {
                     className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center"
                     style={{ left: `${Math.max(3, Math.min(97, position))}%` }}
                   >
-                    <div className="w-2.5 h-2.5 rounded-full bg-[hsl(40,85%,52%)] shadow-[0_0_6px_hsl(40,85%,52%/0.5)] border border-[hsl(40,85%,62%)]" />
-                    <span className="absolute -bottom-3 text-[9px] font-mono text-muted-foreground whitespace-nowrap">
+                    <div className="w-2.5 h-2.5 rounded-full bg-primary border border-primary/60" />
+                    <span className="absolute -bottom-3 font-mono text-[9px] tabular-nums text-muted-foreground whitespace-nowrap">
                       {formatTime(time, use24HourFormat)}
                     </span>
                   </div>
@@ -322,20 +313,20 @@ export const PrayerComparison = () => {
 
       {/* ═══ STATS BAR ═══ */}
       {stats && (
-        <div className="px-3 sm:px-4 py-2 border-t border-border/50 bg-muted/30">
+        <div className="relative px-3 sm:px-4 py-2 border-t border-border bg-muted/30">
           {/* Mobile: stacked stats */}
           <div className="sm:hidden space-y-0.5 text-[10px] text-muted-foreground">
             <div className="flex justify-between">
-              <span><span className="font-semibold text-foreground">{t('explore.comparison.earliest')}:</span> {stats.earliest.city.name}</span>
-              <span className="font-mono">{formatTime(stats.earliest.time, use24HourFormat)}</span>
+              <span><span className="label-mono">{t('explore.comparison.earliest')}</span> {stats.earliest.city.name}</span>
+              <span className="font-mono tabular-nums">{formatTime(stats.earliest.time, use24HourFormat)}</span>
             </div>
             <div className="flex justify-between">
-              <span><span className="font-semibold text-foreground">{t('explore.comparison.latest')}:</span> {stats.latest.city.name}</span>
-              <span className="font-mono">{formatTime(stats.latest.time, use24HourFormat)}</span>
+              <span><span className="label-mono">{t('explore.comparison.latest')}</span> {stats.latest.city.name}</span>
+              <span className="font-mono tabular-nums">{formatTime(stats.latest.time, use24HourFormat)}</span>
             </div>
             <div className="text-center pt-0.5">
-              <span className="font-semibold text-foreground">{t('explore.comparison.spread')}:</span>{' '}
-              <span className="font-mono font-semibold text-[hsl(40,85%,38%)] dark:text-[hsl(40,80%,60%)]">
+              <span className="label-mono">{t('explore.comparison.spread')}</span>{' '}
+              <span className="font-mono font-semibold tabular-nums text-primary">
                 {stats.spreadH > 0 ? `${stats.spreadH}h ` : ''}{stats.spreadM}m
               </span>
             </div>
@@ -343,22 +334,22 @@ export const PrayerComparison = () => {
           {/* Desktop: inline stats */}
           <div className="hidden sm:flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span>
-              <span className="font-semibold text-foreground">{t('explore.comparison.earliest')}:</span>{' '}
-              {stats.earliest.city.name} — {formatTime(stats.earliest.time, use24HourFormat)}
+              <span className="label-mono">{t('explore.comparison.earliest')}</span>{' '}
+              {stats.earliest.city.name} — <span className="font-mono tabular-nums">{formatTime(stats.earliest.time, use24HourFormat)}</span>
             </span>
             <span>
-              <span className="font-semibold text-foreground">{t('explore.comparison.latest')}:</span>{' '}
-              {stats.latest.city.name} — {formatTime(stats.latest.time, use24HourFormat)}
+              <span className="label-mono">{t('explore.comparison.latest')}</span>{' '}
+              {stats.latest.city.name} — <span className="font-mono tabular-nums">{formatTime(stats.latest.time, use24HourFormat)}</span>
             </span>
             <span>
-              <span className="font-semibold text-foreground">{t('explore.comparison.spread')}:</span>{' '}
-              {stats.spreadH > 0 ? `${stats.spreadH}h ` : ''}{stats.spreadM}m
+              <span className="label-mono">{t('explore.comparison.spread')}</span>{' '}
+              <span className="font-mono font-semibold tabular-nums text-primary">
+                {stats.spreadH > 0 ? `${stats.spreadH}h ` : ''}{stats.spreadM}m
+              </span>
             </span>
           </div>
         </div>
       )}
-
-      <div className="gold-border-strip" />
     </div>
   );
 };
