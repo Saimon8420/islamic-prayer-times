@@ -216,7 +216,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-lg font-semibold min-w-[3rem] text-center">
+              <span className="min-w-[3rem] text-center font-mono text-lg font-semibold tabular-nums">
                 {hijriAdjustment > 0 ? `+${hijriAdjustment}` : hijriAdjustment}
               </span>
               <Button

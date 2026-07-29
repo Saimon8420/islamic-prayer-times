@@ -104,6 +104,17 @@ export const en: TranslationKeys = {
       W: 'W',
       NW: 'NW',
     },
+    map: {
+      title: 'Qibla Map',
+      locateMe: 'Locate me',
+      locating: 'Locating…',
+      makkah: 'Makkah',
+      home: 'Home',
+      you: 'You',
+      qibla: 'Qibla',
+      from: 'from',
+      geoError: "Couldn't get your location — showing your set location",
+    },
   },
 
   schedule: {
@@ -355,6 +366,21 @@ export const en: TranslationKeys = {
     title: 'Prayer Times',
     copied: 'Copied to clipboard!',
     failed: 'Sharing failed',
+    dialogTitle: 'Share prayer times',
+    dialogDescription: 'Pick a background, then share or save the image.',
+    chooseBackground: 'Background',
+    shareImage: 'Share image',
+    download: 'Download',
+    copyText: 'Copy as text',
+    preparing: 'Preparing…',
+    saved: 'Saved!',
+    cardFooter: 'Prayer times by Falah',
+    bg: {
+      emerald: 'Emerald',
+      midnight: 'Midnight',
+      golden: 'Golden Hour',
+      parchment: 'Parchment',
+    },
   },
 
   friday: {

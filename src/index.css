@@ -1,53 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@300;400;500;600;700&family=Scheherazade+New:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Scheherazade+New:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* ═══════════════════════════════════════════
+     OBSERVATORY DESIGN SYSTEM
+     Night (dark) is native — a deep indigo sky. Light is a clean daytime
+     surface. Primary = dawn gold (the sun/stars). Secondary = heritage emerald.
+     ═══════════════════════════════════════════ */
   :root {
-    --background: 38 40% 96%;
-    --foreground: 30 25% 12%;
-    --card: 38 35% 98%;
-    --card-foreground: 30 25% 12%;
-    --popover: 38 35% 98%;
-    --popover-foreground: 30 25% 12%;
-    --primary: 158 64% 28%;
-    --primary-foreground: 38 30% 98%;
-    --secondary: 40 85% 52%;
-    --secondary-foreground: 30 25% 12%;
-    --muted: 35 25% 91%;
-    --muted-foreground: 30 15% 45%;
-    --accent: 173 50% 35%;
-    --accent-foreground: 38 30% 98%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 38 30% 98%;
-    --border: 35 25% 85%;
-    --input: 35 25% 85%;
-    --ring: 158 64% 28%;
+    /* Daylight — clean & plain */
+    --background: 43 30% 95%;
+    --foreground: 222 32% 14%;
+    --card: 40 40% 99%;
+    --card-foreground: 222 32% 14%;
+    --popover: 40 40% 99%;
+    --popover-foreground: 222 32% 14%;
+    --primary: 38 76% 43%;
+    --primary-foreground: 40 40% 98%;
+    --secondary: 158 66% 26%;
+    --secondary-foreground: 40 40% 98%;
+    --muted: 40 22% 90%;
+    --muted-foreground: 220 13% 42%;
+    --accent: 158 55% 30%;
+    --accent-foreground: 40 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 40 40% 98%;
+    --border: 40 22% 84%;
+    --input: 40 22% 84%;
+    --ring: 38 76% 43%;
     --radius: 1rem;
+
+    /* Celestial raw tokens for hsl(x / a) usage */
+    --gold: 38 82% 50%;
+    --emerald: 158 64% 30%;
+    --sky-line: 220 20% 55%;
   }
 
   .dark {
-    --background: 222 30% 7%;
-    --foreground: 38 25% 92%;
-    --card: 222 25% 10%;
-    --card-foreground: 38 25% 92%;
-    --popover: 222 25% 10%;
-    --popover-foreground: 38 25% 92%;
-    --primary: 158 55% 40%;
-    --primary-foreground: 38 30% 98%;
-    --secondary: 40 90% 50%;
-    --secondary-foreground: 222 30% 8%;
-    --muted: 222 20% 15%;
-    --muted-foreground: 38 15% 60%;
-    --accent: 173 50% 42%;
-    --accent-foreground: 38 30% 98%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 38 30% 98%;
-    --border: 222 20% 18%;
-    --input: 222 20% 18%;
-    --ring: 158 55% 40%;
+    /* Night sky */
+    --background: 222 46% 5%;
+    --foreground: 219 42% 91%;
+    --card: 222 40% 12%;
+    --card-foreground: 219 42% 91%;
+    --popover: 222 42% 9%;
+    --popover-foreground: 219 42% 91%;
+    --primary: 38 86% 67%;
+    --primary-foreground: 222 46% 8%;
+    --secondary: 158 66% 50%;
+    --secondary-foreground: 222 46% 8%;
+    --muted: 222 28% 16%;
+    --muted-foreground: 219 26% 66%;
+    --accent: 158 55% 45%;
+    --accent-foreground: 222 46% 8%;
+    --destructive: 0 64% 58%;
+    --destructive-foreground: 219 42% 95%;
+    --border: 220 32% 22%;
+    --input: 220 32% 22%;
+    --ring: 38 86% 67%;
+
+    --gold: 38 86% 67%;
+    --emerald: 158 66% 50%;
+    --sky-line: 219 45% 68%;
   }
 }
 
@@ -62,15 +78,15 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Poppins', system-ui, sans-serif;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
   }
 
   body.lang-bn {
-    font-family: 'Noto Sans Bengali', 'Poppins', system-ui, sans-serif;
+    font-family: 'Noto Sans Bengali', 'Space Grotesk', system-ui, sans-serif;
   }
 
   body.lang-ar {
-    font-family: 'Noto Sans Arabic', 'Poppins', system-ui, sans-serif;
+    font-family: 'Noto Sans Arabic', 'Space Grotesk', system-ui, sans-serif;
   }
 }
 
@@ -545,16 +561,23 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-muted/50 rounded-full;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full;
-  background: linear-gradient(180deg, hsl(40, 70%, 45%), hsl(38, 80%, 42%));
+  border-radius: 9999px;
+  background: hsl(var(--border));
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, hsl(40, 70%, 50%), hsl(38, 80%, 48%));
+  background: hsl(var(--muted-foreground) / 0.6);
+  background-clip: padding-box;
+}
+
+* {
+  scrollbar-color: hsl(var(--border)) transparent;
 }
 
 /* Hide scrollbar for horizontal scroll containers */
@@ -563,6 +586,226 @@
 
 /* Selection styling */
 ::selection {
-  background: hsl(158, 64%, 28%);
-  color: white;
+  background: hsl(var(--primary) / 0.28);
+  color: hsl(var(--foreground));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   OBSERVATORY — the celestial design system (Phase 1: shell + prayer).
+   Kept separate from the older Arabian classes above so the not-yet-
+   redesigned tabs keep rendering until they are migrated.
+   ═══════════════════════════════════════════════════════════════════ */
+@layer components {
+  /* App background — a deep indigo night sky (dark) / clean warm surface (light) */
+  .sky-bg {
+    position: relative;
+    background: hsl(var(--background));
+  }
+  .dark .sky-bg {
+    background:
+      radial-gradient(135% 95% at 50% -12%,
+        hsl(222 44% 16%) 0%,
+        hsl(222 46% 8%) 46%,
+        hsl(222 48% 4%) 100%);
+  }
+
+  /* Sparse starfield, fixed behind everything. Dark mode only. */
+  .sky-stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 8%, hsl(219 60% 90% / 0.9), transparent),
+      radial-gradient(1px 1px at 27% 22%, hsl(219 60% 90% / 0.7), transparent),
+      radial-gradient(1.4px 1.4px at 43% 12%, hsl(45 90% 85% / 0.8), transparent),
+      radial-gradient(1px 1px at 58% 27%, hsl(219 60% 90% / 0.6), transparent),
+      radial-gradient(1px 1px at 71% 9%, hsl(219 60% 90% / 0.8), transparent),
+      radial-gradient(1.3px 1.3px at 84% 20%, hsl(45 90% 85% / 0.7), transparent),
+      radial-gradient(1px 1px at 92% 6%, hsl(219 60% 90% / 0.6), transparent),
+      radial-gradient(1px 1px at 8% 34%, hsl(219 60% 90% / 0.5), transparent),
+      radial-gradient(1px 1px at 34% 40%, hsl(219 60% 90% / 0.5), transparent),
+      radial-gradient(1px 1px at 63% 44%, hsl(219 60% 90% / 0.45), transparent),
+      radial-gradient(1px 1px at 78% 38%, hsl(45 90% 85% / 0.5), transparent),
+      radial-gradient(1px 1px at 19% 52%, hsl(219 60% 90% / 0.4), transparent);
+    background-repeat: no-repeat;
+    /* Fade out toward the bottom so lower content stays clean. */
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 62%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 62%);
+  }
+  .dark .sky-stars {
+    opacity: 1;
+  }
+
+  /* Ancient girih star-lattice — a faint geometric backdrop across the whole
+     page, tinted gold and visible in both light and dark (uses the SVG as an
+     alpha mask so it recolours with the theme). */
+  .heritage-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: hsl(var(--gold));
+    opacity: 0.08;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.3'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Crect x='-19' y='-19' width='38' height='38'/%3E%3Crect x='-19' y='-19' width='38' height='38' transform='rotate(45 0 0)'/%3E%3Crect x='77' y='-19' width='38' height='38'/%3E%3Crect x='77' y='-19' width='38' height='38' transform='rotate(45 96 0)'/%3E%3Crect x='-19' y='77' width='38' height='38'/%3E%3Crect x='-19' y='77' width='38' height='38' transform='rotate(45 0 96)'/%3E%3Crect x='77' y='77' width='38' height='38'/%3E%3Crect x='77' y='77' width='38' height='38' transform='rotate(45 96 96)'/%3E%3Ccircle cx='48' cy='48' r='5'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.3'%3E%3Crect x='29' y='29' width='38' height='38'/%3E%3Crect x='29' y='29' width='38' height='38' transform='rotate(45 48 48)'/%3E%3Crect x='-19' y='-19' width='38' height='38'/%3E%3Crect x='-19' y='-19' width='38' height='38' transform='rotate(45 0 0)'/%3E%3Crect x='77' y='-19' width='38' height='38'/%3E%3Crect x='77' y='-19' width='38' height='38' transform='rotate(45 96 0)'/%3E%3Crect x='-19' y='77' width='38' height='38'/%3E%3Crect x='-19' y='77' width='38' height='38' transform='rotate(45 0 96)'/%3E%3Crect x='77' y='77' width='38' height='38'/%3E%3Crect x='77' y='77' width='38' height='38' transform='rotate(45 96 96)'/%3E%3Ccircle cx='48' cy='48' r='5'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 96px 96px;
+    mask-size: 96px 96px;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+  .dark .heritage-bg {
+    opacity: 0.09;
+  }
+
+  /* Minbar (pulpit) silhouettes framing the side margins on wide screens.
+     Sits behind the content (z-0), so it only shows in the empty margins.
+     Tinted gold via the SVG-as-mask, faint like the girih backdrop. */
+  .minbar-decor {
+    position: fixed;
+    bottom: 1.5rem;
+    z-index: 0;
+    display: none;
+    width: 104px;
+    height: 292px;
+    pointer-events: none;
+    background-color: hsl(var(--gold));
+    opacity: 0.13;
+    -webkit-mask: url("/minbar.svg") no-repeat bottom center / contain;
+    mask: url("/minbar.svg") no-repeat bottom center / contain;
+  }
+  .dark .minbar-decor {
+    opacity: 0.16;
+  }
+  .minbar-decor.is-left {
+    left: 1.75rem;
+  }
+  .minbar-decor.is-right {
+    right: 1.75rem;
+    transform: scaleX(-1);
+  }
+  @media (min-width: 1440px) {
+    .minbar-decor {
+      display: block;
+    }
+  }
+
+  /* The console surface: a translucent panel that sits on the sky. */
+  .obs-panel {
+    position: relative;
+    border: 1px solid hsl(var(--border));
+    border-radius: 18px;
+    background: hsl(var(--card));
+  }
+  .dark .obs-panel {
+    background: linear-gradient(180deg,
+      hsl(222 40% 14% / 0.72) 0%,
+      hsl(222 44% 9% / 0.6) 100%);
+    border-color: hsl(var(--sky-line) / 0.16);
+    backdrop-filter: blur(10px) saturate(1.05);
+    -webkit-backdrop-filter: blur(10px) saturate(1.05);
+    box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.04);
+  }
+
+  /* Mono readout label — the "instrument" voice. */
+  .label-mono {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Thin arabesque top-rule — the one heritage flourish on the hero card. */
+  .heritage-rule {
+    height: 2px;
+    width: 100%;
+    background:
+      linear-gradient(90deg,
+        transparent 0%,
+        hsl(var(--gold) / 0.5) 18%,
+        hsl(var(--gold) / 0.5) 82%,
+        transparent 100%);
+    position: relative;
+  }
+  .heritage-rule::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: hsl(var(--gold) / 0.75);
+    box-shadow: 0 0 6px hsl(var(--gold) / 0.5);
+  }
+
+  /* Faint girih 8-point star watermark for the hero card corner. */
+  .girih-watermark {
+    background-color: hsl(var(--gold));
+    opacity: 0.05;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23000' stroke-width='2'%3E%3Crect x='24' y='24' width='52' height='52'/%3E%3Crect x='24' y='24' width='52' height='52' transform='rotate(45 50 50)'/%3E%3Ccircle cx='50' cy='50' r='14'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23000' stroke-width='2'%3E%3Crect x='24' y='24' width='52' height='52'/%3E%3Crect x='24' y='24' width='52' height='52' transform='rotate(45 50 50)'/%3E%3Ccircle cx='50' cy='50' r='14'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* ── Sky-arc (the signature) ── */
+  .sky-arc-label {
+    position: absolute;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+  .sky-arc-label b {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    letter-spacing: 0.02em;
+  }
+  .sky-arc-sun {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle,
+      hsl(45 100% 88%) 0%,
+      hsl(var(--gold)) 55%,
+      hsl(var(--gold) / 0) 72%);
+    box-shadow: 0 0 20px 5px hsl(var(--gold) / 0.35);
+  }
+  .dark .sky-arc-sun {
+    animation: sun-breathe 4.5s ease-in-out infinite;
+  }
+  @keyframes sun-breathe {
+    0%, 100% { box-shadow: 0 0 18px 4px hsl(var(--gold) / 0.30); }
+    50%      { box-shadow: 0 0 26px 8px hsl(var(--gold) / 0.5); }
+  }
+
+  /* Gentle breathing pulse for the next-prayer marker. */
+  .next-pulse {
+    animation: next-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes next-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--emerald) / 0.5); }
+    70%      { box-shadow: 0 0 0 6px hsl(var(--emerald) / 0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dark .sky-arc-sun,
+  .next-pulse {
+    animation: none;
+  }
 }

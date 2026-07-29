@@ -10,6 +10,7 @@ import { PrayerTimesCard } from "./components/prayer/PrayerTimesCard";
 import { FastingTimesCard } from "./components/fasting/FastingTimesCard";
 import { WhiteDays } from "./components/fasting/WhiteDays";
 import { QiblaCompass } from "./components/qibla/QiblaCompass";
+import { QiblaMap } from "./components/qibla/QiblaMap";
 import { MonthlySchedule } from "./components/MonthlySchedule";
 import { DuaCollection } from "./components/dua/DuaCollection";
 import { HijriCalendar } from "./components/calendar/HijriCalendar";
@@ -18,9 +19,7 @@ import { useTheme } from "./hooks/useTheme";
 import { useNotifications } from "./hooks/useNotifications";
 import { useLanguageEffect } from "./hooks/useLanguage";
 import { IslamicOccasionBanner } from "./components/common/IslamicOccasionBanner";
-// import { SkyBackground } from "./components/common/SkyBackground"; // perf test: disabled
 import { DailyVerse } from "./components/common/DailyVerse";
-import { EidCountdown } from "./components/prayer/EidCountdown";
 import { PrayerComparison } from "./components/explore/PrayerComparison";
 import { AthanGlobe } from "./components/explore/AthanGlobe";
 import { WordOfTheDay } from "./components/dua/WordOfTheDay";
@@ -218,18 +217,14 @@ function App() {
   }, [settingsOpen, activeTab]);
 
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern-bg relative">
-      {/* <SkyBackground /> perf test: disabled to check if SVG sky is the slowdown culprit */}
+    <div className="min-h-screen flex flex-col sky-bg relative">
+      <div className="heritage-bg" aria-hidden="true" />
+      <div className="sky-stars" aria-hidden="true" />
+      <div className="minbar-decor is-left" aria-hidden="true" />
+      <div className="minbar-decor is-right" aria-hidden="true" />
       <Header onSettingsClick={() => setSettingsOpen(true)} />
 
       <main className="flex-1 container px-4 py-6 md:py-8 relative z-10">
-        {/* Decorative lanterns on sides — desktop only */}
-        <div className="lantern-decoration hidden xl:block w-8 h-16 -left-2 top-20 opacity-[0.06]" />
-        <div
-          className="lantern-decoration hidden xl:block w-6 h-12 -right-1 top-40 opacity-[0.04]"
-          style={{ animationDelay: "1s" }}
-        />
-
         {!hasLocation ? (
           <div className="flex items-center justify-center min-h-[60vh]">
             <LocationPrompt />
@@ -248,100 +243,50 @@ function App() {
               onValueChange={handleTabChange}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-7 h-14 p-1.5 parchment-card islamic-border">
-                <TabsTrigger
-                  value="prayer"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <PrayerIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.prayer")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="fasting"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <FastingIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.fasting")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="qibla"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <QiblaIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.qibla")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="schedule"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <CalendarIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.schedule")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="duas"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-dark data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <DuaIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.duas")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="hijriCalendar"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <HijriIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.hijriCalendar")}
-                  </span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="explore"
-                  className="flex items-center gap-2 data-[state=active]:islamic-gradient-gold data-[state=active]:text-white data-[state=active]:shadow-md rounded-xl transition-all data-[state=active]:tab-arch-active"
-                >
-                  <ExploreIcon />
-                  <span className="hidden sm:inline">
-                    {t("common.tabs.explore")}
-                  </span>
-                </TabsTrigger>
+              <TabsList className="grid h-auto w-full grid-cols-7 gap-1 rounded-xl border border-border bg-card/50 p-1.5 backdrop-blur-md">
+                {(
+                  [
+                    { value: "prayer", Icon: PrayerIcon, label: "prayer" },
+                    { value: "fasting", Icon: FastingIcon, label: "fasting" },
+                    { value: "qibla", Icon: QiblaIcon, label: "qibla" },
+                    { value: "schedule", Icon: CalendarIcon, label: "schedule" },
+                    { value: "duas", Icon: DuaIcon, label: "duas" },
+                    { value: "hijriCalendar", Icon: HijriIcon, label: "hijriCalendar" },
+                    { value: "explore", Icon: ExploreIcon, label: "explore" },
+                  ] as const
+                ).map(({ value, Icon, label }) => (
+                  <TabsTrigger
+                    key={value}
+                    value={value}
+                    className="group flex flex-col items-center justify-center gap-1 rounded-lg px-1 py-2 text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-primary/[0.07] data-[state=active]:text-primary data-[state=active]:shadow-[inset_0_-2px_0_0_hsl(var(--primary))] sm:flex-row sm:gap-2"
+                  >
+                    <Icon />
+                    <span className="hidden font-mono text-[10px] uppercase tracking-wider sm:inline">
+                      {t(`common.tabs.${label}` as "common.tabs.prayer")}
+                    </span>
+                  </TabsTrigger>
+                ))}
               </TabsList>
 
               {/* Prayer Times Tab */}
-              <TabsContent value="prayer" className="mt-6 space-y-6 fade-in">
-                <EidCountdown />
-                <div className="relative mx-auto w-full max-w-5xl">
-                  {/* Bismillah watermark */}
-                  <span
-                    className="bismillah-watermark -top-6 -right-4 arabic-text"
-                    style={{ fontSize: "4rem" }}
-                  >
-                    بسم الله
-                  </span>
+              <TabsContent value="prayer" className="mt-6 fade-in">
+                <div className="relative w-full">
                   <PrayerTimesCard />
                 </div>
               </TabsContent>
 
               {/* Fasting Times Tab */}
               <TabsContent value="fasting" className="mt-6 space-y-6 fade-in">
-                <div className="grid gap-6 lg:grid-cols-2">
+                <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
                   <FastingTimesCard />
                   <WhiteDays />
                 </div>
               </TabsContent>
 
               {/* Qibla Tab */}
-              <TabsContent value="qibla" className="mt-6 fade-in">
-                <div className="max-w-md mx-auto">
-                  <QiblaCompass />
-                </div>
+              <TabsContent value="qibla" className="mt-6 space-y-6 fade-in">
+                <QiblaCompass />
+                <QiblaMap />
               </TabsContent>
 
               {/* Monthly Schedule Tab */}

@@ -104,6 +104,17 @@ export const bn: TranslationKeys = {
       W: 'প',
       NW: 'উ.প',
     },
+    map: {
+      title: 'কিবলা মানচিত্র',
+      locateMe: 'আমাকে খুঁজুন',
+      locating: 'খুঁজছে…',
+      makkah: 'মক্কা',
+      home: 'অবস্থান',
+      you: 'আপনি',
+      qibla: 'কিবলা',
+      from: 'থেকে',
+      geoError: 'আপনার অবস্থান পাওয়া যায়নি — নির্ধারিত অবস্থান দেখানো হচ্ছে',
+    },
   },
 
   schedule: {
@@ -355,6 +366,21 @@ export const bn: TranslationKeys = {
     title: 'নামাজের সময়',
     copied: 'ক্লিপবোর্ডে কপি হয়েছে!',
     failed: 'শেয়ার ব্যর্থ হয়েছে',
+    dialogTitle: 'নামাজের সময় শেয়ার করুন',
+    dialogDescription: 'একটি ব্যাকগ্রাউন্ড বেছে নিন, তারপর ছবিটি শেয়ার বা সংরক্ষণ করুন।',
+    chooseBackground: 'ব্যাকগ্রাউন্ড',
+    shareImage: 'ছবি শেয়ার',
+    download: 'ডাউনলোড',
+    copyText: 'টেক্সট হিসেবে কপি',
+    preparing: 'প্রস্তুত হচ্ছে…',
+    saved: 'সংরক্ষিত হয়েছে!',
+    cardFooter: 'নামাজের সময় — ফালাহ',
+    bg: {
+      emerald: 'পান্না',
+      midnight: 'মধ্যরাত',
+      golden: 'সোনালি সন্ধ্যা',
+      parchment: 'পার্চমেন্ট',
+    },
   },
 
   friday: {

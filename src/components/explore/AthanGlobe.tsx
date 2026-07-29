@@ -105,15 +105,6 @@ function getContinentPaths() {
   };
 }
 
-// ── Decorative ──
-const ArabesqueCorner = ({ className = '' }: { className?: string }) => (
-  <svg viewBox="0 0 80 80" className={className} fill="none">
-    <path d="M0 0L20 10L10 20Z" fill="rgba(200,168,78,0.25)" />
-    <path d="M0 0L40 5L35 15L15 35L5 40Z" fill="rgba(200,168,78,0.12)" />
-    <circle cx="20" cy="20" r="3" fill="rgba(200,168,78,0.2)" />
-  </svg>
-);
-
 // ── Main Component ──
 export const AthanGlobe = () => {
   const { t } = useTranslation();
@@ -187,32 +178,31 @@ export const AthanGlobe = () => {
   };
 
   return (
-    <div className="islamic-border relative overflow-hidden rounded-2xl">
-      {/* Arabesque corners */}
-      <ArabesqueCorner className="absolute top-0 left-0 w-12 h-12 opacity-60 z-10 pointer-events-none" />
-      <ArabesqueCorner className="absolute top-0 right-0 w-12 h-12 opacity-60 -scale-x-100 z-10 pointer-events-none" />
+    <div className="obs-panel relative overflow-hidden">
+      {/* faint heritage watermark, top-right */}
+      <div className="girih-watermark pointer-events-none absolute right-3 top-3 h-16 w-16 z-10" />
 
       {/* Header */}
-      <div className="islamic-gradient-header gold-border-strip px-4 py-2.5 flex items-center gap-2">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-[hsl(var(--gold))] flex-shrink-0">
+      <div className="relative px-4 pt-4 pb-1 flex items-center gap-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-primary flex-shrink-0">
           <circle cx="12" cy="12" r="10" />
           <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
         </svg>
-        <h3 className="text-sm font-semibold text-white/95 tracking-wide">
+        <h3 className="font-display text-sm font-semibold text-foreground">
           {t('explore.globe.title')}
         </h3>
       </div>
 
       {/* Prayer pills + active count */}
-      <div className="px-4 pt-3 pb-2 space-y-2">
+      <div className="relative px-4 pt-2 pb-2 space-y-2">
         <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
           {PRAYER_KEYS.map(key => (
             <button
               key={key}
               onClick={() => { setSelectedPrayer(key); setTooltip(null); }}
-              className={`px-3 py-1 text-xs font-medium rounded-full whitespace-nowrap transition-all ${
+              className={`rounded-full px-3 py-1 font-display text-xs font-semibold whitespace-nowrap transition-colors ${
                 selectedPrayer === key
-                  ? 'islamic-gradient text-white shadow-sm'
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-muted/50 text-muted-foreground hover:bg-muted'
               }`}
             >
@@ -221,7 +211,8 @@ export const AthanGlobe = () => {
           ))}
         </div>
         {activeCount > 0 && (
-          <p className="text-[11px] text-center text-[hsl(var(--gold))] font-medium">
+          <p className="flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-secondary">
+            <span className="next-pulse inline-block h-1.5 w-1.5 rounded-full bg-secondary" />
             {t('explore.globe.citiesNow').replace('{count}', String(activeCount))}
           </p>
         )}
@@ -232,29 +223,24 @@ export const AthanGlobe = () => {
         <svg
           viewBox={`0 0 ${SVG_W} ${SVG_H}`}
           className="w-full h-auto rounded-xl overflow-hidden"
-          style={{ background: 'var(--globe-bg, hsl(var(--card)))' }}
+          style={{ background: 'hsl(var(--muted))' }}
         >
           <defs>
-            {/* Parchment/dark background */}
-            <linearGradient id="globe-bg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" className="[stop-color:hsl(38,40%,93%)] dark:[stop-color:hsl(222,30%,10%)]" />
-              <stop offset="100%" className="[stop-color:hsl(38,35%,88%)] dark:[stop-color:hsl(222,30%,6%)]" />
-            </linearGradient>
-            {/* Sweep band gradient */}
+            {/* Sweep band gradient — where it is currently the selected prayer time */}
             <linearGradient id="sweep-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="rgba(200,168,78,0)" />
-              <stop offset="50%" stopColor="rgba(200,168,78,0.18)" />
-              <stop offset="100%" stopColor="rgba(200,168,78,0)" />
+              <stop offset="0%" stopColor="hsl(var(--primary) / 0)" />
+              <stop offset="50%" stopColor="hsl(var(--primary) / 0.16)" />
+              <stop offset="100%" stopColor="hsl(var(--primary) / 0)" />
             </linearGradient>
-            {/* Pulse animation for active cities */}
+            {/* Glow for active (athan now) cities */}
             <radialGradient id="active-glow">
-              <stop offset="0%" stopColor="rgba(200,168,78,0.6)" />
-              <stop offset="100%" stopColor="rgba(200,168,78,0)" />
+              <stop offset="0%" stopColor="hsl(var(--secondary) / 0.55)" />
+              <stop offset="100%" stopColor="hsl(var(--secondary) / 0)" />
             </radialGradient>
           </defs>
 
           {/* Background */}
-          <rect width={SVG_W} height={SVG_H} fill="url(#globe-bg)" />
+          <rect width={SVG_W} height={SVG_H} className="fill-muted" />
 
           {/* Grid lines — subtle */}
           {[-60, -30, 0, 30, 60].map(lat => {
@@ -271,7 +257,7 @@ export const AthanGlobe = () => {
             <path
               key={i}
               d={d}
-              className="fill-[hsl(var(--primary))]/10 dark:fill-emerald-900/30 stroke-[hsl(var(--primary))]/40 dark:stroke-emerald-500/25"
+              className="fill-secondary/10 stroke-secondary/30"
               strokeWidth="1"
               strokeLinejoin="round"
             />
@@ -294,10 +280,10 @@ export const AthanGlobe = () => {
             const mk = toSvg(21.4225, MAKKAH_LON);
             return (
               <g>
-                <circle cx={mk.x} cy={mk.y} r="5" className="fill-[hsl(var(--gold))]" opacity="0.3" />
-                <circle cx={mk.x} cy={mk.y} r="3" className="fill-[hsl(var(--gold))]" />
+                <circle cx={mk.x} cy={mk.y} r="5" className="fill-primary" opacity="0.3" />
+                <circle cx={mk.x} cy={mk.y} r="3" className="fill-primary" />
                 {/* Kaaba symbol */}
-                <rect x={mk.x - 2} y={mk.y - 2} width="4" height="4" className="fill-background dark:fill-black" rx="0.5" />
+                <rect x={mk.x - 2} y={mk.y - 2} width="4" height="4" className="fill-background" rx="0.5" />
               </g>
             );
           })()}
@@ -317,8 +303,8 @@ export const AthanGlobe = () => {
                 cy={c.y}
                 r={c.isActive ? 3 : 2}
                 className={c.isActive
-                  ? 'fill-[hsl(var(--gold))] drop-shadow-[0_0_3px_rgba(200,168,78,0.8)]'
-                  : 'fill-[hsl(var(--primary))]/60 dark:fill-emerald-400/50'
+                  ? 'fill-secondary drop-shadow-[0_0_3px_hsl(var(--secondary)/0.8)]'
+                  : 'fill-muted-foreground/40'
                 }
               />
             </g>
@@ -333,13 +319,13 @@ export const AthanGlobe = () => {
               <g onClick={(e) => e.stopPropagation()}>
                 {/* Connector line */}
                 <line x1={tooltip.svgX} y1={tooltip.svgY} x2={tx} y2={ty}
-                  stroke="rgba(200,168,78,0.5)" strokeWidth="0.5" />
+                  className="stroke-primary/50" strokeWidth="0.5" />
                 {/* Background */}
                 <rect
                   x={tx - 65} y={above ? ty - 32 : ty}
                   width="130" height="30" rx="6"
-                  className="fill-background dark:fill-[hsl(222,30%,12%)]"
-                  stroke="rgba(200,168,78,0.3)" strokeWidth="0.5"
+                  className="fill-card stroke-border"
+                  strokeWidth="0.5"
                 />
                 {/* City name */}
                 <text
@@ -353,7 +339,7 @@ export const AthanGlobe = () => {
                 <text
                   x={tx} y={above ? ty - 6 : ty + 25}
                   textAnchor="middle"
-                  className="fill-[hsl(var(--gold))] text-[10px] font-medium"
+                  className="fill-primary text-[10px] font-medium"
                 >
                   {t(`prayer.names.${selectedPrayer.charAt(0).toUpperCase() + selectedPrayer.slice(1)}` as any)} — {formatTime(tooltip.city.time)}
                 </text>

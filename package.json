@@ -1,7 +1,7 @@
 {
   "name": "falah",
   "private": true,
-  "version": "1.4.0",
+  "version": "1.6.0",
   "type": "module",
   "description": "Falah — Islamic prayer times, fasting schedule, Qibla, Hijri calendar, and duas",
   "author": "Md. Latiful Kabir",
@@ -42,6 +42,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "hijri-converter": "^1.1.1",
+    "html-to-image": "^1.11.13",
     "lucide-react": "^0.563.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

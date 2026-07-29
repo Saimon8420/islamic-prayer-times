@@ -109,6 +109,17 @@ export interface TranslationKeys {
       W: string;
       NW: string;
     };
+    map: {
+      title: string;
+      locateMe: string;
+      locating: string;
+      makkah: string;
+      home: string;
+      you: string;
+      qibla: string;
+      from: string;
+      geoError: string;
+    };
   };
 
   // Schedule
@@ -339,6 +350,21 @@ export interface TranslationKeys {
     title: string;
     copied: string;
     failed: string;
+    dialogTitle: string;
+    dialogDescription: string;
+    chooseBackground: string;
+    shareImage: string;
+    download: string;
+    copyText: string;
+    preparing: string;
+    saved: string;
+    cardFooter: string;
+    bg: {
+      emerald: string;
+      midnight: string;
+      golden: string;
+      parchment: string;
+    };
   };
 
   // Friday

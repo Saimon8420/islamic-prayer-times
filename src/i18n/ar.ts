@@ -104,6 +104,17 @@ export const ar: TranslationKeys = {
       W: 'غ',
       NW: 'ش.غ',
     },
+    map: {
+      title: 'خريطة القبلة',
+      locateMe: 'حدد موقعي',
+      locating: 'جارٍ التحديد…',
+      makkah: 'مكة',
+      home: 'الموقع',
+      you: 'أنت',
+      qibla: 'القبلة',
+      from: 'من',
+      geoError: 'تعذّر تحديد موقعك — يتم عرض موقعك المحدد',
+    },
   },
 
   schedule: {
@@ -355,6 +366,21 @@ export const ar: TranslationKeys = {
     title: 'أوقات الصلاة',
     copied: 'تم النسخ!',
     failed: 'فشلت المشاركة',
+    dialogTitle: 'مشاركة أوقات الصلاة',
+    dialogDescription: 'اختر خلفية، ثم شارك الصورة أو احفظها.',
+    chooseBackground: 'الخلفية',
+    shareImage: 'مشاركة الصورة',
+    download: 'تنزيل',
+    copyText: 'نسخ كنص',
+    preparing: 'جارٍ التحضير…',
+    saved: 'تم الحفظ!',
+    cardFooter: 'أوقات الصلاة من فلاح',
+    bg: {
+      emerald: 'زمردي',
+      midnight: 'منتصف الليل',
+      golden: 'الساعة الذهبية',
+      parchment: 'ورق',
+    },
   },
 
   friday: {
