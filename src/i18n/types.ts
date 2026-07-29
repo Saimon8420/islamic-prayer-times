@@ -109,6 +109,17 @@ export interface TranslationKeys {
       W: string;
       NW: string;
     };
+    map: {
+      title: string;
+      locateMe: string;
+      locating: string;
+      makkah: string;
+      home: string;
+      you: string;
+      qibla: string;
+      from: string;
+      geoError: string;
+    };
   };
 
   // Schedule

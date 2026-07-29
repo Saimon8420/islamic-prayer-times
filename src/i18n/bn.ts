@@ -104,6 +104,17 @@ export const bn: TranslationKeys = {
       W: 'প',
       NW: 'উ.প',
     },
+    map: {
+      title: 'কিবলা মানচিত্র',
+      locateMe: 'আমাকে খুঁজুন',
+      locating: 'খুঁজছে…',
+      makkah: 'মক্কা',
+      home: 'অবস্থান',
+      you: 'আপনি',
+      qibla: 'কিবলা',
+      from: 'থেকে',
+      geoError: 'আপনার অবস্থান পাওয়া যায়নি — নির্ধারিত অবস্থান দেখানো হচ্ছে',
+    },
   },
 
   schedule: {

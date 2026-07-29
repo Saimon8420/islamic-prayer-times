@@ -104,6 +104,17 @@ export const en: TranslationKeys = {
       W: 'W',
       NW: 'NW',
     },
+    map: {
+      title: 'Qibla Map',
+      locateMe: 'Locate me',
+      locating: 'Locating…',
+      makkah: 'Makkah',
+      home: 'Home',
+      you: 'You',
+      qibla: 'Qibla',
+      from: 'from',
+      geoError: "Couldn't get your location — showing your set location",
+    },
   },
 
   schedule: {

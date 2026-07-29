@@ -104,6 +104,17 @@ export const ar: TranslationKeys = {
       W: 'غ',
       NW: 'ش.غ',
     },
+    map: {
+      title: 'خريطة القبلة',
+      locateMe: 'حدد موقعي',
+      locating: 'جارٍ التحديد…',
+      makkah: 'مكة',
+      home: 'الموقع',
+      you: 'أنت',
+      qibla: 'القبلة',
+      from: 'من',
+      geoError: 'تعذّر تحديد موقعك — يتم عرض موقعك المحدد',
+    },
   },
 
   schedule: {
