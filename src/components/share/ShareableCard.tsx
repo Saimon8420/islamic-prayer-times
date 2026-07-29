@@ -14,9 +14,9 @@ export const SHARE_CARD_WIDTH = 1080;
 export const SHARE_CARD_HEIGHT = 1350;
 
 const LATIN_FONT =
-  "'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+  "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 const ARABIC_FONT = "'Noto Sans Arabic', 'Scheherazade New', 'Amiri', serif";
-const BENGALI_FONT = "'Noto Sans Bengali', 'Poppins', system-ui, sans-serif";
+const BENGALI_FONT = "'Noto Sans Bengali', 'Space Grotesk', system-ui, sans-serif";
 
 export interface SharePrayerRow {
   key: string;

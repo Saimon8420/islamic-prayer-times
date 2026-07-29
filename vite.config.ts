@@ -8,7 +8,7 @@ import path from "path";
 export default defineConfig(({ command }) => ({
   plugins: [
     react(),
-    ...(command === "serve" ? [basicSsl()] : []),
+    ...(command === "serve" && !process.env.NO_SSL ? [basicSsl()] : []),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
