@@ -106,7 +106,13 @@ export default {
       },
       fontFamily: {
         arabic: ["Amiri", "Scheherazade New", "serif"],
-        sans: ["Poppins", "system-ui", "sans-serif"],
+        // Unified: the whole English UI uses Space Grotesk. `display` and `mono`
+        // are kept as aliases (so existing font-display/font-mono classes keep
+        // working) but all resolve to Space Grotesk; number alignment comes from
+        // `tabular-nums`.
+        sans: ["Space Grotesk", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        mono: ["Space Grotesk", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
