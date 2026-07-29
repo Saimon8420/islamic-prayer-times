@@ -44,63 +44,73 @@ export const EidCountdown = () => {
   }, [daysToFitr, daysToAdha, daysToRamadan, inRamadan]);
 
   const isToday = days === 0;
-
-  const label = (() => {
-    if (mode === 'ramadan') {
-      return isToday
-        ? t('eidCountdown.ramadanMubarak')
-        : t('eidCountdown.daysUntilRamadan', { count: days });
-    }
-    if (mode === 'eidFitr') {
-      return isToday
-        ? t('eidCountdown.eidFitrToday')
-        : t('eidCountdown.daysUntilEidFitr', { count: days });
-    }
-    return isToday
-      ? t('eidCountdown.eidAdhaToday')
-      : t('eidCountdown.daysUntilEidAdha', { count: days });
-  })();
-
   const isEidToday = isToday && (mode === 'eidFitr' || mode === 'eidAdha');
 
-  // Compact pill — gold for Eid day, emerald accent otherwise; Ramadan gets a navy tint
-  const pillClasses = isEidToday
-    ? 'bg-[hsl(40,80%,38%/0.85)] border-[hsl(40,85%,55%/0.6)] text-white'
-    : mode === 'ramadan'
-      ? 'bg-[hsl(222,30%,18%/0.6)] dark:bg-[hsl(222,30%,18%/0.7)] border-[hsl(40,85%,52%/0.35)] text-foreground'
-      : 'bg-[hsl(158,50%,22%/0.55)] dark:bg-[hsl(158,50%,18%/0.7)] border-[hsl(40,85%,52%/0.35)] text-foreground';
+  // Event name (the number is shown separately as the hero).
+  const eventName =
+    mode === 'ramadan'
+      ? t('dailyVerse.context.ramadan')
+      : mode === 'eidFitr'
+        ? t('dailyVerse.context.eid_fitr')
+        : t('dailyVerse.context.eid_adha');
+
+  // "Mubarak!" line when today; otherwise the short counting label.
+  const todayLabel = (() => {
+    if (mode === 'ramadan') return t('eidCountdown.ramadanMubarak');
+    if (mode === 'eidFitr') return t('eidCountdown.eidFitrToday');
+    return t('eidCountdown.eidAdhaToday');
+  })();
+
+  // Accent by mode: Eid day = gold, everything upcoming = emerald.
+  const accent = isEidToday ? 'primary' : 'secondary';
+
+  const shellClasses =
+    accent === 'primary'
+      ? 'border-primary/30 bg-primary/[0.07]'
+      : 'border-secondary/25 bg-secondary/[0.06]';
+  const chipClasses =
+    accent === 'primary'
+      ? 'border-primary/30 bg-primary/15 text-primary'
+      : 'border-secondary/30 bg-secondary/15 text-secondary';
+
+  const Icon = () =>
+    isEidToday ? (
+      <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
+        <path d="M12 2L14.5 8.5L22 9.5L16.5 14.5L18 22L12 18.5L6 22L7.5 14.5L2 9.5L9.5 8.5Z" />
+      </svg>
+    ) : (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-3.5 w-3.5">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    );
 
   return (
     <div
-      className={`fade-in flex items-center justify-center gap-2 rounded-full border px-3 py-1.5 backdrop-blur-md shadow-sm ${pillClasses}`}
+      className={`fade-in inline-flex items-center gap-2.5 rounded-full border px-3 py-1.5 ${shellClasses}`}
     >
-      {/* Icon */}
-      {isEidToday ? (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 shrink-0 opacity-90">
-          <path d="M12 2L14.5 8.5L22 9.5L16.5 14.5L18 22L12 18.5L6 22L7.5 14.5L2 9.5L9.5 8.5Z" />
-        </svg>
+      {/* crescent / star medallion */}
+      <span
+        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border ${chipClasses}`}
+      >
+        <Icon />
+      </span>
+
+      {isToday ? (
+        <p className="font-display text-sm font-semibold text-foreground">{todayLabel}</p>
       ) : (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-3.5 h-3.5 shrink-0 opacity-80">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      )}
-
-      <p className="text-xs sm:text-sm font-semibold truncate">{label}</p>
-
-      {!isToday && (
-        <span className="ms-1 inline-flex items-baseline gap-1 rounded-full bg-[hsl(40,85%,52%/0.18)] border border-[hsl(40,85%,52%/0.4)] px-2 py-0.5 text-[10px] font-bold tabular-nums text-[hsl(40,85%,32%)] dark:text-[hsl(40,80%,68%)] shrink-0">
-          {days}
-          <span className="text-[9px] font-medium opacity-80">
+        <div className="flex items-baseline gap-2">
+          <span className="font-display text-sm font-semibold text-foreground">{eventName}</span>
+          <span
+            className={`font-mono text-base font-semibold tabular-nums ${
+              accent === 'primary' ? 'text-primary' : 'text-secondary'
+            }`}
+          >
+            {days}
+          </span>
+          <span className="label-mono">
             {days === 1 ? t('eidCountdown.day') : t('eidCountdown.days')}
           </span>
-        </span>
-      )}
-
-      {/* Eid Dua — shown only on Eid day, inline */}
-      {isEidToday && (
-        <span className="hidden md:inline arabic-text text-xs opacity-90 ms-2" dir="rtl">
-          {t('eidCountdown.eidDuaArabic')}
-        </span>
+        </div>
       )}
     </div>
   );
