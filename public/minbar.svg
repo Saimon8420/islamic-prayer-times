@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 320">
+  <g fill="#000">
+    <!-- crescent finial -->
+    <path transform="translate(72 16) scale(0.62)" d="M22 6a11 11 0 1 0 4 12A9 9 0 1 1 22 6z"/>
+    <rect x="83.5" y="40" width="3" height="12"/>
+    <!-- onion dome -->
+    <path d="M73 82 Q73 54 85 50 Q97 54 97 82 Z"/>
+    <!-- canopy roof -->
+    <path d="M62 95 L85 78 L108 95 Z"/>
+    <!-- canopy posts -->
+    <rect x="70" y="95" width="4" height="27"/>
+    <rect x="96" y="95" width="4" height="27"/>
+    <!-- seat rail -->
+    <rect x="64" y="116" width="42" height="7"/>
+    <!-- body + staircase (with pointed-arch doorway cut out) -->
+    <path fill-rule="evenodd" d="M10 300 V278 H22 V256 H34 V234 H46 V212 H58 V190 H70 V123 H100 V300 Z M78 300 V252 Q78 240 85 240 Q92 240 92 252 V300 Z"/>
+    <!-- stair railing -->
+    <path d="M15 279 L69 190 L73 192 L19 281 Z"/>
+  </g>
+</svg>
