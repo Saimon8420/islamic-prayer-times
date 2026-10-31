@@ -21,6 +21,7 @@ export const useNotifications = () => {
   const notificationsEnabled = useStore((s) => s.notificationsEnabled);
   const selectedAdhan = useStore((s) => s.selectedAdhan);
   const selectedFajrAdhan = useStore((s) => s.selectedFajrAdhan);
+  const prayerAlerts = useStore((s) => s.prayerAlerts);
   const location = useStore((s) => s.location);
   const calculationMethod = useStore((s) => s.calculationMethod);
   const madhab = useStore((s) => s.madhab);
@@ -51,11 +52,12 @@ export const useNotifications = () => {
         madhab,
         selectedAdhan,
         selectedFajrAdhan,
+        prayerAlerts,
       });
     };
 
     scheduleOrCancel();
-  }, [notificationsEnabled, selectedAdhan, selectedFajrAdhan, location, calculationMethod, madhab]);
+  }, [notificationsEnabled, selectedAdhan, selectedFajrAdhan, prayerAlerts, location, calculationMethod, madhab]);
 
   // Reschedule on app resume (native)
   useEffect(() => {
@@ -73,6 +75,7 @@ export const useNotifications = () => {
         madhab: state.madhab,
         selectedAdhan: state.selectedAdhan,
         selectedFajrAdhan: state.selectedFajrAdhan,
+        prayerAlerts: state.prayerAlerts,
       });
     });
 
@@ -130,6 +133,7 @@ export const useNotifications = () => {
       for (const [key, title, body, time, type] of schedule) {
         const notifKey = `${dateKey}-${key}`;
         if (notifiedRef.current.has(notifKey)) continue;
+        if (key in (state.prayerAlerts ?? {}) && state.prayerAlerts[key as keyof typeof state.prayerAlerts] === false) continue;
 
         const diff = now.getTime() - time.getTime();
         // Trigger if within 0–45 seconds after prayer time
@@ -164,5 +168,5 @@ export const useNotifications = () => {
       clearInterval(interval);
       clearInterval(midnightCheck);
     };
-  }, [notificationsEnabled, selectedAdhan, selectedFajrAdhan, location, calculationMethod, madhab]);
+  }, [notificationsEnabled, selectedAdhan, selectedFajrAdhan, prayerAlerts, location, calculationMethod, madhab]);
 };
