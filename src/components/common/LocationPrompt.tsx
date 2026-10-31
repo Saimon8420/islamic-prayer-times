@@ -3,6 +3,7 @@ import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { useLocation } from '../../hooks/useLocation';
 import { useTranslation } from '../../i18n/useTranslation';
+import { FalahLogo } from '../FalahLogo';
 
 export const LocationPrompt = () => {
   const { loading, error, requestLocation } = useLocation();
@@ -13,16 +14,8 @@ export const LocationPrompt = () => {
       <Card className="overflow-hidden fade-in">
         <CardContent className="p-8 text-center">
           {/* ── crescent welcome ── */}
-          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-primary/25 bg-primary/[0.08]">
-            <svg
-              viewBox="0 0 24 24"
-              className="h-8 w-8 text-primary"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
+          <div className="mx-auto mb-5 flex justify-center">
+            <FalahLogo size={72} />
           </div>
 
           <p className="label-mono !text-secondary">{t('location.greeting')}</p>

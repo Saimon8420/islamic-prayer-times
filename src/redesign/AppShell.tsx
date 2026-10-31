@@ -7,7 +7,8 @@ import { useTranslation } from '../i18n/useTranslation';
 import { MonthlySchedule } from '../components/MonthlySchedule';
 import { PrayerComparison } from '../components/explore/PrayerComparison';
 import { AthanGlobe } from '../components/explore/AthanGlobe';
-import { Icon, CrescentMark, type IconName } from './icons';
+import { Icon, type IconName } from './icons';
+import { FalahLogo } from '../components/FalahLogo';
 import { ToastProvider, PageHead, Segmented } from './shared';
 import { TodayScreen } from './screens/Today';
 import { QiblaScreen } from './screens/Qibla';
@@ -122,7 +123,7 @@ export function AppShell({ locationPrompt }: { locationPrompt?: ReactNode }) {
         <div className="fl-shell">
           <aside className="fl-side" aria-label={t('ui.nav.main')}>
             <div className="fl-brand">
-              <span className="fl-mark"><CrescentMark /></span>
+              <FalahLogo size={42} />
               <div><b>{t('common.appName')}</b><span lang="ar">فلاح</span></div>
             </div>
             <nav style={{ display: 'grid', gap: 4 }}>

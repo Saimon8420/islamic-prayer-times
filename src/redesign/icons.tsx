@@ -29,6 +29,7 @@ const PATHS = {
   compass: <><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></>,
   play: <path d="M7 4v16l13-8z" />,
   stop: <rect width="12" height="12" x="6" y="6" rx="1" />,
+  share: <><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4" /></>,
   refresh: <><path d="M21 12a9 9 0 1 1-3-6.7L21 8" /><path d="M21 3v5h-5" /></>,
 } as const;
 
@@ -46,15 +47,6 @@ export function FlameIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
       <path d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.8 2-5 .2 1.6 1 3 2.5 3.5C11 7 12 2 12 2Z" />
-    </svg>
-  );
-}
-
-/** Falah logo: an eight-point star (Rub el Hizb) with the sun rising inside it. */
-export function CrescentMark() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 64 64">
-      <path d="M32.00 4.00L40.14 12.34L51.80 12.20L51.66 23.86L60.00 32.00L51.66 40.14L51.80 51.80L40.14 51.66L32.00 60.00L23.86 51.66L12.20 51.80L12.34 40.14L4.00 32.00L12.34 23.86L12.20 12.20L23.86 12.34Z" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinejoin="round" /><path d="M19 38a13 13 0 0 1 26 0Z" fill="#e3a13b" /><path d="M15 38h34" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" /><path d="M32 18v4M22.5 22l2.6 3M41.5 22l-2.6 3" stroke="#e3a13b" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
 }
