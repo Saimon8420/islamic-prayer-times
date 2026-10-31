@@ -124,6 +124,8 @@ interface ScheduleParams {
   madhab: MadhabId;
   selectedAdhan: string;
   selectedFajrAdhan: string;
+  /** prayers the user switched off individually (fajr, sunrise, dhuhr, asr, maghrib, isha) */
+  prayerAlerts?: Partial<Record<'fajr' | 'sunrise' | 'dhuhr' | 'asr' | 'maghrib' | 'isha', boolean>>;
 }
 
 export const cancelAllPrayerNotifications = async (): Promise<void> => {
@@ -267,8 +269,16 @@ export const scheduleAllPrayerNotifications = async (
     }
   }
 
-  if (notifications.length > 0) {
-    await LocalNotifications.schedule({ notifications });
+  // Drop prayers the user has switched off individually (id ranges match NOTIFICATION_BASE_IDS)
+  const off = new Set<number>(
+    (Object.keys(params.prayerAlerts ?? {}) as Array<keyof typeof NOTIFICATION_BASE_IDS>)
+      .filter((k) => params.prayerAlerts?.[k as keyof NonNullable<ScheduleParams['prayerAlerts']>] === false)
+      .map((k) => NOTIFICATION_BASE_IDS[k]),
+  );
+  const wanted = notifications.filter((n) => !off.has(Math.floor(n.id / 100) * 100));
+
+  if (wanted.length > 0) {
+    await LocalNotifications.schedule({ notifications: wanted });
   }
 };
 

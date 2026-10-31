@@ -37,7 +37,12 @@ export interface AppSettings {
 
   // Hijri date adjustment (-2 to +2 days)
   hijriAdjustment: number;
+
+  // Per-prayer alerts (on top of the global notifications switch)
+  prayerAlerts: Record<PrayerAlertKey, boolean>;
 }
+
+export type PrayerAlertKey = 'fajr' | 'sunrise' | 'dhuhr' | 'asr' | 'maghrib' | 'isha';
 
 interface AppState extends AppSettings {
   // Actions
@@ -52,6 +57,7 @@ interface AppState extends AppSettings {
   setSelectedFajrAdhan: (adhan: string) => void;
   setLanguage: (language: Language) => void;
   setHijriAdjustment: (adjustment: number) => void;
+  setPrayerAlert: (key: PrayerAlertKey, on: boolean) => void;
   resetSettings: () => void;
 }
 
@@ -67,6 +73,7 @@ const defaultSettings: AppSettings = {
   selectedFajrAdhan: 'alafasy-fajr',
   language: 'en' as Language,
   hijriAdjustment: 0,
+  prayerAlerts: { fajr: true, sunrise: false, dhuhr: true, asr: true, maghrib: true, isha: true },
 };
 
 export const useStore = create<AppState>()(
@@ -95,6 +102,8 @@ export const useStore = create<AppState>()(
       setLanguage: (language) => set({ language }),
 
       setHijriAdjustment: (hijriAdjustment) => set({ hijriAdjustment }),
+
+      setPrayerAlert: (key, on) => set((s) => ({ prayerAlerts: { ...defaultSettings.prayerAlerts, ...s.prayerAlerts, [key]: on } })),
 
       resetSettings: () => set(defaultSettings),
     }),
