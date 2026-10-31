@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ShareCardDialog } from '../../components/share/ShareCardDialog';
+import { IslamicOccasionBanner } from '../../components/common/IslamicOccasionBanner';
 import { useStore } from '../../store/useStore';
 import { useTracker, dayKey, type TrackedPrayer } from '../../store/useTracker';
 import { gregorianToHijri, getDaysUntilRamadan, getDaysUntilEidFitr, getDaysUntilEidAdha, isRamadan } from '../../services/hijriService';
@@ -57,6 +59,7 @@ export function TodayScreen({ onOpenSettings, onNavigate }: { onOpenSettings: ()
   const { t, language } = useTranslation();
   const now = useNow(1000);
   const [offset, setOffset] = useState(0);
+  const [shareOpen, setShareOpen] = useState(false);
   const viewDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset, 12);
   const today = usePrayerDay(now);
   const shown = usePrayerDay(viewDate);
@@ -152,7 +155,10 @@ export function TodayScreen({ onOpenSettings, onNavigate }: { onOpenSettings: ()
               return <>{parts[0]}<b>{dur(next.time.getTime() - t0)}</b>{parts[1]}</>;
             })()}
           </div>
-          <div className="t-next-chip"><Icon name="bell" />{t('ui.today.nextAt', { prayer: next.name, time: fmt(next.time) })}</div>
+          <div className="t-hero-actions">
+            <div className="t-next-chip"><Icon name="bell" />{t('ui.today.nextAt', { prayer: next.name, time: fmt(next.time) })}</div>
+            <button type="button" className="t-next-chip t-share" onClick={() => setShareOpen(true)}><Icon name="share" />{t('share.button')}</button>
+          </div>
         </div>
         <div className="t-curve">
           <svg viewBox="0 0 590 140" role="img" aria-label={t('ui.today.curve')}>
@@ -177,6 +183,8 @@ export function TodayScreen({ onOpenSettings, onNavigate }: { onOpenSettings: ()
           </svg>
         </div>
       </section>
+
+      <div className="fl-legacy t-occasion"><IslamicOccasionBanner /></div>
 
       <div className="t-grid">
         <section className="fl-card t-list2" aria-label={t('ui.today.todayTimes')}>
@@ -254,6 +262,7 @@ export function TodayScreen({ onOpenSettings, onNavigate }: { onOpenSettings: ()
           )}
         </aside>
       </div>
+      <ShareCardDialog open={shareOpen} onOpenChange={setShareOpen} />
     </div>
   );
 }

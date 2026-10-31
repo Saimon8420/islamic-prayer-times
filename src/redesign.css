@@ -372,3 +372,9 @@ html[dir='rtl'] .fl-switch[aria-checked='true']::after { transform: translateX(-
   .t-grid { grid-template-columns: 1fr; gap: 18px; }
   .t-list2.fl-card { padding: 6px 4px 8px; }
 }
+
+.t-hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.t-hero-actions .t-next-chip { margin-top: 0; }
+.t-share { min-height: 40px; cursor: pointer; transition: background var(--t-fast); }
+.t-share:hover { background: var(--bg); }
+.t-occasion:empty { display: none; }
