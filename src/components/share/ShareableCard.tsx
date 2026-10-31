@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import type { CSSProperties } from 'react';
-import type { ShareBackground } from '../../data/shareBackgrounds';
+import { isLightBackground, type ShareBackground } from '../../data/shareBackgrounds';
+import { FalahLogo } from '../FalahLogo';
 
 /* ══════════════════════════════════════════════════════════
    ShareableCard — a fixed 1080×1350 (4:5 portrait) card that
@@ -13,10 +14,22 @@ import type { ShareBackground } from '../../data/shareBackgrounds';
 export const SHARE_CARD_WIDTH = 1080;
 export const SHARE_CARD_HEIGHT = 1350;
 
+export type ShareSize = 'post' | 'story' | 'square';
+export const SHARE_SIZES: Record<ShareSize, number> = { post: 1350, story: 1920, square: 1080 };
+
+export interface ShareOptions {
+  size: ShareSize;
+  style: 'classic' | 'minimal';
+  showVerse: boolean;
+  showArabic: boolean;
+  showHijri: boolean;
+  message: string;
+}
+
 const LATIN_FONT =
-  "'Space Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+  "'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
 const ARABIC_FONT = "'Noto Sans Arabic', 'Scheherazade New', 'Amiri', serif";
-const BENGALI_FONT = "'Noto Sans Bengali', 'Space Grotesk', system-ui, sans-serif";
+const BENGALI_FONT = "'Noto Sans Bengali', 'Manrope Variable', system-ui, sans-serif";
 
 export interface SharePrayerRow {
   key: string;
@@ -43,34 +56,10 @@ export interface ShareableCardProps {
   prayers: SharePrayerRow[];
   verse: ShareVerse | null;
   footer: string; // localized footer note
+  options: ShareOptions;
 }
 
-const isLight = (bg: ShareBackground) => bg.id === 'parchment';
-
-/* ── Brand mark: mihrab arch + eight-point star (echoes favicon) ── */
-const BrandMark = ({ accent }: { accent: string }) => (
-  <svg viewBox="0 0 100 100" width={78} height={78} fill="none" aria-hidden>
-    <path
-      d="M22 88 V52 a28 28 0 0 1 56 0 V88 Z"
-      fill="none"
-      stroke={accent}
-      strokeWidth={5}
-      strokeLinejoin="round"
-    />
-    <path
-      d="M31 88 V52 a19 19 0 0 1 38 0 V88"
-      fill="none"
-      stroke={accent}
-      strokeWidth={2.5}
-      opacity={0.55}
-    />
-    <g transform="translate(50 50)" fill={accent}>
-      <rect x={-15} y={-15} width={30} height={30} />
-      <rect x={-15} y={-15} width={30} height={30} transform="rotate(45)" />
-    </g>
-    <circle cx={50} cy={50} r={4.5} fill="#0C3D22" />
-  </svg>
-);
+const isLight = (bg: ShareBackground) => isLightBackground(bg.id);
 
 const ArabesqueCorner = ({
   accent,
@@ -122,7 +111,8 @@ const StarDivider = ({ accent }: { accent: string }) => (
 
 /* ── Bottom decoration chosen per background id ── */
 const BottomDecoration = ({ bg }: { bg: ShareBackground }) => {
-  if (bg.id === 'midnight') {
+  if (bg.id === 'paper') return null;
+  if (bg.id === 'midnight' || bg.id === 'ocean') {
     // Crescent + scattered stars
     return (
       <svg
@@ -157,7 +147,7 @@ const BottomDecoration = ({ bg }: { bg: ShareBackground }) => {
       </svg>
     );
   }
-  if (bg.id === 'golden') {
+  if (bg.id === 'golden' || bg.id === 'dusk') {
     // Soft sun glow rising from the base
     return (
       <div
@@ -194,8 +184,13 @@ const BottomDecoration = ({ bg }: { bg: ShareBackground }) => {
 };
 
 export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
-  ({ bg, language, brand, tagline, gregorian, hijri, location, prayers, verse, footer }, ref) => {
+  ({ bg, language, brand, tagline, gregorian, hijri, location, prayers, verse, footer, options }, ref) => {
     const latin = language === 'bn' ? BENGALI_FONT : LATIN_FONT;
+    const height = SHARE_SIZES[options.size];
+    const square = options.size === 'square', story = options.size === 'story';
+    const classic = options.style === 'classic';
+    const rowPad = square ? '11px 26px' : story ? '24px 30px' : '17px 26px';
+    const showVerse = options.showVerse && !!verse && !square;
 
     return (
       <div
@@ -204,7 +199,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
         style={{
           position: 'relative',
           width: SHARE_CARD_WIDTH,
-          height: SHARE_CARD_HEIGHT,
+          height,
           overflow: 'hidden',
           background: bg.gradient,
           color: bg.text,
@@ -212,27 +207,32 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
           boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
-          padding: '64px 64px 56px',
+          padding: square ? '52px 64px 44px' : '64px 64px 56px',
+          justifyContent: story ? 'center' : undefined,
         }}
       >
+        {classic && (
+          <>
         {/* Corner ornaments */}
-        <ArabesqueCorner accent={bg.accent} style={{ position: 'absolute', top: 0, left: 0 }} />
-        <ArabesqueCorner
-          accent={bg.accent}
-          style={{ position: 'absolute', top: 0, right: 0, transform: 'scaleX(-1)' }}
-        />
-        <BottomDecoration bg={bg} />
-
-        {/* Thin gold frame */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 28,
-            border: `1px solid ${bg.hairline}`,
-            borderRadius: 24,
-            pointerEvents: 'none',
-          }}
-        />
+            <ArabesqueCorner accent={bg.accent} style={{ position: 'absolute', top: 0, left: 0 }} />
+            <ArabesqueCorner
+              accent={bg.accent}
+              style={{ position: 'absolute', top: 0, right: 0, transform: 'scaleX(-1)' }}
+            />
+            <BottomDecoration bg={bg} />
+    
+            {/* Thin gold frame */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 28,
+                border: `1px solid ${bg.hairline}`,
+                borderRadius: 24,
+                pointerEvents: 'none',
+              }}
+            />
+          </>
+        )}
 
         {/* ── Brand ── */}
         <div
@@ -245,7 +245,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
             marginBottom: 8,
           }}
         >
-          <BrandMark accent={bg.accent} />
+          <FalahLogo size={square ? 70 : 84} />
           <div style={{ textAlign: language === 'ar' ? 'right' : 'left' }}>
             <div style={{ fontSize: 46, fontWeight: 700, letterSpacing: 0.5, lineHeight: 1.1 }}>
               {brand}
@@ -267,7 +267,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
         {/* ── Date + location ── */}
         <div style={{ position: 'relative', textAlign: 'center', marginTop: 18 }}>
           <div style={{ fontSize: 30, fontWeight: 600 }}>{gregorian}</div>
-          <div style={{ fontSize: 23, color: bg.muted, marginTop: 6 }}>{hijri}</div>
+          {options.showHijri && <div style={{ fontSize: 23, color: bg.muted, marginTop: 6 }}>{hijri}</div>}
           <div
             style={{
               display: 'inline-flex',
@@ -292,8 +292,14 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
           </div>
         </div>
 
-        <div style={{ position: 'relative', margin: '26px 0 20px' }}>
-          <StarDivider accent={bg.accent} />
+        {options.message.trim() && (
+          <div style={{ position: 'relative', textAlign: 'center', marginTop: 22, fontSize: square ? 34 : 40, fontWeight: 800, color: bg.accent, lineHeight: 1.25 }}>
+            {options.message.trim()}
+          </div>
+        )}
+
+        <div style={{ position: 'relative', margin: square ? '18px 0 12px' : '26px 0 20px' }}>
+          {classic ? <StarDivider accent={bg.accent} /> : <div style={{ height: 1, background: bg.hairline }} />}
         </div>
 
         {/* ── Prayer times ── */}
@@ -305,7 +311,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '17px 26px',
+                padding: rowPad,
                 borderRadius: 16,
                 background: p.isNext ? bg.panel : 'transparent',
                 border: p.isNext ? `1px solid ${bg.hairline}` : '1px solid transparent',
@@ -332,7 +338,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
                     color: bg.muted,
                   }}
                 >
-                  {p.arabic}
+                  {options.showArabic ? p.arabic : ''}
                 </span>
                 <span
                   style={{
@@ -352,10 +358,10 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
         </div>
 
         {/* ── Verse of the day ── */}
-        {verse && (
+        {showVerse && verse && (
           <>
             <div style={{ position: 'relative', margin: '22px 0 18px' }}>
-              <StarDivider accent={bg.accent} />
+              {classic ? <StarDivider accent={bg.accent} /> : <div style={{ height: 1, background: bg.hairline }} />}
             </div>
             <div
               style={{
@@ -404,7 +410,7 @@ export const ShareableCard = forwardRef<HTMLDivElement, ShareableCardProps>(
         <div
           style={{
             position: 'relative',
-            marginTop: 'auto',
+            marginTop: story ? 48 : 'auto',
             paddingTop: 18,
             textAlign: 'center',
             fontSize: 18,

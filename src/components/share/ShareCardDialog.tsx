@@ -10,9 +10,11 @@ import {
 import {
   ShareableCard,
   SHARE_CARD_WIDTH,
-  SHARE_CARD_HEIGHT,
+  SHARE_SIZES,
   type SharePrayerRow,
+  type ShareOptions,
 } from './ShareableCard';
+import { Switch } from '../ui/switch';
 import {
   SHARE_BACKGROUNDS,
   DEFAULT_SHARE_BACKGROUND,
@@ -46,6 +48,10 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
   const { hijriDate } = useHijriDate();
 
   const [bgId, setBgId] = useState<ShareBackgroundId>(DEFAULT_SHARE_BACKGROUND);
+  const [opts, setOpts] = useState<ShareOptions>({ size: 'post', style: 'classic', showVerse: true, showArabic: true, showHijri: true, message: '' });
+  const [showSunrise, setShowSunrise] = useState(true);
+  const setOpt = (p: Partial<ShareOptions>) => setOpts((o) => ({ ...o, ...p }));
+  const cardH = SHARE_SIZES[opts.size];
   const [status, setStatus] = useState<'idle' | 'working' | 'saved' | 'failed'>('idle');
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -89,7 +95,7 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
       Isha: prayerTimes.isha,
     };
 
-    const prayers: SharePrayerRow[] = MAIN_PRAYERS.map((key) => {
+    const prayers: SharePrayerRow[] = MAIN_PRAYERS.filter((key) => showSunrise || key !== 'Sunrise').map((key) => {
       const names = PRAYER_NAMES[key];
       const name =
         language === 'bn'
@@ -145,11 +151,12 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
     locale,
     hijriDate,
     t,
+    showSunrise,
   ]);
 
   const locationName = location?.name || t('common.unknownLocation');
 
-  const filename = 'falah-prayer-times.png';
+  const filename = `falah-prayer-times-${opts.size}.png`;
 
   const generateBlob = useCallback(async (): Promise<Blob | null> => {
     const node = cardRef.current;
@@ -164,11 +171,11 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
     }
     return toBlob(node, {
       width: SHARE_CARD_WIDTH,
-      height: SHARE_CARD_HEIGHT,
+      height: cardH,
       pixelRatio: 1,
       cacheBust: true,
     });
-  }, []);
+  }, [cardH]);
 
   const buildText = useCallback((): string => {
     if (!cardData) return '';
@@ -264,24 +271,24 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-[92vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[92vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t('share.dialogTitle')}</DialogTitle>
           <DialogDescription>{t('share.dialogDescription')}</DialogDescription>
         </DialogHeader>
 
         {cardData ? (
-          <>
+          <div className="grid gap-6 sm:grid-cols-[300px_minmax(0,1fr)] sm:items-start">
             {/* Live preview */}
             <div
               ref={viewportRef}
-              className="mx-auto w-full max-w-[320px] rounded-xl overflow-hidden shadow-lg ring-1 ring-black/10"
-              style={{ height: SHARE_CARD_HEIGHT * scale }}
+              className="mx-auto w-full max-w-[300px] rounded-xl overflow-hidden shadow-lg ring-1 ring-black/10"
+              style={{ height: cardH * scale }}
             >
               <div
                 style={{
                   width: SHARE_CARD_WIDTH,
-                  height: SHARE_CARD_HEIGHT,
+                  height: cardH,
                   transform: `scale(${scale})`,
                   transformOrigin: 'top left',
                 }}
@@ -298,16 +305,16 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
                   prayers={cardData.prayers}
                   verse={cardData.verse}
                   footer={t('share.cardFooter')}
+                  options={opts}
                 />
               </div>
             </div>
 
+            <div className="flex flex-col gap-5">
             {/* Background picker */}
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
-                {t('share.chooseBackground')}
-              </p>
-              <div className="flex items-center gap-2.5">
+              <p className="text-sm font-bold mb-2">{t('share.chooseBackground')}</p>
+              <div className="flex flex-wrap items-center gap-2.5">
                 {SHARE_BACKGROUNDS.map((b) => (
                   <button
                     key={b.id}
@@ -316,7 +323,7 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
                     title={t(`share.bg.${b.id}` as 'share.bg.emerald')}
                     aria-label={t(`share.bg.${b.id}` as 'share.bg.emerald')}
                     className={
-                      'h-10 w-10 rounded-full transition-all ' +
+                      'h-11 w-11 rounded-full transition-all ' +
                       (bgId === b.id
                         ? 'ring-2 ring-primary ring-offset-2 ring-offset-background scale-105'
                         : 'ring-1 ring-black/10 hover:scale-105')
@@ -327,13 +334,59 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
               </div>
             </div>
 
+
+            {/* Size + style */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              {([
+                ['size', t('share.opt.size'), [['post', t('share.opt.sizePost')], ['story', t('share.opt.sizeStory')], ['square', t('share.opt.sizeSquare')]]],
+                ['style', t('share.opt.style'), [['classic', t('share.opt.styleClassic')], ['minimal', t('share.opt.styleMinimal')]]],
+              ] as const).map(([key, label, choices]) => (
+                <div key={key}>
+                  <p className="text-sm font-bold mb-2">{label}</p>
+                  <div className="grid grid-flow-col auto-cols-fr gap-0.5 rounded-xl bg-muted p-1" role="group" aria-label={label}>
+                    {choices.map(([v, l]) => (
+                      <button key={v} type="button" aria-pressed={opts[key] === v} onClick={() => setOpt({ [key]: v } as Partial<ShareOptions>)}
+                        className={'min-h-9 rounded-lg px-2 text-[13px] font-bold transition ' + (opts[key] === v ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground')}>
+                        {l}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* What to show */}
+            <div>
+              <p className="text-sm font-bold mb-1">{t('share.opt.show')}</p>
+              <div className="divide-y divide-border rounded-xl border border-border">
+                {([
+                  ['showVerse', t('share.opt.showVerse'), opts.showVerse, (v: boolean) => setOpt({ showVerse: v }), opts.size === 'square'],
+                  ['showArabic', t('share.opt.showArabic'), opts.showArabic, (v: boolean) => setOpt({ showArabic: v }), language === 'ar'],
+                  ['showHijri', t('share.opt.showHijri'), opts.showHijri, (v: boolean) => setOpt({ showHijri: v }), false],
+                  ['showSunrise', t('share.opt.showSunrise'), showSunrise, setShowSunrise, false],
+                ] as const).map(([k, label, on, set, disabled]) => (
+                  <label key={k} className={'flex min-h-11 items-center justify-between gap-3 px-3.5 text-sm ' + (disabled ? 'opacity-50' : 'cursor-pointer')}>
+                    {label}
+                    <Switch checked={on && !disabled} disabled={disabled} onCheckedChange={set} aria-label={label} />
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Message */}
+            <div>
+              <label className="text-sm font-bold mb-2 block" htmlFor="share-msg">{t('share.opt.message')}</label>
+              <input id="share-msg" value={opts.message} maxLength={40} onChange={(e) => setOpt({ message: e.target.value })} placeholder={t('share.opt.messagePlaceholder')}
+                className="h-11 w-full rounded-xl border border-input bg-background px-3.5 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring" />
+            </div>
+
             {/* Actions */}
             <div className="flex flex-col gap-2">
               <button
                 type="button"
                 onClick={handleShareImage}
                 disabled={busy}
-                className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 active:scale-[0.99] transition disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 w-full min-h-12 px-4 py-2.5 rounded-xl bg-primary font-bold text-primary-foreground font-medium hover:opacity-90 active:scale-[0.99] transition disabled:opacity-60"
               >
                 <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none">
                   <circle cx="12" cy="3" r="2" stroke="currentColor" strokeWidth="1.5" />
@@ -355,7 +408,7 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
                   type="button"
                   onClick={handleDownload}
                   disabled={busy}
-                  className="inline-flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg border border-border bg-muted/40 font-medium hover:bg-muted active:scale-[0.99] transition disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 flex-1 min-h-11 px-4 py-2 rounded-xl border border-border bg-muted/40 font-medium hover:bg-muted active:scale-[0.99] transition disabled:opacity-60"
                 >
                   <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none">
                     <path d="M8 1v9M4.5 7L8 10.5 11.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -367,7 +420,7 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
                   type="button"
                   onClick={handleCopyText}
                   disabled={busy}
-                  className="inline-flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg border border-border bg-muted/40 font-medium hover:bg-muted active:scale-[0.99] transition disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 flex-1 min-h-11 px-4 py-2 rounded-xl border border-border bg-muted/40 font-medium hover:bg-muted active:scale-[0.99] transition disabled:opacity-60"
                 >
                   <svg viewBox="0 0 16 16" className="w-4 h-4" fill="none">
                     <rect x="5" y="5" width="8" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
@@ -377,7 +430,8 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
                 </button>
               </div>
             </div>
-          </>
+            </div>
+          </div>
         ) : (
           <p className="text-sm text-muted-foreground py-6 text-center">
             {t('common.unknownLocation')}

@@ -8,7 +8,7 @@
  * chosen per `id` inside ShareableCard.
  */
 
-export type ShareBackgroundId = 'emerald' | 'midnight' | 'golden' | 'parchment';
+export type ShareBackgroundId = 'emerald' | 'midnight' | 'golden' | 'parchment' | 'ocean' | 'dusk' | 'sand' | 'paper';
 
 export interface ShareBackground {
   id: ShareBackgroundId;
@@ -75,7 +75,54 @@ export const SHARE_BACKGROUNDS: ShareBackground[] = [
     panel: 'rgba(12,61,34,0.045)',
     swatch: 'linear-gradient(160deg, #f6f0e2, #e6d9bd)',
   },
+  {
+    id: 'ocean',
+    label: 'Ocean',
+    gradient: 'linear-gradient(165deg, #0e5a6b 0%, #0b4357 45%, #082a3d 100%)',
+    text: '#ffffff',
+    muted: 'rgba(220,244,248,0.66)',
+    accent: '#7fe0d3',
+    hairline: 'rgba(127,224,211,0.28)',
+    panel: 'rgba(255,255,255,0.06)',
+    swatch: 'linear-gradient(160deg, #0e5a6b, #082a3d)',
+  },
+  {
+    id: 'dusk',
+    label: 'Dusk',
+    gradient: 'linear-gradient(170deg, #2b2460 0%, #6b3274 45%, #c0566e 82%, #e88a5c 100%)',
+    text: '#ffffff',
+    muted: 'rgba(255,236,240,0.72)',
+    accent: '#ffd59e',
+    hairline: 'rgba(255,213,158,0.32)',
+    panel: 'rgba(255,255,255,0.09)',
+    swatch: 'linear-gradient(160deg, #2b2460, #e88a5c)',
+  },
+  {
+    id: 'sand',
+    label: 'Sand',
+    gradient: 'linear-gradient(165deg, #fbf3e4 0%, #f3e3c6 60%, #e9cfa3 100%)',
+    text: '#3a2414',
+    muted: 'rgba(58,36,20,0.62)',
+    accent: '#b5651d',
+    hairline: 'rgba(181,101,29,0.28)',
+    panel: 'rgba(58,36,20,0.05)',
+    swatch: 'linear-gradient(160deg, #fbf3e4, #e9cfa3)',
+  },
+  {
+    id: 'paper',
+    label: 'Paper',
+    gradient: 'linear-gradient(180deg, #ffffff 0%, #f4f6fa 100%)',
+    text: '#0f1b33',
+    muted: 'rgba(15,27,51,0.58)',
+    accent: '#0f7a52',
+    hairline: 'rgba(15,27,51,0.12)',
+    panel: 'rgba(15,122,82,0.07)',
+    swatch: 'linear-gradient(160deg, #ffffff, #e6e9f0)',
+  },
 ];
+
+/** Light backgrounds need dark ornaments. */
+export const isLightBackground = (id: ShareBackgroundId) => id === 'parchment' || id === 'sand' || id === 'paper';
 
 export const DEFAULT_SHARE_BACKGROUND: ShareBackgroundId = 'emerald';
 

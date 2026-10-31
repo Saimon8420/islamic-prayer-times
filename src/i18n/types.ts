@@ -364,6 +364,26 @@ export interface TranslationKeys {
       midnight: string;
       golden: string;
       parchment: string;
+      ocean: string;
+      dusk: string;
+      sand: string;
+      paper: string;
+    };
+    opt: {
+      size: string;
+      sizePost: string;
+      sizeStory: string;
+      sizeSquare: string;
+      style: string;
+      styleClassic: string;
+      styleMinimal: string;
+      show: string;
+      showVerse: string;
+      showArabic: string;
+      showHijri: string;
+      showSunrise: string;
+      message: string;
+      messagePlaceholder: string;
     };
   };
 
