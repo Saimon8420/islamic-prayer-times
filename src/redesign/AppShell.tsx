@@ -66,6 +66,7 @@ export function AppShell({ locationPrompt }: { locationPrompt?: ReactNode }) {
   const { t } = useTranslation();
   const location = useStore((s) => s.location);
   const method = useStore((s) => s.calculationMethod);
+  const backdrop = useStore((s) => s.backdrop);
   const [route, setRoute] = useState<Route>(fromHash);
   const [history, setHistory] = useState<Route[]>([fromHash()]);
 
@@ -103,6 +104,12 @@ export function AppShell({ locationPrompt }: { locationPrompt?: ReactNode }) {
     return () => { cancelled = true; handle?.remove(); };
   }, [history, route]);
 
+  // Desktop page background (web only; the native app stays plain)
+  const bdClass = !isNativePlatform() && backdrop.style !== 'none'
+    ? ` fl-bd fl-bd-${backdrop.style} fl-bdk-${backdrop.strength} fl-bdt-${backdrop.tint}${backdrop.sidebar ? ' fl-bd-side' : ''}`
+    : '';
+  const shellClass = 'fl' + bdClass;
+
   const label = (r: Route) => t(`ui.nav.${r}` as 'ui.nav.today');
   const methodName = CALCULATION_METHODS.find((m) => m.id === method)?.name ?? method;
   let screen: ReactNode;
@@ -118,7 +125,7 @@ export function AppShell({ locationPrompt }: { locationPrompt?: ReactNode }) {
   else screen = <MoreScreen go={go} />;
 
   return (
-    <div className="fl">
+    <div className={shellClass}>
       <ToastProvider>
         <div className="fl-shell">
           <aside className="fl-side" aria-label={t('ui.nav.main')}>

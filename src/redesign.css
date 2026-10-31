@@ -378,3 +378,77 @@ html[dir='rtl'] .fl-switch[aria-checked='true']::after { transform: translateX(-
 .t-share { min-height: 40px; cursor: pointer; transition: background var(--t-fast); }
 .t-share:hover { background: var(--bg); }
 .t-occasion:empty { display: none; }
+
+/* ───────── desktop page backgrounds (web only, chosen in Settings) ───────── */
+.fl {
+  --bd-girih: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.1'%3E%3Crect x='26.4' y='26.4' width='35.2' height='35.2'/%3E%3Crect x='26.4' y='26.4' width='35.2' height='35.2' transform='rotate(45 44 44)'/%3E%3Ccircle cx='44' cy='44' r='9'/%3E%3Cpath d='M44 0v19.1M44 68.9V88M0 44h19.1M68.9 44H88'/%3E%3Cpath d='M0 12L12 0M76 0l12 12M88 76L76 88M12 88L0 76'/%3E%3C/g%3E%3C/svg%3E");
+  --bd-dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23000'%3E%3Ccircle cx='14' cy='22' r='1.2'/%3E%3Ccircle cx='78' cy='9' r='.9'/%3E%3Ccircle cx='52' cy='60' r='1.4'/%3E%3Ccircle cx='104' cy='48' r='1'/%3E%3Ccircle cx='30' cy='96' r='.9'/%3E%3Ccircle cx='92' cy='100' r='1.3'/%3E%3Cpath d='M66 82l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z'/%3E%3C/g%3E%3C/svg%3E");
+  --bd-desert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='300' viewBox='0 0 1600 300' preserveAspectRatio='xMidYMax slice'%3E%3Cg fill='%23000'%3E%3Cpath fill-opacity='.35' d='M0 170C180 120 330 130 520 160S900 110 1100 130 1450 170 1600 140V300H0Z'/%3E%3Cpath fill-opacity='.6' d='M0 220C220 180 420 175 640 205S1050 170 1300 195 1500 215 1600 200V300H0Z'/%3E%3Cpath d='M0 262C260 240 520 245 800 258S1300 240 1600 252V300H0Z'/%3E%3Cg fill-opacity='.6'%3E%3Cpath transform='translate(820 172) scale(0.9)' d='M4 0 6-16C2-18 0-24 4-28 8-38 16-40 20-32 24-38 30-38 32-30H36C38-38 40-44 44-44L49-42 48-40 45-40C43-36 42-30 40-24 38-20 36-18 34-16L35 0H33L31-15H14L12 0H10V-15H8L6 0ZM17-37 19-46 23-37Z'/%3E%3Cpath transform='translate(870 170) scale(0.9)' d='M4 0 6-16C2-18 0-24 4-28 8-38 16-40 20-32 24-38 30-38 32-30H36C38-38 40-44 44-44L49-42 48-40 45-40C43-36 42-30 40-24 38-20 36-18 34-16L35 0H33L31-15H14L12 0H10V-15H8L6 0ZM17-37 19-46 23-37Z'/%3E%3Cpath transform='translate(920 168) scale(0.9)' d='M4 0 6-16C2-18 0-24 4-28 8-38 16-40 20-32 24-38 30-38 32-30H36C38-38 40-44 44-44L49-42 48-40 45-40C43-36 42-30 40-24 38-20 36-18 34-16L35 0H33L31-15H14L12 0H10V-15H8L6 0ZM17-37 19-46 23-37Z'/%3E%3Cpath transform='translate(968 166) scale(0.82)' d='M4 0 6-16C2-18 0-24 4-28 8-38 16-40 20-32 24-38 30-38 32-30H36C38-38 40-44 44-44L49-42 48-40 45-40C43-36 42-30 40-24 38-20 36-18 34-16L35 0H33L31-15H14L12 0H10V-15H8L6 0ZM17-37 19-46 23-37Z'/%3E%3C/g%3E%3Cg transform='translate(150 230) scale(1)'%3E%3Cpath d='M0 0C2-30 6-60 14-90L18-90C11-60 7-30 6 0Z'/%3E%3Cpath d='M16-90C0-100-20-96-34-84-18-92-2-92 14-86ZM16-90C30-104 52-104 66-92 50-98 32-96 18-86ZM16-90C8-110-6-120-22-124-6-112 4-102 14-88ZM16-90C26-112 42-122 58-124 42-112 30-102 18-88ZM16-90C4-80-4-66-6-50 0-66 8-78 18-86ZM16-90C28-80 36-68 40-52 32-66 26-78 15-86Z'/%3E%3C/g%3E%3Cg transform='translate(205 236) scale(0.75)'%3E%3Cpath d='M0 0C2-30 6-60 14-90L18-90C11-60 7-30 6 0Z'/%3E%3Cpath d='M16-90C0-100-20-96-34-84-18-92-2-92 14-86ZM16-90C30-104 52-104 66-92 50-98 32-96 18-86ZM16-90C8-110-6-120-22-124-6-112 4-102 14-88ZM16-90C26-112 42-122 58-124 42-112 30-102 18-88ZM16-90C4-80-4-66-6-50 0-66 8-78 18-86ZM16-90C28-80 36-68 40-52 32-66 26-78 15-86Z'/%3E%3C/g%3E%3Cg transform='translate(1430 220) scale(0.85)'%3E%3Cpath d='M0 0C2-30 6-60 14-90L18-90C11-60 7-30 6 0Z'/%3E%3Cpath d='M16-90C0-100-20-96-34-84-18-92-2-92 14-86ZM16-90C30-104 52-104 66-92 50-98 32-96 18-86ZM16-90C8-110-6-120-22-124-6-112 4-102 14-88ZM16-90C26-112 42-122 58-124 42-112 30-102 18-88ZM16-90C4-80-4-66-6-50 0-66 8-78 18-86ZM16-90C28-80 36-68 40-52 32-66 26-78 15-86Z'/%3E%3C/g%3E%3Cpath fill-opacity='.7' d='M1300 60a26 26 0 1 0 22 40 20 20 0 1 1-22-40z'/%3E%3Cpolygon points='1345.0,45.0 1346.2,49.1 1349.9,47.1 1347.9,50.8 1352.0,52.0 1347.9,53.2 1349.9,56.9 1346.2,54.9 1345.0,59.0 1343.8,54.9 1340.1,56.9 1342.1,53.2 1338.0,52.0 1342.1,50.8 1340.1,47.1 1343.8,49.1'/%3E%3C/g%3E%3C/svg%3E");
+  --bd-ink: var(--emerald); --bd-dots-ink: var(--gold); --bdk: 1;
+}
+.dark .fl { --bd-ink: var(--gold); }
+.fl.fl-bd-desert { --bd-ink: var(--gold); }
+.fl.fl-bdt-emerald { --bd-ink: var(--emerald); --bd-dots-ink: var(--emerald); }
+.fl.fl-bdt-gold { --bd-ink: var(--gold); --bd-dots-ink: var(--gold); }
+.fl.fl-bdk-soft { --bdk: .6; }
+.fl.fl-bdk-strong { --bdk: 1.6; }
+@media (min-width: 900px) {
+  .fl.fl-bd .fl-main { background: transparent; }
+  .fl.fl-bd-side .fl-side { background: color-mix(in srgb, var(--bg) 55%, transparent); border-color: color-mix(in srgb, var(--line) 70%, transparent); }
+  .fl.fl-bd .fl-main::before, .fl.fl-bd .fl-main::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; -webkit-mask-composite: source-in; mask-composite: intersect; }
+
+  .fl.fl-bd-girih .fl-main::before, .fl.fl-bd-girihDawn .fl-main::before {
+    background: var(--bd-ink); opacity: calc(.11 * var(--bdk));
+    -webkit-mask: var(--bd-girih) 0 0 / 88px 88px repeat, radial-gradient(ellipse 55% 60% at calc(50% + 126px) 42%, transparent 35%, #000 95%);
+    mask: var(--bd-girih) 0 0 / 88px 88px repeat, radial-gradient(ellipse 55% 60% at calc(50% + 126px) 42%, transparent 35%, #000 95%);
+  }
+  .dark .fl.fl-bd-girih .fl-main::before, .dark .fl.fl-bd-girihDawn .fl-main::before { opacity: calc(.09 * var(--bdk)); }
+
+  .fl.fl-bd-dawn, .fl.fl-bd-girihDawn {
+    background:
+      radial-gradient(900px 420px at 78% -120px, color-mix(in srgb, var(--gold-fill) calc(20% * var(--bdk)), transparent), transparent 70%) fixed,
+      radial-gradient(700px 380px at 25% -60px, color-mix(in srgb, var(--emerald) calc(14% * var(--bdk)), transparent), transparent 70%) fixed,
+      var(--bg);
+  }
+  .dark .fl.fl-bd-dawn, .dark .fl.fl-bd-girihDawn {
+    background:
+      radial-gradient(900px 360px at 78% -140px, color-mix(in srgb, var(--gold-fill) calc(10% * var(--bdk)), transparent), transparent 70%) fixed,
+      radial-gradient(700px 320px at 25% -80px, color-mix(in srgb, var(--emerald) calc(9% * var(--bdk)), transparent), transparent 70%) fixed,
+      var(--bg);
+  }
+  .fl.fl-bd-dawn .fl-main::after, .fl.fl-bd-girihDawn .fl-main::after {
+    background: var(--bd-dots-ink); opacity: calc(.35 * var(--bdk));
+    -webkit-mask: var(--bd-dots) 0 0 / 120px 120px repeat, linear-gradient(#000, transparent 55%);
+    mask: var(--bd-dots) 0 0 / 120px 120px repeat, linear-gradient(#000, transparent 55%);
+  }
+  .dark .fl.fl-bd-dawn .fl-main::after, .dark .fl.fl-bd-girihDawn .fl-main::after { opacity: calc(.55 * var(--bdk)); }
+
+  .fl.fl-bd-desert { background: linear-gradient(color-mix(in srgb, var(--gold-fill) calc(9% * var(--bdk)), var(--bg)), var(--bg) 60%) fixed; }
+  .dark .fl.fl-bd-desert {
+    background: radial-gradient(1px 1px at 20% 30%, #fff8, transparent) fixed, radial-gradient(1px 1px at 70% 12%, #fff8, transparent) fixed,
+      radial-gradient(1.5px 1.5px at 85% 40%, #fff6, transparent) fixed, radial-gradient(1px 1px at 40% 8%, #fff7, transparent) fixed,
+      linear-gradient(#0a0f1f, var(--bg) 60%) fixed;
+  }
+  .fl.fl-bd-desert .fl-main::before {
+    top: auto; height: 300px; background: var(--bd-ink); opacity: calc(.22 * var(--bdk));
+    -webkit-mask: var(--bd-desert) center bottom / auto 300px no-repeat; mask: var(--bd-desert) center bottom / auto 300px no-repeat;
+  }
+  .dark .fl.fl-bd-desert .fl-main::before { opacity: calc(.13 * var(--bdk)); }
+  /* after the `mask` shorthands above, which reset the composite to "add" */
+  .fl.fl-bd .fl-main::before, .fl.fl-bd .fl-main::after { -webkit-mask-composite: source-in; mask-composite: intersect; }
+}
+@media (max-width: 899px) { .fl-only-desktop { display: none !important; } }
+
+/* background picker tiles (Settings) */
+.fl-bdtiles { flex-basis: 100%; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.fl-bdtile { display: grid; gap: 7px; font-size: 13px; font-weight: 700; color: var(--ink-2); text-align: center; min-height: 44px; }
+.fl-bdtile[aria-pressed='true'] { color: var(--ink); }
+.fl-bdtile .sw { position: relative; height: 64px; border-radius: 12px; background: var(--bg); box-shadow: 0 0 0 1px var(--line); overflow: hidden; transition: box-shadow var(--t-fast); }
+.fl-bdtile:hover .sw { box-shadow: 0 0 0 1px var(--dim); }
+.fl-bdtile[aria-pressed='true'] .sw { box-shadow: 0 0 0 2px var(--emerald); }
+.fl-bdtile .sw::before, .fl-bdtile .sw::after { content: ''; position: absolute; inset: 0; }
+.sw-girih::before, .sw-girihDawn::before { background: var(--bd-ink); opacity: .32; -webkit-mask: var(--bd-girih) 0 0 / 44px 44px; mask: var(--bd-girih) 0 0 / 44px 44px; }
+.fl-bdtile .sw-dawn, .fl-bdtile .sw-girihDawn { background: radial-gradient(90px 50px at 78% 0, color-mix(in srgb, var(--gold-fill) 40%, transparent), transparent), radial-gradient(70px 40px at 22% 0, color-mix(in srgb, var(--emerald) 25%, transparent), transparent), var(--bg); }
+.sw-dawn::after, .sw-girihDawn::after { background: var(--bd-dots-ink); opacity: .7; -webkit-mask: var(--bd-dots) 0 0 / 60px 60px; mask: var(--bd-dots) 0 0 / 60px 60px; }
+.fl-bdtile .sw-desert { background: linear-gradient(color-mix(in srgb, var(--gold-fill) 16%, var(--bg)), var(--bg)); }
+.sw-desert::before { background: var(--gold); opacity: .45; -webkit-mask: var(--bd-desert) center bottom / auto 64px no-repeat; mask: var(--bd-desert) center bottom / auto 64px no-repeat; }

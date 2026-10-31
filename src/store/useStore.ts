@@ -40,6 +40,17 @@ export interface AppSettings {
 
   // Per-prayer alerts (on top of the global notifications switch)
   prayerAlerts: Record<PrayerAlertKey, boolean>;
+
+  // Desktop page background (web only)
+  backdrop: Backdrop;
+}
+
+export type BackdropStyle = 'none' | 'girih' | 'dawn' | 'desert' | 'girihDawn';
+export interface Backdrop {
+  style: BackdropStyle;
+  strength: 'soft' | 'medium' | 'strong';
+  tint: 'auto' | 'emerald' | 'gold';
+  sidebar: boolean;
 }
 
 export type PrayerAlertKey = 'fajr' | 'sunrise' | 'dhuhr' | 'asr' | 'maghrib' | 'isha';
@@ -58,6 +69,7 @@ interface AppState extends AppSettings {
   setLanguage: (language: Language) => void;
   setHijriAdjustment: (adjustment: number) => void;
   setPrayerAlert: (key: PrayerAlertKey, on: boolean) => void;
+  setBackdrop: (patch: Partial<Backdrop>) => void;
   resetSettings: () => void;
 }
 
@@ -74,6 +86,7 @@ const defaultSettings: AppSettings = {
   language: 'en' as Language,
   hijriAdjustment: 0,
   prayerAlerts: { fajr: true, sunrise: false, dhuhr: true, asr: true, maghrib: true, isha: true },
+  backdrop: { style: 'girihDawn', strength: 'medium', tint: 'auto', sidebar: true },
 };
 
 export const useStore = create<AppState>()(
@@ -104,6 +117,8 @@ export const useStore = create<AppState>()(
       setHijriAdjustment: (hijriAdjustment) => set({ hijriAdjustment }),
 
       setPrayerAlert: (key, on) => set((s) => ({ prayerAlerts: { ...defaultSettings.prayerAlerts, ...s.prayerAlerts, [key]: on } })),
+
+      setBackdrop: (patch) => set((s) => ({ backdrop: { ...defaultSettings.backdrop, ...s.backdrop, ...patch } })),
 
       resetSettings: () => set(defaultSettings),
     }),

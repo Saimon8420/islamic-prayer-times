@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
 import { LocationPicker } from '../../components/LocationPicker';
-import { useStore, type PrayerAlertKey } from '../../store/useStore';
+import { useStore, type PrayerAlertKey, type BackdropStyle } from '../../store/useStore';
+import { isNativePlatform } from '../../services/platformService';
 import { useLocation } from '../../hooks/useLocation';
 import { CALCULATION_METHODS } from '../../services/prayerService';
 import { REGULAR_ADHAN_SOUNDS, FAJR_ADHAN_SOUNDS } from '../../services/notificationService';
@@ -13,9 +14,18 @@ import { Icon } from '../icons';
 import { PageHead, Switch, Segmented } from '../shared';
 import { PRAYER_KEYS, usePrayerDay } from '../lib';
 
+const BACKDROPS: [BackdropStyle, 'ui.settings.bgNone' | 'ui.settings.bgGirih' | 'ui.settings.bgDawn' | 'ui.settings.bgDesert' | 'ui.settings.bgBoth'][] = [
+  ['none', 'ui.settings.bgNone'],
+  ['girih', 'ui.settings.bgGirih'],
+  ['dawn', 'ui.settings.bgDawn'],
+  ['desert', 'ui.settings.bgDesert'],
+  ['girihDawn', 'ui.settings.bgBoth'],
+];
+
 export function SettingsScreen() {
   const { t } = useTranslation();
   const s = useStore();
+  const bd = s.backdrop;
   const loc = useLocation();
   const day = usePrayerDay(new Date());
   const [playing, setPlaying] = useState<string | null>(null);
@@ -109,6 +119,34 @@ export function SettingsScreen() {
               <Segmented label={t('settings.language')} value={s.language} onChange={(v) => s.setLanguage(v as Language)} options={LANGUAGE_OPTIONS.map((l) => ({ value: l.id, label: l.nativeLabel }))} />
             </div>
             <div className="fl-row"><div className="lt"><b>{t('settings.timeFormat24')}</b><span>{t('settings.timeFormat24Desc')}</span></div><Switch label={t('settings.timeFormat24')} checked={s.use24HourFormat} onChange={s.setUse24HourFormat} /></div>
+            {!isNativePlatform() && (
+              <>
+                <div className="fl-row fl-only-desktop" style={{ flexWrap: 'wrap' }}>
+                  <div className="lt"><b>{t('ui.settings.bg')}</b><span>{t('ui.settings.bgDesc')}</span></div>
+                  <div className="fl-bdtiles" role="group" aria-label={t('ui.settings.bg')}>
+                    {BACKDROPS.map(([v, k]) => (
+                      <button key={v} type="button" className="fl-bdtile" aria-pressed={bd.style === v} onClick={() => s.setBackdrop({ style: v })}>
+                        <span className={`sw sw-${v}`} />
+                        {t(k)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {bd.style !== 'none' && (
+                  <>
+                    <div className="fl-row fl-only-desktop" style={{ flexWrap: 'wrap' }}>
+                      <div className="lt"><b>{t('ui.settings.bgStrength')}</b></div>
+                      <Segmented label={t('ui.settings.bgStrength')} value={bd.strength} onChange={(v) => s.setBackdrop({ strength: v })} options={[{ value: 'soft', label: t('ui.settings.bgSoft') }, { value: 'medium', label: t('ui.settings.bgMedium') }, { value: 'strong', label: t('ui.settings.bgStrong') }]} />
+                    </div>
+                    <div className="fl-row fl-only-desktop" style={{ flexWrap: 'wrap' }}>
+                      <div className="lt"><b>{t('ui.settings.bgColour')}</b></div>
+                      <Segmented label={t('ui.settings.bgColour')} value={bd.tint} onChange={(v) => s.setBackdrop({ tint: v })} options={[{ value: 'auto', label: t('ui.settings.bgAuto') }, { value: 'emerald', label: t('ui.settings.bgEmerald') }, { value: 'gold', label: t('ui.settings.bgGold') }]} />
+                    </div>
+                    <div className="fl-row fl-only-desktop"><div className="lt"><b>{t('ui.settings.bgSidebar')}</b></div><Switch label={t('ui.settings.bgSidebar')} checked={bd.sidebar} onChange={(v) => s.setBackdrop({ sidebar: v })} /></div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
 

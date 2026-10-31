@@ -639,6 +639,22 @@ export interface TranslationKeys {
       hanafi: string;
       preview: string;
       stop: string;
+      bg: string;
+      bgDesc: string;
+      bgNone: string;
+      bgGirih: string;
+      bgDawn: string;
+      bgDesert: string;
+      bgBoth: string;
+      bgStrength: string;
+      bgSoft: string;
+      bgMedium: string;
+      bgStrong: string;
+      bgColour: string;
+      bgAuto: string;
+      bgEmerald: string;
+      bgGold: string;
+      bgSidebar: string;
     };
     more: {
       calendarSub: string;
