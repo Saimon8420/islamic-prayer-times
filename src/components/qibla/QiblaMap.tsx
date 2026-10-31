@@ -70,6 +70,8 @@ export const QiblaMap = () => {
   const bearing = Math.round(calculateQibla(origin[0], origin[1]));
   const distance = Math.round(calculateDistanceToMakkah(origin[0], origin[1]));
   const originLabel = visitor ? t('qibla.map.you') : location?.name || t('qibla.map.home');
+  // Within ~8% of the map of each other the two pins and labels would collide.
+  const nearHome = !!visitor && Math.abs(projX(visitor[1]) - projX(home[1])) < 8 && Math.abs(projY(visitor[0]) - projY(home[0])) < 8;
 
   const requestLocate = () => {
     if (!('geolocation' in navigator)) {
@@ -168,27 +170,29 @@ export const QiblaMap = () => {
           </span>
         </span>
 
-        {/* Home pin (the set location) */}
-        <span
-          className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
-          style={{ left: `${projX(home[1])}%`, top: `${projY(home[0])}%` }}
-        >
-          <span className="h-2 w-2 rounded-full bg-secondary shadow-[0_0_0_3px_hsl(var(--secondary)/0.22)]" />
-          <span className="mt-0.5 max-w-[72px] truncate rounded bg-card/70 px-1 font-mono text-[8px] uppercase tracking-wider text-muted-foreground">
-            {location?.name || t('qibla.map.home')}
-          </span>
-        </span>
-
-        {/* Visitor pin (live GPS, opt-in) */}
-        {visitor && (
+        {/* Home pin (the set location) — merged into the visitor pin when they'd overlap */}
+        {!nearHome && (
           <span
             className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+            style={{ left: `${projX(home[1])}%`, top: `${projY(home[0])}%` }}
+          >
+            <span className="h-2 w-2 rounded-full bg-secondary shadow-[0_0_0_3px_hsl(var(--secondary)/0.22)]" />
+            <span className="mt-0.5 max-w-[72px] truncate rounded bg-card/70 px-1 font-mono text-[8px] uppercase tracking-wider text-muted-foreground">
+              {location?.name || t('qibla.map.home')}
+            </span>
+          </span>
+        )}
+
+        {/* Visitor pin (live GPS, opt-in); its label sits above the dot so it never collides with Home's */}
+        {visitor && (
+          <span
+            className="absolute flex -translate-x-1/2 translate-y-[calc(-100%+4px)] flex-col items-center"
             style={{ left: `${projX(visitor[1])}%`, top: `${projY(visitor[0])}%` }}
           >
-            <span className="next-pulse h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.25)]" />
-            <span className="mt-0.5 rounded bg-card/70 px-1 font-mono text-[8px] uppercase tracking-wider text-amber-600 dark:text-amber-400">
-              {t('qibla.map.you')}
+            <span className="mb-0.5 max-w-[120px] truncate rounded bg-card/80 px-1 font-mono text-[8px] uppercase tracking-wider text-amber-600 dark:text-amber-400">
+              {nearHome ? `${t('qibla.map.you')} · ${location?.name.split(',')[0] || t('qibla.map.home')}` : t('qibla.map.you')}
             </span>
+            <span className="next-pulse h-2 w-2 rounded-full bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.25)]" />
           </span>
         )}
       </div>
