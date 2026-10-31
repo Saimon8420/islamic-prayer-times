@@ -1,3 +1,4 @@
+import { developerProjects } from '../../data/developerProjects';
 import { useState } from 'react';
 import { Heart, ExternalLink, Code2, Globe, ChevronDown, Sparkles, Star } from 'lucide-react';
 import { useTranslation } from '../../i18n/useTranslation';
@@ -17,23 +18,7 @@ const EightPointedStar = () => (
   </svg>
 );
 
-const developerProjects = [
-  {
-    name: 'Al Quran',
-    url: 'https://al-quran-client-site-e1g4.vercel.app/',
-    description: 'Complete Quran with translations',
-  },
-  {
-    name: 'Hadith Explorer',
-    url: 'https://hadith-explorer-bay.vercel.app/',
-    description: 'Search & browse Hadith collections',
-  },
-  {
-    name: 'Awqat',
-    url: 'https://awqat-dev.vercel.app',
-    description: 'Design shareable prayer & fasting timetables',
-  },
-];
+
 
 type SectionId = 'about' | 'powered' | 'features' | 'developer';
 
