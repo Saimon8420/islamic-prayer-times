@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { toBlob } from 'html-to-image';
 import {
   Dialog,
@@ -55,20 +55,18 @@ export const ShareCardDialog = ({ open, onOpenChange }: ShareCardDialogProps) =>
   const [status, setStatus] = useState<'idle' | 'working' | 'saved' | 'failed'>('idle');
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.3);
+  const [scale, setScale] = useState(0.25);
 
-  // Fit the 1080px-wide card into whatever width the dialog gives us.
-  useLayoutEffect(() => {
-    if (!open) return;
-    const el = viewportRef.current;
+  // Fit the 1080px-wide card into whatever width the dialog gives us. A callback
+  // ref, because the dialog portal mounts the preview after the open effect runs.
+  const viewportRef = useCallback((el: HTMLDivElement | null) => {
     if (!el) return;
     const measure = () => setScale(el.clientWidth / SHARE_CARD_WIDTH);
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [open]);
+  }, []);
 
   const bg = getShareBackground(bgId);
   const locale = language === 'bn' ? 'bn-BD' : language === 'ar' ? 'ar-SA' : 'en-US';
