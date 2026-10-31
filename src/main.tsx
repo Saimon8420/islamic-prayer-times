@@ -8,7 +8,11 @@ import '@fontsource/noto-sans-arabic/400.css';
 import '@fontsource/noto-sans-arabic/500.css';
 import '@fontsource/noto-sans-arabic/600.css';
 import '@fontsource/noto-sans-arabic/700.css';
+import '@fontsource-variable/manrope';
+import '@fontsource/amiri/400.css';
+import '@fontsource/noto-naskh-arabic/400.css';
 import './index.css';
+import './redesign.css';
 import App from './App';
 
 createRoot(document.getElementById('root')!).render(
